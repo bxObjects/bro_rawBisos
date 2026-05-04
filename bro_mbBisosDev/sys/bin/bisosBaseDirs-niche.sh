@@ -116,7 +116,8 @@ _EOF_
     }
     EH_assert [[ $# -eq 0 ]]
 
-    # echo ${gitLabel}
+    gitLabel="mb2_github"
+    echo "gitLabel = ${gitLabel}"
     
     lpDo vis_bxGitReposAuthReCloneBisos    
 

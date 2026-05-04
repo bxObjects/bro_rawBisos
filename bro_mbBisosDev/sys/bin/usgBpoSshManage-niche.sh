@@ -78,14 +78,14 @@ _CommentEnd_
 
 # G_IcmParams
 
-sshKeyPath=$( FN_absolutePathGet "~piu_mbBisosDev/credentials/github.com/mohsenBanan/sshKeys/mb1_github" )
+sshKeyPath=$( FN_absolutePathGet "/bisos/git/bxRepos/bxObjects/bro_rawBisos/bro_mbBisosDev/credentials/github.com/mohsenBanan/sshKeys/mb2_github" )
 gitLabel=$( FN_nonDirsPart ${sshKeyPath} )
 gitServer="github.com"
 
 function G_postParamHook {
-    local siteGitServerInfoBaseDir=$( bisosSiteGitServer.sh -i gitServerInfoBaseDir )
+    # local siteGitServerInfoBaseDir=$( bisosSiteGitServer.sh -i gitServerInfoBaseDir )
 
-    site_gitServerName=$( fileParamManage.py -i fileParamRead ${siteGitServerInfoBaseDir} gitServerName )    
+    # site_gitServerName=$( fileParamManage.py -i fileParamRead ${siteGitServerInfoBaseDir} gitServerName )
     return 0
 }
 
@@ -106,7 +106,7 @@ function vis_examples {
 
     local oneBxoId=${currentBxoId}
     #local oneGitBxSeLn="git.bysource.org"
-    local oneGitBxSeLn="${site_gitServerName}"
+    # local oneGitBxSeLn="${site_gitServerName}"
 
     #local oneUsg=${currentUsgUname}
     local oneUsg=$(id -u -n)
@@ -177,6 +177,9 @@ _EOF_
 
     local currentUser=$(id -u -n)
 
+    lpDo ln -s /bisos/git/bxRepos/mb-ephemera/shuttle/id_rsa ${sshKeyPath}
+    lpDo ln -s /bisos/git/bxRepos/mb-ephemera/shuttle/id_rsa.pub ${sshKeyPath}
+
     lpDo ${G_myUnNicheName} ${extraInfo} -p usg=${currentUser} -i usgCustomFullUpdate ${gitLabel} ${sshKeyPath} ${gitServer}
 
     local gitConfigBasePath=$( dirname ${sshKeyPath} )/gitConfig.fps
@@ -185,6 +188,9 @@ _EOF_
     local userName=$( fileParamManage.py -i fileParamRead ${gitConfigBasePath} userName )
 
     lpDo ${G_myUnNicheName} ${extraInfo} -p usg=${currentUser} -i usgAcctCustomGitInfoUpdate "${gitLabel}" "${userName}" "${userEmail}"
+
+    lpDo rm ${sshKeyPath}/id_rsa
+    lpDo rm ${sshKeyPath}/id_rsa.pub
     
     lpReturn
 }
