@@ -1,0 +1,17 @@
+#+TITLE:  BRO_ (BISOS Repo Object) for use After rawBisos in Unsited Environments
+#+DATE: <2025-06-28 Sat 20:18>
+#+AUTHOR: Mohsen BANAN
+
+As a BRO_ (BISOS Repo Object), this repo contains various bros
+for use after rawBisos in unsited environments.
+
+* Table of Contents     :TOC:
+- [[#scope-of-this-repo][Scope of This Repo]]
+
+* Scope of This Repo
+
+This scope of this repo is debian as distro.
+Currenty we target
+
+-  [[https://www.debian.org/releases/trixie][Debian 13 (Trixie)]]
+-  [[https://www.debian.org/releases/bookworm/][Debian 12 (Bookworm)]]
