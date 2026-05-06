@@ -80,7 +80,8 @@ _CommentEnd_
 
 sshKeyPath=$( FN_absolutePathGet "/bisos/git/bxRepos/bxObjects/bro_rawBisos/bro_mbBisosDev/credentials/github.com/mohsenBanan/sshKeys/mb2_github" )
 gitLabel=$( FN_nonDirsPart ${sshKeyPath} )
-gitServer="github.com"
+gitServer="ssh.github.com"
+gitAccess="sshOverHttps"
 
 function G_postParamHook {
     # local siteGitServerInfoBaseDir=$( bisosSiteGitServer.sh -i gitServerInfoBaseDir )
@@ -180,7 +181,7 @@ _EOF_
     lpDo ln -s /bisos/git/bxRepos/mb-ephemera/shuttle/id_rsa ${sshKeyPath}
     lpDo ln -s /bisos/git/bxRepos/mb-ephemera/shuttle/id_rsa.pub ${sshKeyPath}
 
-    lpDo ${G_myUnNicheName} ${extraInfo} -p usg=${currentUser} -i usgCustomFullUpdate ${gitLabel} ${sshKeyPath} ${gitServer}
+    lpDo ${G_myUnNicheName} ${extraInfo} -p usg=${currentUser} -i usgCustomFullUpdate ${gitLabel} ${sshKeyPath} ${gitServer} ${gitAccess}
 
     local gitConfigBasePath=$( dirname ${sshKeyPath} )/gitConfig.fps
 
