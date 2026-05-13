@@ -27,8 +27,8 @@
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:terseTreeNavigator)][dbf]]
 * +
 *                                        *━━━━━━━━━━━━━━━━━━━━━━━━*
-*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/rawBisos/hereSvcs/residentMta/_nodeBase_")][ =residentMta= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/rawBisos/hereSvcs/webUiCsPlayer/_nodeBase_")][ =webUiCsPlayer= ]] *|*
-*   /Ancestors/  :: [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/rawBisos/hereSvcs/_nodeBase_")][ = /<hereSvcs>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/rawBisos/_nodeBase_")][ = /<rawBisos>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/_nodeBase_")][ =bisos-core= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/_nodeBase_")][ = /<panels>/ = ]] *|* [[elisp:(dired "//bisos")][ ~bisos~ ]] *|*
+*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/rawBisos/rawBisosPlatform/residentMta/_nodeBase_")][ =residentMta= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/rawBisos/rawBisosPlatform/webUiCsPlayer/_nodeBase_")][ =webUiCsPlayer= ]] *|*
+*   /Ancestors/  :: [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/rawBisos/rawBisosPlatform/_nodeBase_")][ = /<rawBisosPlatform>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/rawBisos/_nodeBase_")][ = /<rawBisos>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/_nodeBase_")][ =bisos-core= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/_nodeBase_")][ = /<panels>/ = ]] *|* [[elisp:(dired "//bisos")][ ~bisos~ ]] *|*
 *                                   _━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━_                          [[elisp:(org-shifttab)][<)]] E|
 ####+END
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "Overview and Use Cases" :anchor "Panel" :extraInfo "  /::Blank Starting Point::/"
@@ -40,9 +40,9 @@
 * +
 * TODO  We will guide documentation from here. This is the very top.
 * -B|
-####+BEGIN: blee:bxPanel:linkWithLinedTreeNavigator :model "auto" :outLevel 2 :foldDesc "auto" :destDesc "auto" :dest "/bisos/apps/defaults/activeDocs/bxPlatform/baseDirs/_nodeBase_"
-* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(blee:bnsm:panel-goto "/bisos/apps/defaults/activeDocs/bxPlatform/baseDirs/_nodeBase_")][@ ~PROBLEM: Missing FV /bisos/apps/defaults/activeDocs/bxPlatform/baseDirs/_nodeBase_/destDesc~ @]]   ::  [[elisp:(org-cycle)][| /PROBLEM: Missing FV /bisos/apps/defaults/activeDocs/bxPlatform/baseDirs/_nodeBase_/foldDesc/ |]]
- [[elisp:(org-shifttab)][<)]] E| [[elisp:(org-shifttab)][<)]] E|
+####+BEGIN: blee:bxPanel:linkWithTreeElem :agenda t :sep t :outLevel 2 :model "auto" :foldDesc "auto" :destDesc "auto" :dest "/bisos/git/auth/bxRepos/bisos-pip/webCap/py3/panels/bisos.webCap/_nodeBase_"
+* /[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(blee:bnsm:panel-goto "/bisos/git/auth/bxRepos/bisos-pip/webCap/py3/panels/bisos.webCap/_nodeBase_")][@ ~bisos.webCap~ @]]  [[elisp:(org-cycle)][| *=* |]] :: /Agenda/ <<bisos.webCap>> [[elisp:(org-shifttab)][<)]] E|
 ####+END
 
 ####+BEGIN: blee:bxPanel:separator :outLevel 1
