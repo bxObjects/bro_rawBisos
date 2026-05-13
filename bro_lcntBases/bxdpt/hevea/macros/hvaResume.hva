@@ -1,0 +1,39 @@
+\ProvidesPackage{resume}
+
+\newcommand{\name}[1]{%
+  \begin{center}%
+    \large{\textbf{#1}}%
+    \bigskip%
+  \end{center}%
+}
+
+% addresses are done with htmlonly
+
+\newcommand{\sectiontitle}[1]{%
+  \begin{center}%
+    \large{\textbf{\textsc{#1}}}%
+    \bigskip%
+  \end{center}%
+}
+
+\newcommand{\jobtitle}[1]{%
+  \begin{flushleft} \textit{#1} \end{flushleft}%
+}
+
+\newcommand{\employer}[1]{%
+    \begin{flushleft} \textbf{\textit{#1}} \end{flushleft}%
+}
+
+\newcommand{\datesOld}[1]{%
+    #1 \newline%
+}
+
+\newcommand{\dates}[1]{%
+  \begin{flushright}%
+    #1%
+  \end{flushright}%
+}
+
+\newcommand{\location}[1]{%
+  \begin{flushright} #1 \end{flushright}%
+}

@@ -1,0 +1,5 @@
+\ProvidesPackage{polyglossia}
+
+
+\newcommand{\selectlanguage}[1]{}
+

@@ -1,0 +1,4 @@
+\newenvironment{faPar}{\begin{flushright}}{\end{flushright}}
+\newenvironment{fa}{}{}
+\newcommand{\persian}{}
+

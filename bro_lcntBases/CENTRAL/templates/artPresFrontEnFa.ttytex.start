@@ -1,0 +1,34 @@
+%%% -*- Mode: LaTeX; -*-
+%       RCS: $Id: artPresFrontEnFa.ttytex.start,v 1.2 2012-10-04 15:19:06 lsipusr Exp $
+
+%%%#+BEGIN: bx:dblock:lcnt:warning-intro :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:header-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:style-params :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:header-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:copyright :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:main-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+\input{artPresBodyEnFa.tex}
+
+%%%#+BEGIN: bx:dblock:lcnt:main-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:latex:end-of-file :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:

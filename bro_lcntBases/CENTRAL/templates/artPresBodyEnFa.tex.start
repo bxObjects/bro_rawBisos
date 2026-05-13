@@ -1,0 +1,48 @@
+%%% -*- Mode: LaTeX; -*-
+%       RCS: $Id: artPresBodyEnFa.tex.start,v 1.1 2011-06-25 04:56:53 lsipusr Exp $
+
+%%%#+BEGIN: bx:dblock:lcnt:body:warning-intro :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:body:about-this-document :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%{{{ Start-Here
+
+\section{Start Here}
+
+
+\subsection{With an Introduction}
+
+\begin{frame}{Some Introduction}{}
+
+  \begin{list}{This List Will Appear Both In Article and Presentation:}{}
+  \item And here we go with an item
+  \end{list}
+
+\end{frame}
+
+
+\mode<article>{ 
+This sections shows up in article only and not presentation.
+You could cite something \cite{rfc-3724} 
+only for the article. 
+}
+
+\mode<presentation>{
+\begin{frame}{Presentation Only Text}{}
+  \begin{itemize}
+  \item This text only appears in the presentation form
+  \end{itemize}
+\end{frame}
+}
+
+
+%}}} Start-Here
+
+%%%#+BEGIN: bx:dblock:lcnt:body:colophon :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+
+%%%#+BEGIN: bx:dblock:lcnt:latex:end-of-file :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:

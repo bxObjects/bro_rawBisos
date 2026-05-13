@@ -1,0 +1,11 @@
+\ProvidesPackage{bystararticle}
+
+\excludecomment{presentationMode}
+\includecomment{articleMode}
+
+%\newcommand{\pnote}[1]{\note{#1}}
+\newcommand{\pnote}[1]{#1}
+
+\newcommand{\hrulefill}{%
+  \@print{<hr>}%
+}%

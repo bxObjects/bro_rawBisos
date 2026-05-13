@@ -1,0 +1,86 @@
+\ProvidesPackage{beamerarticle}
+
+
+\newenvironment{revealslide}[1][]{%
+    \@open{SECTION}{}
+}{
+    \@close{SECTION}
+}
+
+\newenvironment{frame}[1][]{%
+  \@namedef{frameAudio}{blank}%    
+}{
+  \@print{</section>}%
+}%
+
+
+\newcommand{\transition}[1]{}
+
+\newcommand{\transitionout}[1]{}
+
+%
+% For Audio, Language Can Also Be Supported
+% 
+\newcommand{\frameaudio}[1]{%
+  \@namedef{frameAudio}{#1}%
+}
+
+\newcommand{\frametitle}[1]{%
+  \@print{<section>}%
+
+  \@print{<h3>}#1\@print{</h3>}
+
+  {\ifthenelse{\equal{\@nameuse{frameAudio}}{blank}}%
+    {}%
+    {
+      \@print{}
+      \@print{<audio controls>}
+      \@print{ <source src=}\@nameuse{frameAudio}\@print{ >}
+      \@print{</audio>}
+    }%
+  }%
+  %\@print{ <source src="audio/}\@nameuse{frameAudio}\@print{.wav"}
+}
+
+
+\newcommand{\framesubtitle}[1]{%
+  \@print{<h5>}#1\@print{</h5>}
+}
+
+
+
+%%%
+%%% NOTUSED -- OBSOLETED
+%%%
+\def\mode<#1>{%
+  \ifthenelse{\equal{#1}{article}}
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}
+    { 
+      \@print{*/</script>}
+    \@namedef{bxCommentOpenedP}{false}
+    }
+    {}
+  }
+  {}
+  \ifthenelse{\equal{#1}{all}}
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}
+    {
+      \@print{*/</script>}
+    \@namedef{bxCommentOpenedP}{false}
+    }
+    {}
+  }
+  {}
+  \ifthenelse{\equal{#1}{presentation}}
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}
+    {
+      \@print{*/</script>}
+       \@namedef{bxCommentOpenedP}{false}
+    }
+    {
+      \@print{<script>/*}
+      \@namedef{bxCommentOpenedP}{true} 
+    }
+  }
+  {}
+}

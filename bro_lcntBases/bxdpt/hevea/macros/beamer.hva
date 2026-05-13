@@ -1,0 +1,251 @@
+\ProvidesPackage{beamer}
+
+\newenvironment{revealslideOld}[1][]{%
+    \@open{SECTION}{}
+}{
+    \@close{SECTION}
+}
+
+\newenvironment{revealslide}[1][]{%
+    \@open{SECTION}{}
+}{
+    \@close{SECTION}
+}
+
+
+\newenvironment{frame}[1][]{%
+  \@namedef{transitionIn}{blank}%
+  \@namedef{transitionOut}{blank}%
+  \@namedef{frameAudio}{blank}%    
+}{
+  \@print{</section>}  
+}
+
+\newcommand{\transition}[1]{%
+  \@namedef{transitionIn}{#1}%  
+}
+
+\newcommand{\transitionout}[1]{%
+  \@namedef{transitionOut}{#1}%  
+}
+
+
+% \newcommand{\pnote}[1]{\note{#1}}
+
+% Just ignore pnotes all together
+\newcommand{\pnote}[1]{%
+  \@print{<aside class="notes">}
+  #1
+  \@print{</aside>}
+}
+
+
+%
+% For Audio, Language Can Also Be Supported
+% 
+\newcommand{\frameaudio}[1]{%
+  \@namedef{frameAudio}{#1}%
+}
+
+\newcommand{\frametitle}[1]{%
+  \@print{<section }%
+  {\ifthenelse{\equal{\@nameuse{frameAudio}}{blank}}%
+    {}%
+    {\@print{ data-audio-src=}\@nameuse{frameAudio}%
+    }%
+  }%
+  {\ifthenelse{\equal{\@nameuse{transitionIn}}{blank}}%
+    {}%
+    {\ifthenelse{\equal{\@nameuse{transitionOut}}{blank}}%
+      {\@print{ data-transition="}\@nameuse{transitionIn}\@print{"}%
+      }%
+      {\@print{ data-transition="}\@nameuse{transitionIn} \@nameuse{transitionOut}\@print{"}%
+      }%
+    }%
+  }%
+  \@print{ >}
+
+  \@print{<h4>}#1\@print{</h4>}
+}
+
+\newcommand{\framesubtitle}[1]{%
+  \@print{<h5>}#1\@print{</h5>}
+}
+
+
+\newcommand{\part}[1]{%
+  {\ifthenelse{\equal{\@nameuse{bxPartOpenedP}}{true}}%
+    {%
+      %\@print{</section>}%      
+      \@namedef{bxPartOpenedP}{false}%
+      {\ifthenelse{\equal{\@nameuse{bxChapterOpenedP}}{true}}%
+        {%
+          % \@print{</section>}%      
+          \@namedef{bxChapterOpenedP}{false}%
+          {\ifthenelse{\equal{\@nameuse{bxSectionOpenedP}}{true}}%
+            {%
+              % \@print{</section>}%      
+              \@namedef{bxSectionOpenedP}{false}%
+              {\ifthenelse{\equal{\@nameuse{bxSubSectionOpenedP}}{true}}%
+                {%
+                  % \@print{</section>}%
+                  \@namedef{bxSubSectionOpenedP}{false}%
+                  {\ifthenelse{\equal{\@nameuse{bxSubSubSectionOpenedP}}{true}}%
+                    {%
+                      % \@print{</section>}%
+                      \@namedef{bxSubSubSectionOpenedP}{false}%
+                    }%
+                    {}%
+                  }
+                }
+                {}%
+              }
+            }
+            {}
+          }
+        }
+        {}
+      }
+    }
+    {%
+      % \@print{<section>}%
+      \@namedef{bxPartOpenedP}{true}%
+    }%
+  }
+}
+  
+
+
+\newcommand{\chapter}[1]{%
+  {\ifthenelse{\equal{\@nameuse{bxChapterOpenedP}}{true}}%
+    {%
+      %\@print{</section>}%      
+      \@namedef{bxChapterOpenedP}{false}%
+      {\ifthenelse{\equal{\@nameuse{bxSectionOpenedP}}{true}}%
+        {
+          %\@print{</section>}%      
+          \@namedef{bxSectionOpenedP}{false}%
+          {\ifthenelse{\equal{\@nameuse{bxSubSectionOpenedP}}{true}}%
+            {%
+              %\@print{</section>}%
+              \@namedef{bxSubSectionOpenedP}{false}%
+              {\ifthenelse{\equal{\@nameuse{bxSubSubSectionOpenedP}}{true}}%
+                {%
+                  %\@print{</section>}%
+                  \@namedef{bxSubSubSectionOpenedP}{false}%
+                }%
+                {}%
+              }
+            }
+            {}%
+          }
+        }
+        {}
+      }
+    }
+    {%
+      %\@print{<section>}%
+      \@namedef{bxChapterOpenedP}{true}%
+    }%
+  }
+}
+
+
+\newcommand{\section}[1]{%
+  {\ifthenelse{\equal{\@nameuse{bxSectionOpenedP}}{true}}%
+    {%
+       %\@print{</section>}%
+       \@namedef{bxSectionOpenedP}{false}%
+       {\ifthenelse{\equal{\@nameuse{bxSubSectionOpenedP}}{true}}%
+         {%
+           %\@print{</section>}%
+           \@namedef{bxSubSectionOpenedP}{false}%
+           {\ifthenelse{\equal{\@nameuse{bxSubSubSectionOpenedP}}{true}}%
+             {%
+               %\@print{</section>}%
+               \@namedef{bxSubSubSectionOpenedP}{false}%
+             }%
+             {}%
+           }%
+         }%
+         {}%
+       }%
+    }%
+    {%
+      %\@print{<section>}%
+      \@namedef{bxSectionOpenedP}{true}%
+    }%
+  }%
+}
+
+
+\newcommand{\subsection}[1]{%
+  {\ifthenelse{\equal{\@nameuse{bxSubSectionOpenedP}}{true}}%
+    {%
+      %\@print{</section>}%
+      \@namedef{bxSubSectionOpenedP}{false}%
+      {\ifthenelse{\equal{\@nameuse{bxSubSubSectionOpenedP}}{true}}%
+        {%
+          %\@print{</section>}%
+          \@namedef{bxSubSubSectionOpenedP}{false}%
+        }%
+        {}%
+      }%
+    }%
+    {%
+      %\@print{<section>}%
+      \@namedef{bxSubSectionOpenedP}{true}%
+    }%
+  }%
+}
+
+
+\newcommand{\subsubsection}[1]{%
+  {\ifthenelse{\equal{\@nameuse{bxSubSubSectionOpenedP}}{true}}%
+    {%
+      %\@print{</section>}%
+      \@namedef{bxSubSubSectionOpenedP}{false}%
+    }%
+    {%
+      %\@print{<section>}%
+      \@namedef{bxSubSubSectionOpenedP}{true}%
+    }%
+  }%
+}
+
+
+%%%
+%%% Not Used In ByStar -- use begin{presentationMode} instead
+%%% 
+\def\mode<#1>{%
+  \ifthenelse{\equal{#1}{presentation}}%
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}%
+    {% 
+      \@print{*/</script>}%
+      \@namedef{bxCommentOpenedP}{false}%
+    }%
+    {}%
+  }%
+  {}%
+  \ifthenelse{\equal{#1}{all}}%
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}%
+    {%
+      \@print{*/</script>}%
+    \@namedef{bxCommentOpenedP}{false}%
+    }%
+    {}%
+  }%
+  {}%
+  \ifthenelse{\equal{#1}{article}}%
+  {\ifthenelse{\equal{\@nameuse{bxCommentOpenedP}}{true}}%
+    {%
+      \@print{*/</script>}%
+       \@namedef{bxCommentOpenedP}{false}%
+    }%
+    {%
+      \@print{<script>/*}%
+      \@namedef{bxCommentOpenedP}{true}%
+    }%
+  }%
+  {}%
+}%

@@ -1,0 +1,85 @@
+%%% -*- Mode: LaTeX; -*-
+%       RCS: $Id: memoMainEnFa.ttytex.start,v 1.2 2012-10-15 17:01:34 lsipusr Exp $
+
+%%%#+BEGIN: bx:dblock:lcnt:warning-intro :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:header-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:style-params :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:header-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:copyright :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:main-begin :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+\thispagestyle{empty}
+
+\vspace*{-0.5in}
+
+\begin{flushleft}
+{\Huge {\bf Mohsen Banan}}
+\end{flushleft}
+
+\vspace*{-.5in}
+
+\begin{flushright}
+{\Huge {\bf \begin{fa}محسن بنان\end{fa}}}
+\end{flushright}
+
+\vspace*{-.15in}
+
+\makebox[6.5in]{\hrulefill}
+
+\vspace*{-.15in}
+
+
+\begin{flushright}
+{\small 3610 164th Place SE}\\
+{\small Bellevue, WA 98008}\\
+{\small Phone: +1 (425) 644-8026}\\
+{\small E-mail: desk@mohsen.1.banan.byname.net}
+\end{flushright}
+
+\noindent\begin{tabular}{ll}
+Date:      & October 17, 2011\\
+To:        & Recipient\\
+From:      & Mohsen BANAN\\
+Subject:   & This Matter\\
+\\
+\end{tabular}
+
+
+Some Text Comes Here
+
+
+
+
+\begin{faPar}
+
+سلام حال شما چطور است. اميدوارم  \LRE{One Two Three} يک دو سه.
+
+\end{faPar}
+
+Some English \RLE{\persian{درست وصت انگليسى}} comes here.
+Some \begin{fa}درست وصت انگليسى\end{fa} English comes here.
+
+
+
+%%%#+BEGIN: bx:dblock:lcnt:main-end :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:latex:end-of-file :class "@srcForms@" :langs "@srcLangs@"
+%%%#+END:

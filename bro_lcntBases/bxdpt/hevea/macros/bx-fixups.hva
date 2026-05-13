@@ -1,0 +1,9 @@
+% \newcommand{\htmladdnormallink}[2]{%
+% {\url}{#1}
+% }
+
+\newcommand{\LRE}{}
+\newcommand{\lstlang@bash@}{}
+\newcommand{\lstdd@bash}{}
+\newcommand{\paragraph}{}
+

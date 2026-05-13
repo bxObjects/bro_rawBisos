@@ -1,0 +1,14 @@
+
+This
+     /lcnt/bxdpt/tex/macros
+directory is intended to replace
+
+/opt/public/osmt/share/texmf/tex/extras 
+
+Note that 
+    ln -s /opt/public/osmt/share/texmf/tex/extras /usr/share/texmf/tex/extras
+needs to be changed.
+
+After addition of file, we need to run:
+
+texhash
