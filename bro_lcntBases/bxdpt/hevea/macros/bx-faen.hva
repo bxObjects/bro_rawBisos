@@ -1,2 +1,0 @@
-\newenvironment{latin}{\begin{flushleft}}{\end{flushleft}}
-
