@@ -1,4 +1,0 @@
-\ProvidesPackage{bystararticle}
-
-\excludecomment{articleMode}
-\includecomment{presentationMode}
