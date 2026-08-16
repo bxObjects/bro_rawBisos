@@ -100,7 +100,7 @@ tree at =bro_rawBisosPlatform/sys/cbm/=. This is where BISOS
 capabilities (airflow, nextcloud, lcnt, ...) are declared as CBS
 (Capability Bundle Specifications) and gated for materialization
 via =cbmProc.spcs= + =cbmProc.control=. Airflow is the first
-concrete leaf, planted at =sys/cbm/collective/webHere/airflow/=.
+concrete leaf, planted at =sys/cbm/collective/hereWeb/airflow/=.
 See the platform README for details.
 
 # Local Variables:

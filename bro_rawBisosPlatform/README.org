@@ -22,7 +22,7 @@ overview and sibling directories.
   - [[#capability-types-second-level][Capability types (second level)]]
   - [[#leaf-anatomy][Leaf anatomy]]
   - [[#lifecycle-cbm--cbs-verbs][Lifecycle --- =cbm_*= + =cbs_*= verbs]]
-- [[#current-focus-airflow-under-collectivewebhere][Current Focus --- airflow under =collective/webHere/=]]
+- [[#current-focus-airflow-under-collectivewebhere][Current Focus --- airflow under =collective/hereWeb/=]]
 - [[#references][References]]
 
 * =platform= vs =sys= --- generic vs "this one"
@@ -62,8 +62,8 @@ bro_rawBisosPlatform/           # symlinked to /bisos/platform/
         ├── pals/               # realm: PAL-owned capabilities
         ├── user/               # realm: user-owned capabilities
         └── collective/         # realm: shared across realms
-            ├── webHere/        # capability type: HTTP via .here
-            ├── mailHere/       # capability type: mail via .here
+            ├── hereWeb/        # capability type: HTTP via .here
+            ├── hereMail/       # capability type: mail via .here
             ├── rpyc/           # capability type: PyCS RPyC performer
             └── induct/         # capability type: non-service induction
 #+END_EXAMPLE
@@ -132,13 +132,13 @@ All five realms share the same two-level organisation (the same
 Currently four capability types are defined. All are valid under
 any realm.
 
-- *=webHere/=* --- capability delivered as an HTTP service reachable
+- *=hereWeb/=* --- capability delivered as an HTTP service reachable
   through the =.here= fake domain (populated in =/etc/hosts=).
   Typically an nginx vhost fronting a local upstream. Example:
   =airflow= (=airflow.here= → =127.0.0.1:24006=).
-- *=mailHere/=* --- capability delivered as a mail service reachable
+- *=hereMail/=* --- capability delivered as a mail service reachable
   through the =.here= domain. Different resolution/delivery stack
-  from =webHere= (qmail-side rather than nginx-side).
+  from =hereWeb= (qmail-side rather than nginx-side).
 - *=rpyc/=* --- capability delivered as a PyCS RPyC performer ---
   the service-side of BISOS Command-Services. Atomic; no further
   sub-typing. Example: =facterPerf=.
@@ -155,7 +155,7 @@ Every CBM leaf is a *directory* named after the capability,
 containing three files:
 
 #+BEGIN_EXAMPLE
-collective/webHere/airflow/
+collective/hereWeb/airflow/
 ├── cbmProc.spcs         # THE CBS declaration (spread-planted CS)
 ├── cbmProc.control      # gate state: available | enabled | disabled
 └── cbmProc.status       # machine-written outcome log (append-only)
@@ -165,8 +165,8 @@ The three filenames are *uniform across every leaf* --- what varies
 is =cbmProc.spcs='s body. Inside the .spcs, a =cba_seed.setup(
 seedType=..., ...)= call declares what kind of CBS this is:
 
-- =seedType="systemd"= for a service capability (=webHere=,
-  =mailHere=, =rpyc= all typically pair with this).
+- =seedType="systemd"= for a service capability (=hereWeb=,
+  =hereMail=, =rpyc= all typically pair with this).
 - =seedType="induct"= for a non-service capability (no
   =cba_sysd_seed.setup(...)= call; just sbom + image-time bits).
 
@@ -200,11 +200,11 @@ Initial state after planting: =cbmProc.control= = =available=.
 A capability doesn't materialize just because it's been planted;
 someone must explicitly run =cbm_enable= first.
 
-* Current Focus --- airflow under =collective/webHere/=
+* Current Focus --- airflow under =collective/hereWeb/=
 
 Airflow is being planted as the first concrete CBM leaf at:
 
-: sys/cbm/collective/webHere/airflow/
+: sys/cbm/collective/hereWeb/airflow/
 
 It represents one capability composed of four systemd units (db,
 webserver, scheduler, triggerer) plus a DNS entry (=airflow.here=)

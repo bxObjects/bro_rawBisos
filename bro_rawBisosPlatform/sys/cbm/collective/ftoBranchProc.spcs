@@ -9,9 +9,9 @@
 * exposes the cbm_* walk-example menu via walkExamples().
 *
 * Discovered leaves at time of writing:
-*   collective/webHere/airflow/
+*   collective/hereWeb/airflow/
 *   collective/rpyc/facterPerf/     (has a README only, no cbmProc.spcs yet)
-*   collective/mailHere/            (empty)
+*   collective/hereMail/            (empty)
 *   collective/induct/              (empty)
 *
 * Walk usages:

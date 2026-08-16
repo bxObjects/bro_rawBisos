@@ -59,7 +59,7 @@ matter for reading trees and file names here:
 - *realm / capabilityType* --- Under =sys/cbm/=, the layering is
   =sys/cbm/<realm>/<capabilityType>/<capabilityName>/=. Five realms
   today (=platform=, =site=, =pals=, =user=, =collective=); four
-  capability types today (=webHere=, =mailHere=, =rpyc=, =induct=).
+  capability types today (=hereWeb=, =hereMail=, =rpyc=, =induct=).
   Do NOT use =band= --- that is not the correct term.
 - *CBA / CBS / CBM* --- CBA is the framework layer (in
   =bisos.capability=). CBS is a Capability Bundle /Specification/
@@ -98,8 +98,8 @@ etc. --- not directly under this =custom= activity's skills dir).
   CBM tree at =sys/cbm/=.
 - =bro_rawBisosPlatform/sys/cbm/collective/= --- the populated realm.
   Contains =ftoBranchProc.spcs= (walker branch) and capability-type
-  subdirs (=webHere=, =mailHere=, =rpyc=, =induct=).
-- =bro_rawBisosPlatform/sys/cbm/collective/webHere/airflow/= --- the
+  subdirs (=hereWeb=, =hereMail=, =rpyc=, =induct=).
+- =bro_rawBisosPlatform/sys/cbm/collective/hereWeb/airflow/= --- the
   canonical CBM exemplar. Three files: =cbmProc.spcs= (pointer to
   =airflow-cbs.pcs=), =cbmProc.control= (initial =available=),
   =cbmProc.status= (append-log).

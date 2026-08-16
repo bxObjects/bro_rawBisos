@@ -44,7 +44,7 @@ Prompt the user to confirm that the desired/appropriate model (/model) is being 
 ----- AI Results: ------
 ** -
 
-* Stage 1: Establish the CBM Tree with Airflow as First webHere-Collective Capability
+* Stage 1: Establish the CBM Tree with Airflow as First hereWeb-Collective Capability
 
 Goal: Build the walkable CBM tree structure under
 =bro_rawBisosPlatform/sys/cbm/= and plant airflow as its first
@@ -53,11 +53,11 @@ capability. Depends on the =bisos.capability= Stage 1 work
 =pip install -e='d).
 
 The tree becomes the concrete demonstration of the CBM pattern ---
-airflow as one *webHere-collective* capability with all four systemd
+airflow as one *hereWeb-collective* capability with all four systemd
 units (db, webserver, scheduler, triggerer) materialized in one shot
 from a single =cbmProc.spcs=. Tree layering follows the platform
 README: =sys/cbm/<realm>/<capabilityType>/<capabilityName>/= where
-realm = =collective= and capabilityType = =webHere= for airflow.
+realm = =collective= and capabilityType = =hereWeb= for airflow.
 
 ** Design Decisions Captured Before Stage 1 Begins
 
@@ -107,9 +107,9 @@ Create the directory hierarchy in
 #+BEGIN_EXAMPLE
 sys/cbm/
 └── collective/                # realm (top-level under cbm/)
-    ├── webHere/               # capability type: HTTP via .here
+    ├── hereWeb/               # capability type: HTTP via .here
     │   └── airflow/           # capability (leaf)
-    ├── mailHere/              # capability type: mail via .here
+    ├── hereMail/              # capability type: mail via .here
     ├── rpyc/                  # capability type: PyCS RPyC performer
     │   └── facterPerf/
     └── induct/                # capability type: non-service install
@@ -127,13 +127,13 @@ marker files needed --- markerless walk (from =bisos.fileObj= Stage
 2 decision D5).
 ----- AI Results: ------
 Tree already existed at the correct shape --- verified
-=collective/webHere/airflow/= exists (renamed from
-=collective/here/airflow/= via =git mv=), =collective/mailHere/=
+=collective/hereWeb/airflow/= exists (renamed from
+=collective/here/airflow/= via =git mv=), =collective/hereMail/=
 created empty, =collective/rpyc/facterPerf/= and =collective/induct/=
 already present. Ready for =cbmProc.spcs= planting at the airflow
 leaf.
 
-** DONE [#A] Plant airflow's =cbmProc.spcs= at =collective/webHere/airflow/= :ai:
+** DONE [#A] Plant airflow's =cbmProc.spcs= at =collective/hereWeb/airflow/= :ai:
 CLOSED: [2026-08-15]
 SCHEDULED: <2026-08-15 Sat>
 Original body (below) called for inlining the CBS content; that was
@@ -170,7 +170,7 @@ cba_sysd_seed.plantWithWhich("cbmProc-seed.cs")
 
 ----- AI Results: ------
 Planted at
-=/bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/sys/cbm/collective/webHere/airflow/cbmProc.spcs=,
+=/bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/sys/cbm/collective/hereWeb/airflow/cbmProc.spcs=,
 =chmod +x=. Pointer form:
 
 #+BEGIN_SRC python
@@ -189,7 +189,7 @@ invocation renders =cbm_*= chapters. =cbm_control= reports
 ** DONE [#A] Create =cbmProc.control= and =cbmProc.status= for airflow :ai:
 CLOSED: [2026-08-15]
 SCHEDULED: <2026-08-15 Sat>
-Alongside =cbmProc.spcs= at =collective/webHere/airflow/=:
+Alongside =cbmProc.spcs= at =collective/hereWeb/airflow/=:
 
 - =cbmProc.control= --- initial contents: =available= (single word,
   plain text, NOT JSON). Refine format later.
@@ -214,7 +214,7 @@ Family 1 and Family 2 =cbm_*= verbs) from =bisos.capability.cbmProc_seedInfo=.
 ----- AI Results: ------
 Bare invocation renders both fto_* chapters + "Leaf-Provided Walk
 Examples (Mode 1)" chapter with all 11 =cbm_*= walks. =fto_treeList=
-correctly discovers =webHere/airflow/= as a Leaf via
+correctly discovers =hereWeb/airflow/= as a Leaf via
 =cbmProc.spcs= match.
 
 ** DONE [#B] Verify walker discovers airflow leaf and dispatches =cbm_*= verbs :ai:
@@ -223,10 +223,10 @@ SCHEDULED: <2026-08-15 Sat>
 End-to-end sanity from =collective/=:
 
 1. =./ftoBranchProc.spcs -i fto_treeList= --- verify walker shows
-   =webHere/airflow/= as a Leaf (via =cbmProc.spcs= match).
+   =hereWeb/airflow/= as a Leaf (via =cbmProc.spcs= match).
 2. =./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status=
    --- verify each leaf's status is printed.
-3. =cd webHere/airflow && ./cbmProc.spcs -i cbm_isEnabled= ---
+3. =cd hereWeb/airflow && ./cbmProc.spcs -i cbm_isEnabled= ---
    verify predicate reports False (not enabled; control = =available=).
 4. =./cbmProc.spcs -i cbm_enable= --- verify =cbmProc.control=
    becomes =enabled=.
@@ -243,8 +243,8 @@ These are walker + control-gate tests, not real materialization
 tests. Real materialization happens on a VM.
 ----- AI Results: ------
 All 7 tests PASSED. Notable outcomes:
-- Walker classifies =webHere/airflow/= as Leaf via =cbmProc.spcs=
-  match; other realms (=induct=, =mailHere=, =rpyc=, etc.) traversed
+- Walker classifies =hereWeb/airflow/= as Leaf via =cbmProc.spcs=
+  match; other realms (=induct=, =hereMail=, =rpyc=, etc.) traversed
   as implicit auxBranches (Deliverable-5 markerless walk).
 - =fto_forwardToLeaves --cmndName=cbm_status= visits 7 nodes; reaches
   airflow leaf; empty =cbmProc.status= reported correctly.
@@ -257,8 +257,8 @@ All 7 tests PASSED. Notable outcomes:
   under-reporting.
 - Gate-closed skip audit line written correctly.
 
-Notable rename during this stage: =collective/here/= → =collective/webHere/=
-(per user vocabulary correction; =mailHere= sibling also created).
+Notable rename during this stage: =collective/here/= → =collective/hereWeb/=
+(per user vocabulary correction; =hereMail= sibling also created).
 =bro_rawBisosPlatform/README.org= documents the realm/capabilityType
 layering.
 ** -
