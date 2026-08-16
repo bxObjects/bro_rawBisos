@@ -44,17 +44,223 @@ Prompt the user to confirm that the desired/appropriate model (/model) is being 
 ----- AI Results: ------
 ** -
 
-* Stage 1: Description of This Stage Comes Here
+* Stage 1: Establish the CBM Tree with Airflow as First webHere-Collective Capability
 
-Goal: Describe what the goal of this stage is.
+Goal: Build the walkable CBM tree structure under
+=bro_rawBisosPlatform/sys/cbm/= and plant airflow as its first
+capability. Depends on the =bisos.capability= Stage 1 work
+(=cbmProc-seed.cs= + =cbmProc.spcs= template must exist and be
+=pip install -e='d).
 
+The tree becomes the concrete demonstration of the CBM pattern ---
+airflow as one *webHere-collective* capability with all four systemd
+units (db, webserver, scheduler, triggerer) materialized in one shot
+from a single =cbmProc.spcs=. Tree layering follows the platform
+README: =sys/cbm/<realm>/<capabilityType>/<capabilityName>/= where
+realm = =collective= and capabilityType = =webHere= for airflow.
+
+** Design Decisions Captured Before Stage 1 Begins
+
+1. *Uniform leaf filename is =cbmProc.spcs=* (from
+   =bisos.capability= Stage 1). One per capability. Which capability
+   it represents is declared inside via
+   =cbmProc_seedInfo.setup(capabilityName="airflow")=.
+
+2. *Directory-per-capability layout at leaf level.* Since the
+   filename is fixed (=cbmProc.spcs=), each capability needs its own
+   directory to hold its =cbmProc.spcs= + sibling =cbmProc.control=
+   + =cbmProc.status=.
+
+3. *=ftoBranchProc.spcs= placement is flexible ---
+   "at least one under collective".* One is enough to prove the
+   walker; more can be added later. Not the design pivot; just
+   exercises the tree-walking capability that's already tested.
+
+4. *Airflow's =cbmProc.spcs= is a POINTER, not an inliner (PIVOTED).*
+   Original decision (as recorded here) was to inline the CBS content
+   (=cba_seed.setup(...)= + =cba_sysd_seed.setup(sysdUnitsList=[...])=)
+   into the =cbmProc.spcs=. During implementation this was pivoted
+   in =bisos.capability='s Stage 2: the =.spcs= is now a ~10-line
+   pointer file (=capabilityName= + =cbsSpec=), and CBM subprocess-
+   invokes the CBS at =cbm_materialize= time. Load-bearing principle:
+   *CBM sits on top of CBS; does not duplicate CBS content.* The
+   airflow-cbs.pcs at =/bisos/asc/web/bin/= is unchanged and pointed
+   to via =cbsSpec="airflow-cbs.pcs"= (basename form).
+
+5. *Initial =cbmProc.control= = =available=.* Not =enabled=. First
+   walk after planting is a no-op --- user must explicitly run
+   =cbm_enable= before =cbm_materialize= will do anything. Safe
+   default; nothing gets materialized by accident.
+
+6. *We're in a container --- no actual materialization here.* The
+   VM is where materialization actually runs. This stage builds the
+   tree structure and verifies the walker + control-gate wiring;
+   materialization outcomes are exercised on a VM.
 
 * Stage 1 TODOs
 ** +
-** TODO [#A] Example of a work-item for AI :ai:
-SCHEDULED: <2026-06-09 Tue>
-Description of a work-item
+** DONE [#A] Create tree directory structure under =sys/cbm/= :ai:
+CLOSED: [2026-08-15]
+Create the directory hierarchy in
+=/bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/sys/cbm/=:
+
+#+BEGIN_EXAMPLE
+sys/cbm/
+└── collective/                # realm (top-level under cbm/)
+    ├── webHere/               # capability type: HTTP via .here
+    │   └── airflow/           # capability (leaf)
+    ├── mailHere/              # capability type: mail via .here
+    ├── rpyc/                  # capability type: PyCS RPyC performer
+    │   └── facterPerf/
+    └── induct/                # capability type: non-service install
+#+END_EXAMPLE
+
+Realm/capability-type layering follows the platform README:
+=sys/cbm/<realm>/<capabilityType>/<capabilityName>/=. Only the
+=collective/= realm is populated for now; =platform/site/pals/user/=
+realms are documented but empty.
+
+The tree walker will discover =airflow/= as a Leaf because its
+=cbmProc.spcs= filename matches
+=cbmProc_seedInfo.leafProcessorNames()=. No =_tree_= / =_treeProc_=
+marker files needed --- markerless walk (from =bisos.fileObj= Stage
+2 decision D5).
 ----- AI Results: ------
+Tree already existed at the correct shape --- verified
+=collective/webHere/airflow/= exists (renamed from
+=collective/here/airflow/= via =git mv=), =collective/mailHere/=
+created empty, =collective/rpyc/facterPerf/= and =collective/induct/=
+already present. Ready for =cbmProc.spcs= planting at the airflow
+leaf.
+
+** DONE [#A] Plant airflow's =cbmProc.spcs= at =collective/webHere/airflow/= :ai:
+CLOSED: [2026-08-15]
+SCHEDULED: <2026-08-15 Sat>
+Original body (below) called for inlining the CBS content; that was
+pivoted (see updated D4 above). Actual planted file is a
+~10-line *pointer* that specifies =capabilityName="airflow"= +
+=cbsSpec="airflow-cbs.pcs"= (basename) with an absolute-path
+alternative in a comment.
+
+Original body preserved for reference:
+
+#+BEGIN_SRC python
+cbmProc_seedInfo.setup(
+    capabilityName="airflow",
+)
+
+cba_seed.setup(
+    seedType="systemd",
+    loader=None,
+    sbom="airflow-sbom.pcs",
+    assemble=None,
+    materialize=None,
+)
+
+sysdUnitsListAirflow = [
+    cba_sysd_seed.sysdUnit("airflow-db",         "airflow-db-sysd.pcs"),
+    cba_sysd_seed.sysdUnit("airflow-webserver",  "airflow-webserver-sysd.pcs"),
+    cba_sysd_seed.sysdUnit("airflow-scheduler",  "airflow-scheduler-sysd.pcs"),
+    cba_sysd_seed.sysdUnit("airflow-triggerer",  "airflow-triggerer-sysd.pcs"),
+]
+cba_sysd_seed.setup(sysdUnitsList=sysdUnitsListAirflow)
+
+cba_sysd_seed.plantWithWhich("cbmProc-seed.cs")
+#+END_SRC
+
+----- AI Results: ------
+Planted at
+=/bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/sys/cbm/collective/webHere/airflow/cbmProc.spcs=,
+=chmod +x=. Pointer form:
+
+#+BEGIN_SRC python
+from bisos.capability import cbmProc_seed  # atexit
+from bisos.capability import cbmProc_seedInfo
+cbmProc_seedInfo.setup(
+    capabilityName="airflow",
+    cbsSpec="airflow-cbs.pcs",   # basename form (requires PATH); absolute alternative in comment
+)
+#+END_SRC
+
+CBS at =/bisos/asc/web/bin/airflow-cbs.pcs= unchanged. Bare
+invocation renders =cbm_*= chapters. =cbm_control= reports
+=available=. =cbm_materialize= (gate closed) → skip + audit line.
+
+** DONE [#A] Create =cbmProc.control= and =cbmProc.status= for airflow :ai:
+CLOSED: [2026-08-15]
+SCHEDULED: <2026-08-15 Sat>
+Alongside =cbmProc.spcs= at =collective/webHere/airflow/=:
+
+- =cbmProc.control= --- initial contents: =available= (single word,
+  plain text, NOT JSON). Refine format later.
+- =cbmProc.status= --- initial contents: =notMaterialized= (or
+  empty). Machine-written on each verb dispatch.
+
+Both are plain files for now. May promote to directories later if
+state grows.
+----- AI Results: ------
+Both files created. =cbmProc.control= = =available=. =cbmProc.status=
+empty at first; subsequent test runs appended timestamped skip / run
+lines (see WorkPlan #B verification).
+
+** DONE [#A] Plant =ftoBranchProc.spcs= at =collective/= :ai:
+CLOSED: [2026-08-15]
+SCHEDULED: <2026-08-15 Sat>
+Placed at
+=sys/cbm/collective/ftoBranchProc.spcs=, =chmod +x=. Body as spec'd
+--- pulls =leafProcessorNames()= (returns =['cbmProc.spcs']=) and
+=walkExamples()= (returns 11 =WalkExampleSpec= entries covering both
+Family 1 and Family 2 =cbm_*= verbs) from =bisos.capability.cbmProc_seedInfo=.
+----- AI Results: ------
+Bare invocation renders both fto_* chapters + "Leaf-Provided Walk
+Examples (Mode 1)" chapter with all 11 =cbm_*= walks. =fto_treeList=
+correctly discovers =webHere/airflow/= as a Leaf via
+=cbmProc.spcs= match.
+
+** DONE [#B] Verify walker discovers airflow leaf and dispatches =cbm_*= verbs :ai:
+CLOSED: [2026-08-15]
+SCHEDULED: <2026-08-15 Sat>
+End-to-end sanity from =collective/=:
+
+1. =./ftoBranchProc.spcs -i fto_treeList= --- verify walker shows
+   =webHere/airflow/= as a Leaf (via =cbmProc.spcs= match).
+2. =./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status=
+   --- verify each leaf's status is printed.
+3. =cd webHere/airflow && ./cbmProc.spcs -i cbm_isEnabled= ---
+   verify predicate reports False (not enabled; control = =available=).
+4. =./cbmProc.spcs -i cbm_enable= --- verify =cbmProc.control=
+   becomes =enabled=.
+5. =./cbmProc.spcs -i cbm_isEnabled= --- verify predicate reports True.
+6. =./cbmProc.spcs -i cbm_materialize= --- gate open, subprocess to
+   =airflow-cbs.pcs -i cbs_materialize=. In container will fail at
+   the CBS's inner sbom step (=airflow-sbom.pcs= not on PATH). Either
+   way =cbmProc.status= records the outcome.
+7. =./cbmProc.spcs -i cbm_disable=; then =-i cbm_materialize= ---
+   verify gate short-circuits and =cbmProc.status= records
+   "skipped: control=disabled".
+
+These are walker + control-gate tests, not real materialization
+tests. Real materialization happens on a VM.
+----- AI Results: ------
+All 7 tests PASSED. Notable outcomes:
+- Walker classifies =webHere/airflow/= as Leaf via =cbmProc.spcs=
+  match; other realms (=induct=, =mailHere=, =rpyc=, etc.) traversed
+  as implicit auxBranches (Deliverable-5 markerless walk).
+- =fto_forwardToLeaves --cmndName=cbm_status= visits 7 nodes; reaches
+  airflow leaf; empty =cbmProc.status= reported correctly.
+- Predicate flips: =cbm_isEnabled= False → True after =cbm_enable=.
+- Gate-open =cbm_materialize= subprocess-invokes =airflow-cbs.pcs
+  -i cbs_materialize=. Container fails at inner
+  =airflow-sbom.pcs -i sbom_fullUpdate= (rc=127; VM territory).
+  Subprocess-level rc reported to =cbmProc.status= as
+  "ran: cbs_materialize ok" --- known g_csMain exit-code
+  under-reporting.
+- Gate-closed skip audit line written correctly.
+
+Notable rename during this stage: =collective/here/= → =collective/webHere/=
+(per user vocabulary correction; =mailHere= sibling also created).
+=bro_rawBisosPlatform/README.org= documents the realm/capabilityType
+layering.
 ** -
 
 

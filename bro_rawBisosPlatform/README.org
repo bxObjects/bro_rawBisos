@@ -1,0 +1,237 @@
+#+TITLE:  bro_rawBisosPlatform --- The Platform Portion of bro_rawBisos
+#+DATE: <2026-08-15 Sat>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
+
+=bro_rawBisosPlatform= is the platform-facing portion of the
+[[file:../README.org][bro_rawBisos]] umbrella. On a raw-bisos system,
+=bro_rawBisosPlatform/= is symlinked to =/bisos/platform/= --- so
+everything documented here describes both this directory in the
+repo *and* what an initial raw-bisos system sees at =/bisos/platform/=.
+
+Parent: [[file:../README.org][bro_rawBisos/README.org]] --- umbrella
+overview and sibling directories.
+
+* Table of Contents     :TOC:
+- [[#platform-vs-sys----generic-vs-this-one][=platform= vs =sys= --- generic vs "this one"]]
+- [[#layout][Layout]]
+- [[#the-cbm-tree-syscbm][The CBM Tree --- =sys/cbm/=]]
+  - [[#what-cbm-is][What CBM Is]]
+  - [[#two-level-organisation-realm--capability-type][Two-level organisation: realm / capability-type]]
+  - [[#realms-first-level-under-cbm][Realms (first level under =cbm/=)]]
+  - [[#capability-types-second-level][Capability types (second level)]]
+  - [[#leaf-anatomy][Leaf anatomy]]
+  - [[#lifecycle-cbm--cbs-verbs][Lifecycle --- =cbm_*= + =cbs_*= verbs]]
+- [[#current-focus-airflow-under-collectivewebhere][Current Focus --- airflow under =collective/webHere/=]]
+- [[#references][References]]
+
+* =platform= vs =sys= --- generic vs "this one"
+
+BISOS uses two words that look similar but mean different things.
+Getting them right matters for reading the tree.
+
+- *platform* --- the *generic* concept. A platform is an
+  abstraction that any host could realise. The word is used in
+  documentation, panels, and framework code to mean "a platform,
+  any platform."
+
+- *sys* --- *this specific platform, the one currently running*.
+  Wherever you see =sys/= in the tree, it means "the state of this
+  host, right here, right now." It is a self-reference, not a
+  generic namespace.
+
+So =bro_rawBisosPlatform/= is the *repo view* of what belongs to a
+platform, and =bro_rawBisosPlatform/sys/= is the running state of
+*this* platform (which happens to be the initial state that
+raw-bisos ships).
+
+* Layout
+
+#+BEGIN_EXAMPLE
+bro_rawBisosPlatform/           # symlinked to /bisos/platform/
+├── README.org                  # this file
+├── panel/                      # Blee panels for this BRO's contents
+└── sys/                        # "this platform" --- the running state
+    ├── bin/                    # platform-level scripts (placeholder)
+    ├── pals/
+    │   └── bro_rawBisosPals/
+    │       └── value           # FP pointer to sibling repo dir
+    └── cbm/                    # Capability Bundle Materialization tree
+        ├── platform/           # realm: platform-owned capabilities
+        ├── site/               # realm: site-owned capabilities
+        ├── pals/               # realm: PAL-owned capabilities
+        ├── user/               # realm: user-owned capabilities
+        └── collective/         # realm: shared across realms
+            ├── webHere/        # capability type: HTTP via .here
+            ├── mailHere/       # capability type: mail via .here
+            ├── rpyc/           # capability type: PyCS RPyC performer
+            └── induct/         # capability type: non-service induction
+#+END_EXAMPLE
+
+* The CBM Tree --- =sys/cbm/=
+
+** What CBM Is
+
+*CBM* --- *Capability Bundle Materialization* --- is the mechanism
+by which a BISOS capability (a complete piece of functionality, not
+a package) is declared once as a *CBS* (Capability Bundle
+Specification), and then materialized in one shot on the target
+host. The three related terms:
+
+- *CBA* --- Capability Bundle *Abstraction*. The framework layer
+  (lives in =bisos.capability=).
+- *CBS* --- Capability Bundle *Specification*. The declaration of
+  one specific capability, inlined in a =cbmProc.spcs= leaf.
+- *CBM* --- Capability Bundle *Materialization*. The action of
+  turning a CBS into installed / configured / running state on this
+  host. Gated by a sibling =cbmProc.control= file.
+
+CBM differs from traditional packaging (apt/pip give you software;
+you wire it into a service yourself). CBM materializes the *entire*
+capability in one shot --- installing packages, dropping systemd
+unit files, adding DNS entries, installing nginx vhosts, enabling
+and starting units, all according to what the leaf's =cbmProc.spcs=
+declares.
+
+Not every capability is a service. See =induct= below.
+
+** Two-level organisation: realm / capability-type
+
+Every CBM leaf lives at:
+
+#+BEGIN_EXAMPLE
+sys/cbm/<realm>/<capabilityType>/<capabilityName>/
+#+END_EXAMPLE
+
+- *realm* --- a *domain of customization*. Which BXO owns / customizes
+  this capability.
+- *capabilityType* --- *how* the capability is delivered. Service
+  vs. no-service; local vs. remote; HTTP vs. mail vs. RPyC.
+- *capabilityName* --- the specific capability (=airflow=, =nextcloud=,
+  =lcnt=, ...). This is the leaf directory.
+
+** Realms (first level under =cbm/=)
+
+Five sibling realms exist. Each is a *domain of customization* ---
+who or what owns this capability's lifecycle.
+
+| Realm         | Owned / customized by      | Typical capabilities              |
+|---------------+----------------------------+-----------------------------------|
+| =platform/=   | the platform itself        | container platform, VM host       |
+| =site/=       | a ByStar-Rims-Site         | gitlab BPO server, registrars     |
+| =pals/=       | a PAL                      | private email, content publication |
+| =user/=       | a =/bxo/= account          | per-user services                 |
+| =collective/= | shared across other realms | airflow, nextcloud, lcnt, ...     |
+
+All five realms share the same two-level organisation (the same
+=capabilityType/capabilityName/= structure), though at present only
+=collective/= has planted content in this BRO.
+
+** Capability types (second level)
+
+Currently four capability types are defined. All are valid under
+any realm.
+
+- *=webHere/=* --- capability delivered as an HTTP service reachable
+  through the =.here= fake domain (populated in =/etc/hosts=).
+  Typically an nginx vhost fronting a local upstream. Example:
+  =airflow= (=airflow.here= → =127.0.0.1:24006=).
+- *=mailHere/=* --- capability delivered as a mail service reachable
+  through the =.here= domain. Different resolution/delivery stack
+  from =webHere= (qmail-side rather than nginx-side).
+- *=rpyc/=* --- capability delivered as a PyCS RPyC performer ---
+  the service-side of BISOS Command-Services. Atomic; no further
+  sub-typing. Example: =facterPerf=.
+- *=induct/=* --- capability that is *not* a service. Induct-type
+  =cbmProc.spcs= leaves declare a series of =-sbom.pcs= files (and
+  potentially image-time modifications) that install and configure
+  software features *into* BISOS. Nothing systemd-managed runs
+  afterward. Example: =lcnt= (Libre Content --- installs LaTeX
+  toolchain, templates, and generation tools).
+
+** Leaf anatomy
+
+Every CBM leaf is a *directory* named after the capability,
+containing three files:
+
+#+BEGIN_EXAMPLE
+collective/webHere/airflow/
+├── cbmProc.spcs         # THE CBS declaration (spread-planted CS)
+├── cbmProc.control      # gate state: available | enabled | disabled
+└── cbmProc.status       # machine-written outcome log (append-only)
+#+END_EXAMPLE
+
+The three filenames are *uniform across every leaf* --- what varies
+is =cbmProc.spcs='s body. Inside the .spcs, a =cba_seed.setup(
+seedType=..., ...)= call declares what kind of CBS this is:
+
+- =seedType="systemd"= for a service capability (=webHere=,
+  =mailHere=, =rpyc= all typically pair with this).
+- =seedType="induct"= for a non-service capability (no
+  =cba_sysd_seed.setup(...)= call; just sbom + image-time bits).
+
+Leaf detection is *definitional*: the FTO walker recognises a
+directory as a CBM leaf iff it contains =cbmProc.spcs=. No marker
+files (=_tree_=, =_treeProc_=) are needed at leaves or on
+intermediate branch directories.
+
+** Lifecycle --- =cbm_*= + =cbs_*= verbs
+
+Each leaf has a two-layer verb surface, provided by
+=bisos.capability='s =cbmProc-seed.cs=:
+
+- *=cbm_*= verbs --- control the gate:*
+  - =cbm_available= / =cbm_enable= / =cbm_disable= (write state)
+  - =cbm_isEnabled= / =cbm_status= / =cbm_control= (read state)
+
+- *=cbs_*= verbs --- do the materialization work:*
+  - =cbs_load= / =cbs_sbom= / =cbs_assemble=
+  - =cbs_materialize= / =cbs_reMaterialize=
+  - =cbs_unMaterialize= / =cbs_deMaterialize=
+  - =cbs_type= / =cbs_isMaterialized=
+
+The =cbs_*= verbs are *gated* by =cbmProc.control=: they only run
+when the control file reads =enabled=. Any other state
+(=available=, =disabled=) causes the seed to short-circuit, log
+the skip to =cbmProc.status=, and exit 0. The =cbm_*= verbs are
+*never* gated --- they manipulate the gate itself.
+
+Initial state after planting: =cbmProc.control= = =available=.
+A capability doesn't materialize just because it's been planted;
+someone must explicitly run =cbm_enable= first.
+
+* Current Focus --- airflow under =collective/webHere/=
+
+Airflow is being planted as the first concrete CBM leaf at:
+
+: sys/cbm/collective/webHere/airflow/
+
+It represents one capability composed of four systemd units (db,
+webserver, scheduler, triggerer) plus a DNS entry (=airflow.here=)
+plus an nginx vhost --- all materialized in one shot when the
+leaf's =cbmProc.spcs= runs =cbs_materialize= (with the gate open).
+
+The airflow sub-=.pcs= files (=airflow-sbom.pcs=,
+=airflow-db-sysd.pcs=, ...) currently live at =/bisos/asc/web/bin/=
+and are referenced by string name from inside airflow's
+=cbmProc.spcs=. Whether they migrate into the CBM tree is an open
+design question.
+
+See the =AI-WorkPlan.org= at the top of this repo for the current
+work item.
+
+* References
+
+- Parent: [[file:../README.org][bro_rawBisos/README.org]]
+- CBS/CBA/CBM framework: =bisos.capability= at
+  =/bisos/git/auth/bxRepos/bisos-pip/capability/=
+- FTO walker + planted-tree machinery: =bisos.fileObj= at
+  =/bisos/git/auth/bxRepos/bisos-pip/fileObj/=
+- =.spcs= (spread-planted CS) architecture:
+  =/bisos/git/auth/bxRepos/bisos-pip/pycs/spcs/README.org=
+- Boot story:
+  =/bisos/git/bxRepos/bxGenesis/start/README.org=
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 3)
+# End:

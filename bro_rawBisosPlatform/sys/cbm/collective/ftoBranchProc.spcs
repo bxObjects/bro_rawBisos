@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* ftoBranchProc.spcs at sys/cbm/collective/
+*
+* Walker branch for the CBM collective realm. Detects capability
+* leaves (directories containing cbmProc.spcs) via
+* bisos.capability.cbmProc_seedInfo.leafProcessorNames(), and
+* exposes the cbm_* walk-example menu via walkExamples().
+*
+* Discovered leaves at time of writing:
+*   collective/webHere/airflow/
+*   collective/rpyc/facterPerf/     (has a README only, no cbmProc.spcs yet)
+*   collective/mailHere/            (empty)
+*   collective/induct/              (empty)
+*
+* Walk usages:
+*   ./ftoBranchProc.spcs                             --- bare menu
+*   ./ftoBranchProc.spcs -i fto_treeList             --- inventory
+*   ./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status
+*   ./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_materialize
+#+end_org """
+
+from bisos.fileObj import ftoBranch_seed         # noqa: F401  _atExit_
+from bisos.fileObj import ftoBranch_seedInfo
+from bisos.capability import cbmProc_seedInfo
+
+ftoBranch_seedInfo.setup(
+    leafProcessors=cbmProc_seedInfo.leafProcessorNames(),
+    leafExamples=cbmProc_seedInfo.walkExamples(),
+)

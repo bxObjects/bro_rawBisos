@@ -1,17 +1,108 @@
 #+TITLE:  BRO_ (BISOS Repo Object) for use After rawBisos in Unsited Environments
 #+DATE: <2025-06-28 Sat 20:18>
 #+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
 
-As a BRO_ (BISOS Repo Object), this repo contains various bros
-for use after rawBisos in unsited environments.
+This =bro_rawBisos= repo is a *BRO_* (BISOS Repo Object --- a
+single git repository, typically public). It functions as an
+*umbrella* for the BXOs (ByStar Objects) that an initial raw-bisos
+system expects to obtain --- platform state, site state, PALS
+placeholders, and user defaults.
 
 * Table of Contents     :TOC:
 - [[#scope-of-this-repo][Scope of This Repo]]
+- [[#relation-to-the-bisos-bootstrap-story][Relation to the BISOS Bootstrap Story]]
+- [[#layout-of-this-repo][Layout of This Repo]]
+  - [[#bro_rawbisosplatform][bro_rawBisosPlatform/]]
+  - [[#bro_rawbisospals][bro_rawBisosPals/]]
+  - [[#bro_rawbisossite][bro_rawBisosSite/]]
+  - [[#bro_rawbisosuser--bro_rawbisosdefaultuser][bro_rawBisosUser/ + bro_rawBisosDefaultUser/]]
+- [[#current-focus][Current Focus]]
 
 * Scope of This Repo
 
-This scope of this repo is debian as distro.
-Currenty we target
+bro_rawBisos repo is an umbrella for the relevant BXOs that an initial system expects.
 
--  [[https://www.debian.org/releases/trixie][Debian 13 (Trixie)]]
--  [[https://www.debian.org/releases/bookworm/][Debian 12 (Bookworm)]]
+The scope of this repo is all the BXOs that a sited platfrom typically obtains.
+
+bro_rawBisosPlatform  is symlinked to /bisos/platform.
+
+bro_rawBisosSite is symlinked to /bisos/site.
+
+bro_rawBisosPals is a placeholder for the PALS of raw-bisos.
+
+bro_rawBisosUser if for use by the ~/bpos.
+
+* Relation to the BISOS Bootstrap Story
+
+The overall BISOS deployment layering is described in
+=/bisos/git/bxRepos/bxGenesis/start/README.org=. The relevant
+excerpt:
+
+- *Raw-BISOS / Raw-Blee* --- installed via =raw-bisos.sh= from a
+  Fresh-Debian. Provides =bystar= login account, Blee, and the core
+  =/bisos= directory hierarchy.
+- *BISOS-Service-Platform* --- Raw-BISOS provisioned as a VM hosting
+  platform.
+- *ByStar-Rims-Site* --- foundational site services on top of the
+  BISOS-Service-Platform.
+- *PALS-Self-Hosting* --- Possession-Assertable Libre Services in
+  the exposed rim.
+- *Sited-Blee-Environment* --- the fully-sited usage environment.
+
+This repo (=bro_rawBisos=) supplies the initial content that a
+raw-bisos system obtains --- platform state, site state, PALS
+placeholders, and user defaults --- plus the CBM (Capability Bundle
+Materialization) tree where BISOS capabilities are declared and
+gated for materialization.
+
+* Layout of This Repo
+
+The =bro_rawBisos*/= subdirectories are logical partitions of this
+one BRO, each addressing a distinct concern. On a raw-bisos system,
+several of them are surfaced as symlinks under =/bisos/=. Each has
+(or will have) its own =README.org=.
+
+** bro_rawBisosPlatform/
+
+Symlinked to =/bisos/platform/= on a raw-bisos system. Owns the
+=sys/= subtree (which represents *this* platform, the running one)
+and the *CBM tree* at =sys/cbm/=, where capability-bundle
+specifications are planted and gated for materialization.
+
+See: [[file:bro_rawBisosPlatform/README.org][bro_rawBisosPlatform/README.org]]
+
+** bro_rawBisosPals/
+
+A placeholder for the PALS content of raw-bisos ---
+Possession-Assertable Libre Services templates and defaults that a
+site does not yet own. Cross-referenced from
+=bro_rawBisosPlatform/sys/pals/bro_rawBisosPals/value= as an FP
+pointer.
+
+** bro_rawBisosSite/
+
+Symlinked to =/bisos/site/= on a raw-bisos system. Initial site
+content --- what =/bisos/site/= looks like before a real Rims-Site
+takes ownership.
+
+** bro_rawBisosUser/ + bro_rawBisosDefaultUser/
+
+User-account content: =bro_rawBisosUser/= is used by =~/bpos/=
+(the =bystar= account's own BPO). =bro_rawBisosDefaultUser/=
+provides the defaults inherited by freshly-created =/bxo/=
+accounts.
+
+* Current Focus
+
+Active work is on =bro_rawBisosPlatform/= --- specifically the CBM
+tree at =bro_rawBisosPlatform/sys/cbm/=. This is where BISOS
+capabilities (airflow, nextcloud, lcnt, ...) are declared as CBS
+(Capability Bundle Specifications) and gated for materialization
+via =cbmProc.spcs= + =cbmProc.control=. Airflow is the first
+concrete leaf, planted at =sys/cbm/collective/webHere/airflow/=.
+See the platform README for details.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 3)
+# End:

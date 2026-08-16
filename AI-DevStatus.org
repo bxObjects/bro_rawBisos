@@ -25,19 +25,221 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
-  [To be filled in by Claude after first substantive interaction]
+
+=bro_rawBisos= is the BRO (single git repo) hosting umbrella
+BXO-partition subdirectories that a raw-bisos system expects. On a
+raw-bisos host, =bro_rawBisosPlatform/= is symlinked to
+=/bisos/platform/= and =bro_rawBisosSite/= to =/bisos/site/=. This
+repo's work in this session was concentrated in
+=bro_rawBisosPlatform/sys/cbm/=.
+
+As of 2026-08-15:
+
+- CBM tree populated with the first live capability leaf (airflow
+  under =sys/cbm/collective/webHere/airflow/=).
+- One =ftoBranchProc.spcs= planted at =sys/cbm/collective/= exercising
+  the walker.
+- Full end-to-end verified: bare invocation, gate flips, walk-forward
+  of =cbm_*= verbs across the subtree, subprocess-dispatch to
+  =airflow-cbs.pcs=.
+- Full materialization (bringing up airflow's four systemd units +
+  DNS + nginx vhost) requires a VM host --- container work stops at
+  the CBS's inner sbom step.
+
+Prerequisite work in =bisos.capability= (=cbmProc-seed.cs= +
+=cbm_*= verb families + =cbsSpec= resolution) is done and locally
+pip-installed. See that repo's =AI-DevStatus.org= for the framework
+side.
+
+Other subdirectories (=bro_rawBisosPals=, =bro_rawBisosSite=,
+=bro_rawBisosUser=, =bro_rawBisosDefaultUser=) untouched this session.
 
 * Architecture
-  [Key components, file structure, entry points]
+
+** Repo layout
+
+#+BEGIN_EXAMPLE
+bro_rawBisos/                       # this repo (one BRO)
+├── README.org                      # top-level umbrella overview
+├── AI-{WORKFLOW,Activity,DevStatus,WorkPlan}.org
+├── bro_rawBisosPlatform/           # -> /bisos/platform/ on raw-bisos
+│   ├── README.org
+│   └── sys/                        # THIS running platform (self-ref)
+│       ├── bin/
+│       ├── pals/
+│       │   └── bro_rawBisosPals/value  # FP pointer to sibling
+│       └── cbm/                    # Capability Bundle Materialization tree
+│           ├── platform/           # realm (empty)
+│           ├── site/               # realm (empty)
+│           ├── pals/               # realm (empty)
+│           ├── user/               # realm (empty)
+│           └── collective/         # realm (populated)
+│               ├── ftoBranchProc.spcs  # walker at this branch
+│               ├── webHere/        # capabilityType: HTTP via .here
+│               │   └── airflow/    # capability leaf
+│               │       ├── cbmProc.spcs
+│               │       ├── cbmProc.control
+│               │       └── cbmProc.status
+│               ├── mailHere/       # capabilityType (empty)
+│               ├── rpyc/           # capabilityType
+│               │   └── facterPerf/ # (README only, no cbmProc.spcs)
+│               └── induct/         # capabilityType (empty)
+├── bro_rawBisosPals/               # PALS placeholder
+├── bro_rawBisosSite/               # -> /bisos/site/ on raw-bisos
+├── bro_rawBisosUser/               # for ~/bpos/
+└── bro_rawBisosDefaultUser/        # defaults inherited by new /bxo/ accounts
+#+END_EXAMPLE
+
+** Vocabulary anchors
+
+- =sys/= means /this specific running platform/ (self-reference), not
+  a generic namespace.
+- =sys/cbm/<realm>/<capabilityType>/<capability>/= is the two-level
+  layering. Five realms (=platform=, =site=, =pals=, =user=,
+  =collective=); four capability types (=webHere=, =mailHere=, =rpyc=,
+  =induct=).
+- Use =realm= not =band=.
+- CBM sits on top of CBS via subprocess; it does not duplicate CBS
+  content. =cbmProc.spcs= at the airflow leaf is a ~10-line pointer.
+
+** Airflow leaf structure (canonical)
+
+Three files at =sys/cbm/collective/webHere/airflow/=:
+
+- =cbmProc.spcs= --- pointer via
+  =cbmProc_seedInfo.setup(capabilityName="airflow", cbsSpec="airflow-cbs.pcs")=.
+  The commented-alternative uses the absolute path form
+  =/bisos/asc/web/bin/airflow-cbs.pcs=.
+- =cbmProc.control= --- initial contents =available=. Written by
+  =cbm_enable=/=cbm_disable=/=cbm_available=.
+- =cbmProc.status= --- append-only log of skip/run/failure events.
+
+** Walker at =collective/=
+
+=sys/cbm/collective/ftoBranchProc.spcs= imports
+=bisos.capability.cbmProc_seedInfo='s =leafProcessorNames()= and
+=walkExamples()= functions and passes them to
+=ftoBranch_seedInfo.setup(leafProcessors=..., leafExamples=...)=.
+The walker then classifies =webHere/airflow/= as a Leaf definitionally
+(via =cbmProc.spcs= match); other directories (=induct/=, =mailHere/=,
+=rpyc/=, =rpyc/facterPerf/=) traversed as implicit auxBranches
+(markerless walk per =bisos.fileObj= Deliverable 5).
 
 * What Works
-  [Verified functionality]
+
+Verified end-to-end (2026-08-15) from =sys/cbm/collective/=:
+
+- =./ftoBranchProc.spcs= renders full menu including "Leaf-Provided
+  Walk Examples (Mode 1)" chapter with 11 =cbm_*= walks.
+- =./ftoBranchProc.spcs -i fto_treeList= discovers =webHere/airflow/=
+  as Leaf.
+- =./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status=
+  visits 7 nodes; reaches airflow leaf.
+- Walked =cbm_enable= then =cbm_materialize= subprocess-invokes
+  =airflow-cbs.pcs -i cbs_materialize= which reaches
+  =cba_csu.cbs_materialize= (fails at inner sbom step in
+  container --- VM territory).
+- Gate closed (via walked =cbm_disable=) → skip audit line in each
+  leaf's =cbmProc.status=.
+
+Also verified directly at the airflow leaf (not just via walker):
+
+- Bare invocation renders =cbm_*= chapters (no traceback noise).
+- =cbm_control= / =cbm_status= / =cbm_isEnabled= all read state
+  correctly.
+- =cbm_enable=/=cbm_disable=/=cbm_available= write state and audit.
+- =cbm_materialize= with unresolvable basename → clean =ValueError=
+  message + audit line, no crash.
+- =cbm_materialize= with absolute-path =cbsSpec= → subprocess
+  reaches =airflow-cbs.pcs=.
 
 * What Is Untested
-  [Known gaps]
+
+- *Real materialization on a VM.* All container-side tests stop at
+  the CBS's inner =airflow-sbom.pcs -i sbom_fullUpdate= step (rc=127;
+  =airflow-sbom.pcs= not on container PATH). Full materialization
+  (installing packages, bringing up systemd units, adding
+  =airflow.here= DNS, installing nginx vhost, webserver listening on
+  port 24006) requires a VM host.
+
+- *Airflow's dependent sub-.pcs files* (=airflow-sbom.pcs=,
+  =airflow-db-sysd.pcs=, =airflow-webserver-sysd.pcs=,
+  =airflow-scheduler-sysd.pcs=, =airflow-triggerer-sysd.pcs=,
+  =airflow-here-dns.pcs=, =airflow-wvd.pcs=) exist at =/bisos/asc/web/bin/=
+  but user has flagged them as "may be very much out of date."
+  Modernization deferred; do NOT touch casually.
+
+- *Other realms (=platform=, =site=, =pals=, =user=) are empty.*
+  Documented in the platform README's layout but no capabilities
+  planted.
+
+- *Other capability types under =collective/= are mostly empty.*
+  =mailHere/= has no leaf; =induct/= has no leaf; =rpyc/facterPerf/=
+  has a README but no =cbmProc.spcs= yet.
+
+- *No walker at higher levels.* Only one =ftoBranchProc.spcs= exists,
+  at =collective/=. Could add higher ones (=sys/cbm/=, =sys/=) later.
+
+- *No CI / no separate test suite in this BRO.* Downstream tests are
+  in =bisos.capability/py3/tests/verify.sh= (54 assertions covering
+  the CBM machinery).
 
 * Key Design Decisions
-  [Non-obvious choices and their rationale]
+
+** Realm/capabilityType layering
+
+Directory shape enforced:
+=sys/cbm/<realm>/<capabilityType>/<capabilityName>/=. Five realms
+(=platform=, =site=, =pals=, =user=, =collective=), four capability
+types today (=webHere=, =mailHere=, =rpyc=, =induct=). Not "band"
+(that was a stale draft term).
+
+Rationale: separates *ownership* (realm --- which BXO customizes
+this) from *delivery mode* (capability type --- HTTP vs mail vs
+service vs non-service).
+
+** =here= renamed to =webHere= (with =mailHere= peer created)
+
+Original =collective/here/= implied all-things-.here. Renaming
+distinguishes HTTP-via-.here (=webHere=) from mail-via-.here
+(=mailHere=). Renamed via =git mv= to preserve history. Empty
+=mailHere/= created as sibling placeholder.
+
+** CBM as pointer, not inliner (matches =bisos.capability= D4 pivot)
+
+Original decision at planting time was to inline CBS content in
+=cbmProc.spcs=. Pivoted before planting: =cbmProc.spcs= is now a
+~10-line pointer with =capabilityName= + =cbsSpec=. CBM
+subprocess-invokes the CBS at materialization time. The pre-existing
+=airflow-cbs.pcs= stays put and unchanged.
+
+** =bro_rawBisosPlatform/= symlinked to =/bisos/platform/= on raw-bisos
+
+Editing this BRO's =bro_rawBisosPlatform/sys/cbm/= directly edits
+what a raw-bisos host sees at =/bisos/platform/sys/cbm/=. Live
+platform state.
+
+** Container vs VM
+
+The CBM framework layer (walker, gate, subprocess-dispatch, status
+audit) all works in a container. The CBS's inner materialization
+work (apt install, systemctl start, /etc/hosts writes, nginx config)
+requires a VM host --- most CBS files include their own
+in-container refusal gates (e.g. =airflow-sbom.pcs=). This is by
+design; the CBM machinery is exercised in the container, and the
+final VM leg of materialization is validated separately.
+
+** Known limitation: g_csMain exit-code propagation
+
+=bisos.b.cs.main.g_csMain= exits 0 even when a Cmnd raises. Result:
+subprocess =rc= from a CBS may be 0 despite an inner failure, and
+=cbmProc.status= may log =ran: cbs_materialize ok= incorrectly. This
+is a =bisos.b= issue affecting many downstream consumers. Do NOT
+work around locally here.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:
 
 # Local Variables:
 # eval: (setq-local toc-org-max-depth 4)

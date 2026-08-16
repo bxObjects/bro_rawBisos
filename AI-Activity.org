@@ -26,32 +26,128 @@ symlink, break the symlink now: =rm AI-Activity.org && cp
 <templates>/custom/AI-Activity.org AI-Activity.org=. Or run
 =deClaudify= and re-run =initiate= with =--noLink=.
 
-* Filling In This File
+* Project Purpose
 
-Below this line, replace the placeholder sections with this project's
-actual conventions. Everything above is orientation for whoever reads
-this next --- keep it or delete it as suits you.
+=bro_rawBisos= is a *BRO* (BISOS Repo Object --- one public git repo)
+functioning as an *umbrella of BXOs* (ByStar Objects) that an initial
+raw-bisos system expects to obtain. It supplies platform state, site
+state, PALS placeholders, and user defaults for a Debian 12/13
+raw-bisos install.
 
-** Project Purpose
+Full overview: [[file:README.org][README.org]]
 
-  [Brief one-paragraph description of what this project does.]
+Current focus: the CBM (Capability Bundle Materialization) tree at
+=bro_rawBisosPlatform/sys/cbm/=. See
+[[file:bro_rawBisosPlatform/README.org][bro_rawBisosPlatform/README.org]] for the realm/capabilityType layering
+and the airflow exemplar.
 
-** Conventions and Preferences
+* Core Vocabulary
 
-  [Language, libraries, tooling. E.g.: "Python 3.11; type hints
-  encouraged for new code; no linting gate; smoke-test via
-  ./test/verify.sh."]
+This is a non-bisos-pip repo (=custom= activity template), but it
+consumes vocabulary from the bisos-pip world. The distinctions below
+matter for reading trees and file names here:
 
-** Where Things Live
+- *BXO / BPO / BRO* --- BXO is the generic ByStar Object umbrella
+  term. BPO is a /Portable/ Object (site-gitlab account, may hold
+  multiple repos). BRO is a /Repo/ Object (one public git repo).
+  This repo is one BRO; its subdirectories are logical partitions,
+  not separate BROs.
+- *=sys= vs =platform=* --- =platform= is the generic concept.
+  =sys/= (as in =bro_rawBisosPlatform/sys/=) is *this specific
+  running platform*, a self-reference. Wherever you see =sys/= in
+  the tree, it means "the state of this host, here, now."
+- *realm / capabilityType* --- Under =sys/cbm/=, the layering is
+  =sys/cbm/<realm>/<capabilityType>/<capabilityName>/=. Five realms
+  today (=platform=, =site=, =pals=, =user=, =collective=); four
+  capability types today (=webHere=, =mailHere=, =rpyc=, =induct=).
+  Do NOT use =band= --- that is not the correct term.
+- *CBA / CBS / CBM* --- CBA is the framework layer (in
+  =bisos.capability=). CBS is a Capability Bundle /Specification/
+  --- a standalone =-cbs.pcs= executable declaring one capability.
+  CBM is /Materialization/ --- a =cbmProc.spcs= planted at a leaf,
+  gated by =cbmProc.control=, subprocess-invoking a CBS. *CBM sits
+  on top of CBS; it does NOT duplicate CBS content.*
 
-  [Key directories and files. Point at design docs, primary READMEs,
-  external references a fresh Claude session should know before doing
-  substantive work.]
+For deep coverage of the CBM authoring pattern, load the
+=cbm-authorship= skill (installed under =bisos-pip= activity, so
+available via the sibling repos =bisos.capability=, =bisos.fileObj=,
+etc. --- not directly under this =custom= activity's skills dir).
 
-** Anything Non-Obvious
+* Conventions and Preferences
 
-  [Constraints, gotchas, historical decisions, in-progress migrations,
-  external dependencies. Anything that would surprise a fresh reader.]
+- Language of source files here: primarily =.spcs= (spread-planted
+  CS), =.pcs= (planted CS), org-mode README/panel content. Little
+  Python; when present, follows bisos-pip conventions.
+- Marker files (=_tree_=, =_treeProc_=): mostly *absent* under the
+  CBM tree by design (markerless walks per =bisos.fileObj= Deliverable
+  5). Leaves are identified definitionally via presence of
+  =cbmProc.spcs=; auxBranches are implicit for unmarked directories.
+- Testing: no local test suite in this BRO. Downstream test coverage
+  is in =bisos.capability/py3/tests/verify.sh= (54 assertions covering
+  the CBM machinery).
+- Editing =cbmProc.control= or =cbmProc.status= by hand: prefer using
+  =cbm_control= / =cbm_enable= / =cbm_disable= Cmnds at the leaf.
+  Direct file edits work but bypass the audit trail.
+
+* Where Things Live
+
+** In this repo
+
+- =bro_rawBisosPlatform/= --- symlinked to =/bisos/platform/= on a
+  raw-bisos host. Owns =sys/= (this platform, self-reference) and the
+  CBM tree at =sys/cbm/=.
+- =bro_rawBisosPlatform/sys/cbm/collective/= --- the populated realm.
+  Contains =ftoBranchProc.spcs= (walker branch) and capability-type
+  subdirs (=webHere=, =mailHere=, =rpyc=, =induct=).
+- =bro_rawBisosPlatform/sys/cbm/collective/webHere/airflow/= --- the
+  canonical CBM exemplar. Three files: =cbmProc.spcs= (pointer to
+  =airflow-cbs.pcs=), =cbmProc.control= (initial =available=),
+  =cbmProc.status= (append-log).
+- =bro_rawBisosPals/=, =bro_rawBisosSite/=, =bro_rawBisosUser/=,
+  =bro_rawBisosDefaultUser/= --- sibling logical partitions,
+  documented in the top-level README.
+
+** Cross-repo (a fresh Claude will need to know these)
+
+- =/bisos/git/auth/bxRepos/bisos-pip/capability/= --- CBA framework
+  + =cbmProc-seed.cs= + =cbmProc_csu.py=. This is the code the
+  =cbmProc.spcs= files here point back to. Non-invasive rule
+  applies: =cba_*.py= files there ship as-is.
+- =/bisos/git/auth/bxRepos/bisos-pip/fileObj/= --- FTO walker used
+  by =ftoBranchProc.spcs= to walk this tree.
+- =/bisos/asc/web/bin/airflow-cbs.pcs= --- the legacy CBS pointed at
+  by airflow's =cbmProc.spcs=. Do NOT modernize casually
+  (user-designated deferred work).
+- =/bisos/git/bxRepos/bxGenesis/start/README.org= --- BISOS
+  bootstrap story, layering context.
+
+* Anything Non-Obvious
+
+- *=sys/pals/bro_rawBisosPals/value= is a file-parameter (FP) pointer*
+  --- its =value= file contains a path back to the sibling
+  =bro_rawBisosPals/=. Not a symlink; an FP. Reading its contents
+  gives you the target path.
+- *Symlink surfacing on a raw-bisos host* --- =bro_rawBisosPlatform/=
+  is exposed at =/bisos/platform/= via symlink; =bro_rawBisosSite/=
+  at =/bisos/site/=. Editing here edits the host's live state.
+- *cbmProc-related "band" is wrong; use "realm."* An earlier draft
+  used =band=. Every artifact using =band= was corrected. If you
+  encounter =band= anywhere, treat it as a stale-doc bug.
+- *g_csMain exit-code limitation* --- =bisos.b.cs.main.g_csMain=
+  currently exits 0 even when a Cmnd raises. This means CBM's
+  =cbmProc.status= may log =ran: cbs_materialize ok= even when the
+  underlying CBS subprocess actually failed. Same limitation flagged
+  in =bisos.fileObj= Stage 2 #C. Do NOT work around locally.
+- *Container vs VM* --- Full materialization (installing packages,
+  bringing up systemd units) requires a VM host. Inside a container,
+  =cbm_materialize= will invoke the CBS which will fail at its own
+  in-container refuse gate (e.g. =airflow-sbom.pcs= needs to run in
+  a real host context). The CBM machinery itself works in a container;
+  the CBS payloads generally do not.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:
 
 # Local Variables:
 # eval: (setq-local toc-org-max-depth 4)
