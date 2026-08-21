@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* cbmProc.spcs --- nginx as a hereWeb-collective capability
+#+end_org """
+
+# --- atexit hook: register cbmProc-seed.cs as this file's seed ---
+from bisos.capability import cbmProc_seed  # noqa: F401  _atExit_
+
+# --- declare which capability this leaf represents + point to CBS ---
+from bisos.capability import cbmProc_seedInfo
+cbmProc_seedInfo.setup(
+    capabilityName="nginx",
+    cbsSpec="/bisos/asc/web/bin/nginx-cbs.pcs",   # basename form (requires /bisos/asc/web/bin on PATH)
+)
