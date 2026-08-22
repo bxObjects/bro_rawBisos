@@ -25,7 +25,21 @@ from bisos.fileObj import ftoBranch_seed         # noqa: F401  _atExit_
 from bisos.fileObj import ftoBranch_seedInfo
 from bisos.capability import cbmProc_seedInfo
 
+branchesOrdered = [
+    "nginx",
+    "airflow",
+    "csPlayerUi",
+]
+
+leavesOrdered = [
+    "nginx",
+    "airflow",
+    "csPlayerUi",
+]
+
 ftoBranch_seedInfo.setup(
     leafProcessors=cbmProc_seedInfo.leafProcessorNames(),
     leafExamples=cbmProc_seedInfo.walkExamples(),
+    branchesOrdered=branchesOrdered,
+    leavesOrdered=leavesOrdered,
 )
