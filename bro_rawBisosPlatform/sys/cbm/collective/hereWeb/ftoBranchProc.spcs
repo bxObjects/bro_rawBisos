@@ -28,6 +28,7 @@ from bisos.capability import cbmProc_seedInfo
 branchesOrdered = [
     "nginx",
     "airflow",
+    "reactPlus",
     "gatsbyBxSidebar",
     "csPlayerUi",
 ]
