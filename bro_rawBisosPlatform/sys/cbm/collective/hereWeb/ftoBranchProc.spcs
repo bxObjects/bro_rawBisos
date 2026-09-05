@@ -33,11 +33,15 @@ branchesOrdered = [
 ]
 
 leavesOrdered = [
-    "nginx",
-    "airflow",
-    "gatsbyBxSidebar",
-    "csPlayerUi",
 ]
+
+# nodesOrdered = [
+#     "nginx",
+#     "airflow",
+#     "gatsbyBxSidebar",
+#     "csPlayerUi",
+# ]
+
 
 ftoBranch_seedInfo.setup(
     leafProcessors=cbmProc_seedInfo.leafProcessorNames(),
