@@ -211,11 +211,12 @@ webserver, scheduler, triggerer) plus a DNS entry (=airflow.here=)
 plus an nginx vhost --- all materialized in one shot when the
 leaf's =cbmProc.spcs= runs =cbs_materialize= (with the gate open).
 
-The airflow sub-=.pcs= files (=airflow-sbom.pcs=,
-=airflow-db-sysd.pcs=, ...) currently live at =/bisos/asc/web/bin/=
-and are referenced by string name from inside airflow's
-=cbmProc.spcs=. Whether they migrate into the CBM tree is an open
-design question.
+The airflow CBS and its sub-=.pcs= files (=airflow-sbom.pcs=,
+=airflow-db-sysd.pcs=, ...) live in the =bisos.airflow= package at
+=/bisos/git/bxRepos/bisos-pip/airflow/py3/bin/=. Airflow's
+=cbmProc.spcs= points at =airflow-cbs.pcs= there by absolute path
+(=cbsSpec=). They earlier lived at =/bisos/asc/web/bin/=; those copies
+were deleted 2026-10-01.
 
 See the =AI-WorkPlan.org= at the top of this repo for the current
 work item.

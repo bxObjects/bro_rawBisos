@@ -86,6 +86,11 @@ realm = =collective= and capabilityType = =hereWeb= for airflow.
    *CBM sits on top of CBS; does not duplicate CBS content.* The
    airflow-cbs.pcs at =/bisos/asc/web/bin/= is unchanged and pointed
    to via =cbsSpec="airflow-cbs.pcs"= (basename form).
+   /Superseded 2026-10-01:/ the airflow CBS now lives in the
+   =bisos.airflow= package and =cbsSpec= is the absolute path
+   =/bisos/git/bxRepos/bisos-pip/airflow/py3/bin/airflow-cbs.pcs=.
+   The =/bisos/asc/web/bin/airflow-*= copies have been deleted
+   (=bisos/asc= commit =addaad4=).
 
 5. *Initial =cbmProc.control= = =available=.* Not =enabled=. First
    walk after planting is a no-op --- user must explicitly run
@@ -185,6 +190,10 @@ cbmProc_seedInfo.setup(
 CBS at =/bisos/asc/web/bin/airflow-cbs.pcs= unchanged. Bare
 invocation renders =cbm_*= chapters. =cbm_control= reports
 =available=. =cbm_materialize= (gate closed) → skip + audit line.
+
+/Note 2026-10-01:/ historical. =cbsSpec= now points at the
+=bisos.airflow= package CBS by absolute path; the =/bisos/asc/web/bin/=
+airflow copies no longer exist. See =AI-DevStatus.org=.
 
 ** DONE [#A] Create =cbmProc.control= and =cbmProc.status= for airflow :ai:
 CLOSED: [2026-08-15]

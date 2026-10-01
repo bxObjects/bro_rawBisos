@@ -115,9 +115,10 @@ etc. --- not directly under this =custom= activity's skills dir).
   applies: =cba_*.py= files there ship as-is.
 - =/bisos/git/auth/bxRepos/bisos-pip/fileObj/= --- FTO walker used
   by =ftoBranchProc.spcs= to walk this tree.
-- =/bisos/asc/web/bin/airflow-cbs.pcs= --- the legacy CBS pointed at
-  by airflow's =cbmProc.spcs=. Do NOT modernize casually
-  (user-designated deferred work).
+- =/bisos/git/auth/bxRepos/bisos-pip/airflow/= (=bisos.airflow=) ---
+  owns the airflow CBS (=py3/bin/airflow-cbs.pcs=) and its sub-=.pcs=
+  files. Airflow's =cbmProc.spcs= points at it by absolute path. The
+  former =/bisos/asc/web/bin/airflow-*= copies were deleted 2026-10-01.
 - =/bisos/git/bxRepos/bxGenesis/start/README.org= --- BISOS
   bootstrap story, layering context.
 

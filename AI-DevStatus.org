@@ -107,9 +107,11 @@ bro_rawBisos/                       # this repo (one BRO)
 Three files at =sys/cbm/collective/hereWeb/airflow/=:
 
 - =cbmProc.spcs= --- pointer via
-  =cbmProc_seedInfo.setup(capabilityName="airflow", cbsSpec="airflow-cbs.pcs")=.
-  The commented-alternative uses the absolute path form
-  =/bisos/asc/web/bin/airflow-cbs.pcs=.
+  =cbmProc_seedInfo.setup(capabilityName="airflow", cbsSpec=...)=, with
+  =cbsSpec= the absolute path to the =bisos.airflow= package's CBS:
+  =/bisos/git/bxRepos/bisos-pip/airflow/py3/bin/airflow-cbs.pcs=.
+  (Until 2026-09 it pointed at =/bisos/asc/web/bin/airflow-cbs.pcs=;
+  those asc copies were deleted 2026-10-01, =bisos/asc= commit =addaad4=.)
 - =cbmProc.control= --- initial contents =available=. Written by
   =cbm_enable=/=cbm_disable=/=cbm_available=.
 - =cbmProc.status= --- append-only log of skip/run/failure events.
@@ -163,11 +165,11 @@ Also verified directly at the airflow leaf (not just via walker):
   port 24006) requires a VM host.
 
 - *Airflow's dependent sub-.pcs files* (=airflow-sbom.pcs=,
-  =airflow-db-sysd.pcs=, =airflow-webserver-sysd.pcs=,
-  =airflow-scheduler-sysd.pcs=, =airflow-triggerer-sysd.pcs=,
-  =airflow-here-dns.pcs=, =airflow-wvd.pcs=) exist at =/bisos/asc/web/bin/=
-  but user has flagged them as "may be very much out of date."
-  Modernization deferred; do NOT touch casually.
+  =airflow-*-sysd.pcs=, =airflow-here-dns.pcs=, =airflow-wvd.pcs=) now
+  live only in the =bisos.airflow= package at
+  =/bisos/git/bxRepos/bisos-pip/airflow/py3/bin/=; that package is
+  authoritative for them. The old =/bisos/asc/web/bin/= copies were
+  deleted 2026-10-01 (=bisos/asc= commit =addaad4=).
 
 - *Other realms (=platform=, =site=, =pals=, =user=) are empty.*
   Documented in the platform README's layout but no capabilities
