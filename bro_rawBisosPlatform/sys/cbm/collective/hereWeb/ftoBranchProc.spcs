@@ -10,6 +10,7 @@
 *
 * Discovered leaves at time of writing:
 *   collective/hereWeb/airflow/
+*   collective/hereWeb/{kafka,prometheus,grafana,pypiserver,devpi,geneweb,platform}/  (2026-10-16)
 *   collective/rpyc/facterPerf/     (has a README only, no cbmProc.spcs yet)
 *   collective/hereMail/            (empty)
 *   collective/induct/              (empty)
@@ -28,9 +29,17 @@ from bisos.capability import cbmProc_seedInfo
 branchesOrdered = [
     "nginx",
     "airflow",
+    "kafka",
+    "prometheus",
+    "grafana",      # after prometheus: its provisioned datasource
+    "pypiserver",
+    "devpi",
+    "geneweb",
     "reactPlus",
     "gatsbyBxSidebar",
+    "csPlayerPerf", # before csPlayerUi: its vhost proxies /api/ to csPlayerPerf
     "csPlayerUi",
+    "platform",     # last: platform.here snapshots every leaf above
 ]
 
 leavesOrdered = [

@@ -24,5 +24,5 @@ from bisos.capability import cbmProc_seed  # noqa: F401  _atExit_
 from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="reactPlus",
-    cbsSpec="/bisos/asc/web/bin/reactPlus-cbs.pcs",
+    cbsSpec="/bisos/git/bxRepos/bisos-pip/webCap/py3/bin/reactPlus-cbs.pcs",
 )

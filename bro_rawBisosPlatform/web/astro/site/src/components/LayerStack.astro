@@ -1,0 +1,25 @@
+---
+// The platform's layers as a stack, top layer first, under the capabilities. Whatever items a layer
+// has are shown, so a new fact needs only the content script.
+import Stages from "./Stages.astro"
+import LayerItems from "./LayerItems.astro"
+import { layersTopDown, capabilities } from "../lib/content.mjs"
+
+const { full = false } = Astro.props
+---
+<div class="stack">
+  <a href="/capabilities/" class="layer capabilities">
+    <strong>Capabilities</strong> --- {capabilities.length} CBM leaves, on top of the layers below
+  </a>
+  {layersTopDown.map((layer) => (
+    <div class={`layer ${layer.id}`} id={layer.id}>
+      <div class="layerHead">
+        <span><a href={`/platform/${layer.id}/`}><strong>{layer.title}</strong></a>
+          <span class="small muted"> --- {layer.subtitle}</span></span>
+        <span>{layer.summary}</span>
+      </div>
+      {layer.stages && <Stages stages={layer.stages} />}
+      {full && <LayerItems items={layer.items} withSource />}
+    </div>
+  ))}
+</div>

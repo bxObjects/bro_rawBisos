@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* ~[Summary]~ :: A =PlantedCmndService= for this static site (Astro) --- platform.here
+
+Planted at the top of the site's directory, on bisos.webCap's astroProc seed (astroProc-seed.cs). The
+directory holds cbm/ (the capability), content/ (tree/, bin/, data/) and site/ (the Astro site). The
+seed works from this file's directory: content, build, verify, the content tree's Cmnds.
+
+Its content is content/bin/* (the CBM tree and layers snapshots); it has no content/tree yet.
+#+end_org """
+
+from bisos.b import cs
+
+from bisos.webCap import astroProc_seed  # noqa: F401  # _atExit_
+from bisos.webCap import astroProc_seedInfo
+
+from bisos.banna import banna_csu
+
+fqdn = "platform.here"
+
+def bannaPortNu(portName: str) -> int:
+    return int(banna_csu.bannaTcpPortNuOf().pyCmnd(argsList=[portName],).results)
+
+astroProc_seedInfo.setup(
+    fqdn=fqdn,
+    devPortNu=bannaPortNu("platform_dev"),
+)
+
+def examples_csu() -> None:
+    """This site's own chapter, after the seed's."""
+    literal = cs.examples.execInsert
+    cs.examples.menuChapter(f'*{fqdn} --- this site*')
+    literal(f"bx-browse-url.sh http://{fqdn}")

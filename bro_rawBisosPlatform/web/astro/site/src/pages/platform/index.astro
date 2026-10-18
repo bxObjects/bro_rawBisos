@@ -1,0 +1,15 @@
+---
+import Base from "../../layouts/Base.astro"
+import LayerStack from "../../components/LayerStack.astro"
+import { layersSnapshot } from "../../lib/content.mjs"
+---
+<Base title="Platform Layers">
+  <h1>The Platform's Layers</h1>
+  <p>
+    This platform as four layers, from the bottom: the <strong>Box</strong> (the hardware or virtualized
+    resource), the <strong>OS</strong>, <strong>BISOS</strong> on it, and how far that BISOS has evolved
+    (<strong>BISOS-Evolution</strong>). The <a href="/capabilities/">capabilities</a> run on top. Each value is
+    detected when the site is built ({layersSnapshot.generatedAt}); the last column says where it came from.
+  </p>
+  <LayerStack full />
+</Base>

@@ -1,0 +1,28 @@
+---
+// One page per layer, from the layers snapshot; links to the layers above and below.
+import Base from "../../layouts/Base.astro"
+import Stages from "../../components/Stages.astro"
+import LayerItems from "../../components/LayerItems.astro"
+import { layersTopDown, layersSnapshot } from "../../lib/content.mjs"
+
+export function getStaticPaths() {
+  return layersTopDown.map((layer, i) => ({
+    params: { layer: layer.id },
+    props: { layer, above: layersTopDown[i - 1], below: layersTopDown[i + 1] },
+  }))
+}
+
+const { layer, above, below } = Astro.props
+---
+<Base title={layer.title}>
+  <h1>{layer.title}</h1>
+  <p class="muted">{layer.subtitle}</p>
+  <p class="summary">{layer.summary}</p>
+  {layer.stages && <Stages stages={layer.stages} />}
+  <LayerItems items={layer.items} withSource />
+  <p class="small muted">Detected {layersSnapshot.generatedAt}.</p>
+  <div class="neighbours">
+    {above ? <a href={`/platform/${above.id}/`}>Above: {above.title}</a> : <span />}
+    {below ? <a href={`/platform/${below.id}/`}>Below: {below.title}</a> : <span />}
+  </div>
+</Base>

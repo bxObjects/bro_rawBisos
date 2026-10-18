@@ -1,0 +1,126 @@
+#+title: platform.here --- This Platform's Capabilities
+#+DATE: <2026-10-16 Fri>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
+
+* Overview
+
+=http://platform.here= is a static Astro site that lists this Raw-BISOS platform's capabilities: one
+table per =realm/capabilityType= with the leaf's gate (enabled, available, disabled), a link to its
+=.here= site, what that site answered, and its package. From it one gets to every capability's URL.
+It also shows the platform's layers, and summarizes the rawBisosCBMs concepts
+(=bxGenesis/start/rawBisosCBMs/README.org=).
+
+It is itself a CBM: the leaf =sys/cbm/collective/hereWeb/platform/=, last in the walk's
+=branchesOrdered=, so a =sysCbmManage.cs -i fullyMaterialize= builds it after every other
+capability and its tables show their outcome.
+
+* The Platform's Layers
+
+The home page stacks the platform's four layers under its capabilities; =/platform= has every
+detected value and where it came from, and each layer has a page of its own (=/platform/<id>/=),
+listed top down in the Platform Layers section's left tree. From the bottom:
+
+| Layer           | What it says                                  | On the first platform           |
+|-----------------+-----------------------------------------------+---------------------------------|
+| Box             | type (rawMetal, Host, VM, Docker, PrivDocker, | PrivDocker, on a VM (Amazon EC2 |
+|                 | PodmanSysd); CPU, cores, RAM, disk, links     | r5.24xlarge)                    |
+| OS              | Debian release; profile (headless, xfce, ...) | Debian 13.1 (trixie), vnc-xfce  |
+| BISOS           | addresses; where /bisos/platform, site lead   | bro_rawBisosPlatform, ...Site   |
+| BISOS-Evolution | RawBisos -> RawBisosCBMs -> Sited-BISOS       | RawBisosCBMs                    |
+
+=content/bin/platformLayers.py= detects them at build time and writes =content/data/platformLayers.json=:
+facts
+from =facter= (as =bisos.facter='s CMDB uses), plus checks facter does not make. Each layer is a summary
+and a list of items (label, value, source); the pages show whatever items there are, so a new fact
+is one item in the generator. The rules, as agreed (2026-10-17):
+
+- *Nesting*: in a container, the box is the container type and what it runs on, e.g. "PrivDocker,
+  on a VM". PrivDocker: every capability effective for PID 1. PodmanSysd: Podman with systemd as
+  PID 1. VM: a hypervisor's DMI vendor. Host: bare metal running libvirtd, docker, podman or
+  containerd; rawMetal: bare metal that does not.
+- *Shared numbers*: in a container, CPU, RAM and disk are the host's; they are marked so, and a
+  cgroup limit is shown where there is one. The kernel is the host's too.
+- *OS profile*: the installed desktop session (xfce, gnome, kde, ...), with =vnc-= when a VNC server
+  is installed; headless when there is no session.
+- *Evolution*: RawBisos when =/bisos/platform= leads to =bro_rawBisosPlatform=; RawBisosCBMs when, in
+  addition, an enabled leaf last materialized ok; Sited-BISOS when the platform or site leads to a
+  real BPO.
+
+* A Snapshot, Not a Live View
+
+The tables are what the CBM tree said when the site was built. =content/bin/platformCapabilities.py=
+reads each leaf under =/bisos/platform/sys/cbm/= (=cbmProc.spcs= parsed as text, =cbmProc.control=,
+the last line of =cbmProc.status=), takes the =.here= name, IP and port from =bisos.banna=, probes
+each =.here= URL once, and writes =content/data/capabilities.json=. The pages, the tabs and one
+page per leaf are built from that file. Refresh with =cbm/platform-assemble.cs -i siteBuild=.
+
+Checking live from the browser was set aside: each =.here= name is a different origin.
+
+* Layout
+
+The common structure of BISOS static sites (AI-WorkPlan 2.1, 3.2): the capability, the content and
+the site are kept apart. The site moved from Gatsby (=../gatsby/=) to Astro on 2026-10-17
+(AI-WorkPlan Stage 3).
+
+#+begin_example
+web/astro/
+  README.org, AI-*.org, CLAUDE.md   this site, and its AI collaboration
+  astroProc.spcs                    the site's process (bisos.webCap's astroProc seed)
+  cbm/                              the capability: CBS, assemble, vhost, dns entry
+  content/                          what the site shows: bin/ scripts write data/
+  site/                             the Astro site: package.json, astro.config.mjs, src/
+#+end_example
+
+| File                                  | What it is                                                |
+|---------------------------------------+-----------------------------------------------------------|
+| =astroProc.spcs=                      | bisos.webCap's astroProc seed: siteBuild, siteVerify, ... |
+| =cbm/platform-cbs.pcs=                | the CBS: no sbom, no units, only the assemble step        |
+| =cbm/platform-assemble.cs=            | =siteBuild= (=./astroProc.spcs -i siteBuild=),            |
+|                                       | =hereDns=, =webVirtDom=                                   |
+| =cbm/platform-here-dns.pcs=           | =platform.here= in =/etc/hosts= (127.0.22.120)            |
+| =cbm/platform-wvd.pcs=                | the nginx vhost: static files from =site/dist/=, the 404  |
+| =content/bin/platformCapabilities.py= | CBM tree + banna -> =content/data/capabilities.json=      |
+| =content/bin/platformLayers.py=       | facter + checks -> =content/data/platformLayers.json=     |
+| =site/src/lib/content.mjs=            | reads =content/data/= at build time; refuses without it   |
+| =site/src/lib/menu.mjs=               | the tabs and Capabilities' left tree (and the sitemap):   |
+|                                       | groups by =realm/capabilityType= and their leaves         |
+| =site/src/pages/=                     | Home, Platform Layers and one page per layer,             |
+|                                       | Capabilities with one page per group and per leaf,        |
+|                                       | rawBisosCBMs, Sitemap, 404                                |
+| =site/src/components/=, =layouts/=    | the tables, the layer stack, the astro-starter layout     |
+
+No React and no client-side JavaScript: Astro components rendered at build time; the left tree folds
+with =<details>=. Node comes from the =reactPlus= leaf; =npm ci= installs exactly
+=site/package-lock.json= (Astro 7.3.8). =site/node_modules/=, =site/dist/=, =site/.astro/= and
+=content/data/*= are not under git.
+
+* Where It Came From
+
+First a Gatsby site, a copy of =bisos-web/gatsby-starter-bystar-nestedSidebar= (=../gatsby/=), then
+rebuilt in Astro with the same pages, content and capability files. Its CBS files were generated
+afresh (from bisos.geneweb's), not copied from the starter.
+
+* Usage
+
+#+begin_src bash
+cd /bisos/platform/sys/cbm/collective/hereWeb/platform
+./cbmProc.spcs -i cbm_materialize          # as the walk does it
+
+cd /bisos/platform/web/astro
+./astroProc.spcs                                   # the site's process (astroProc seed)
+./cbm/platform-assemble.cs -i siteBuild            # refresh the content and rebuild
+./cbm/platform-assemble.cs -i fullUpdate           # + dns entry + vhost
+./content/bin/platformCapabilities.py --noProbe    # one content script, without probing URLs
+#+end_src
+
+* Known Limits
+
+- Only leaves with a =cbmProc.spcs= are listed; declared leaves (a README only) are not.
+- The =.here= name is the capability name unless =hereNameOf= in the generator says otherwise
+  (=gatsbyBxSidebar= is =starterSidebar.here=).
+- This site's own row is not probed (it is built before its vhost exists): it says "this site".
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 3)
+# End:

@@ -1,0 +1,62 @@
+---
+// Every page, in the astro-starter-bystar model: header, the top-level entries as tabs, a left tree only
+// for a section with children (Capabilities; as narrow as its longest entry, folding on small screens),
+// the page, the footer. No breadcrumbs. The Site Map is a site action in the header.
+import Menu from "../components/Menu.astro"
+import { menu, sectionOf } from "../lib/menu.mjs"
+import { capabilitiesSnapshot } from "../lib/content.mjs"
+import "../styles/site.css"
+
+const { title } = Astro.props
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`
+const s = capabilitiesSnapshot
+const section = sectionOf(path)
+const leftNav = Boolean(section?.children?.length)
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — platform.here</title>
+    <meta name="description" content="The layers and capabilities of this Raw-BISOS platform, with links to their .here sites." />
+  </head>
+  <body>
+    <div class="frame">
+      <header class="siteHeader">
+        <nav class="siteActions" aria-label="Site"><a href="/sitemap/">Site Map</a></nav>
+        <div class="titleBlock">
+          <a href="/" class="siteTitle">platform.here</a>
+          <p>The layers and capabilities of the Raw-BISOS platform <strong>{s.host}</strong></p>
+        </div>
+        <nav class="tabs" aria-label="Sections">
+          {menu.map((t) => <a href={t.path} class={t === section ? "selected" : undefined}>{t.label}</a>)}
+        </nav>
+      </header>
+      <div class={leftNav ? "columns" : "columns noLeft"}>
+        {leftNav && (
+          <aside class="leftNav">
+            <details class="navFold" open>
+              <summary>{section.label}</summary>
+              <a class="sectionTitle" href={section.path}>{section.label}</a>
+              <Menu items={section.children} path={path} />
+            </details>
+          </aside>
+        )}
+        <main class="content">
+          <slot />
+        </main>
+      </div>
+      <footer class="siteFooter">
+        <p>
+          Snapshot of <code>{s.cbmBase}</code> taken {s.generatedAt}. Rebuild with
+          <code>cbm/platform-assemble.cs -i siteBuild</code>.
+        </p>
+        <p>
+          Part of <a href="https://github.com/bxGenesis/start">BISOS</a>, the ByStar Internet Services Operating
+          System. Built with Astro.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

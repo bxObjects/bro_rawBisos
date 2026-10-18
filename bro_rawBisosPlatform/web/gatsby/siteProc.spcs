@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* ~[Summary]~ :: A =SpreadPlantedCmndSerce= for Processing this Site --- platform.here (Gatsby)
+
+At the top of the site's directory, which holds cbm/ (the capability), content/ (bin/ scripts that
+write data/) and site/ (the Gatsby site). It is a reactProc seed, and that seed works on the current
+directory (it detects the framework from gatsby-config.js there and prints commands to run there).
+So this file changes into site/ before the seed runs, and its own chapter, "Site Process", gives
+the commands as run from this directory.
+#+end_org """
+
+import os
+import pathlib
+import sys
+
+# Before the seed runs: keep our own path valid, then work in site/ (see above).
+sys.argv[0] = os.path.abspath(sys.argv[0])
+siteBase = pathlib.Path(sys.argv[0]).resolve().parent
+siteDir = siteBase / "site"
+os.chdir(siteDir)
+
+from bisos.b import cs
+
+from bisos.csSeed import seedsLib
+
+from bisos.webCap import reactProc_seed as reactProc_seed # noqa: F401  # type: ignore[unused-import] _atExit_
+from bisos.webCap import reactProc_seedInfo
+from bisos.webCap import reactProc_csu
+
+from bisos.banna import banna_csu
+
+fqdn = "platform.here"
+devPortNu = int(banna_csu.bannaTcpPortNuOf().pyCmnd(argsList=["platform_dev"],).results)
+
+# examplesFuncsList is not shown by the seed (it reaches csCmndsList_seedInfo, not the examples run);
+# the seed runs a planted file's examples_csu() instead, defined below.
+reactProc_seedInfo.setup(
+    reactFramework=reactProc_csu.ReactFramework.Gatsby,
+    webVirtualDomain=fqdn,
+    dev_webPortNu=devPortNu,
+)
+
+def examples_csu() -> None:
+    literal = cs.examples.execInsert
+
+    cs.examples.menuChapter(f'*Site Process --- run from {siteBase}*')
+
+    cs.examples.menuSection('/Content -- every executable in content/bin writes content/data/')
+    literal("for g in content/bin/*; do [ -x $g ] && $g; done")
+
+    cs.examples.menuSection('/Develop -- gatsby develop on the banna platform_dev port/')
+    literal(f"(cd site && npx gatsby develop -H 127.0.0.1 -p {devPortNu})   # http://localhost:{devPortNu}")
+
+    cs.examples.menuSection('/Build -- as the capability does it/')
+    literal("./cbm/platform-assemble.cs -i gatsbyBuild   # content, npm ci, gatsby build")
+    literal("(cd site && npx gatsby clean)               # drop site/.cache and site/public")
+
+    cs.examples.menuSection('/Serve -- the capability/')
+    literal("./cbm/platform-assemble.cs -i fullUpdate    # gatsbyBuild + dns entry + nginx vhost")
+    literal(f"bx-browse-url.sh http://{fqdn}")
+
+    cs.examples.menuSection('/The seed chapters above run in site/ (this file changes into it)/')

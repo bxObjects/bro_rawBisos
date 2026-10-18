@@ -11,5 +11,5 @@ from bisos.capability import cbmProc_seed  # noqa: F401  _atExit_
 from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="csPlayerUi",
-    cbsSpec="/bisos/git/bxRepos/bisos-web/csPlayer-webUi/csPlayerUi-cbs.pcs",  # absolute-lock alternative
+    cbsSpec="/bisos/git/bxRepos/bisos-web/csPlayer-webUi/cbm/csPlayerUi-cbs.pcs",  # the Astro site (the Gatsby one is in gatsby/)
 )

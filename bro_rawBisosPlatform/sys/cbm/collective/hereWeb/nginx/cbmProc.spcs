@@ -11,5 +11,5 @@ from bisos.capability import cbmProc_seed  # noqa: F401  _atExit_
 from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="nginx",
-    cbsSpec="/bisos/asc/web/bin/nginx-cbs.pcs",   # basename form (requires /bisos/asc/web/bin on PATH)
+    cbsSpec="/bisos/git/bxRepos/bisos-pip/webCap/py3/bin/nginx-cbs.pcs",   # bisos.webCap (moved from /bisos/asc/web/bin, 2026-10-18)
 )

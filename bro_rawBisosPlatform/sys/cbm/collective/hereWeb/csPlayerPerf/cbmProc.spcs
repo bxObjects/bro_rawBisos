@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* cbmProc.spcs --- csPlayerPerf as a hereWeb-collective capability
+#+end_org """
+
+# --- atexit hook: register cbmProc-seed.cs as this file's seed ---
+from bisos.capability import cbmProc_seed  # noqa: F401  _atExit_
+
+# --- declare which capability this leaf represents + point to CBS ---
+from bisos.capability import cbmProc_seedInfo
+
+cbmProc_seedInfo.setup(
+    capabilityName="csPlayerPerf",
+    cbsSpec="/bisos/git/bxRepos/bisos-web/csPlayerPerf-drf/cbm/csPlayerPerf-cbs.pcs",  # csPlayer's Django REST API
+)

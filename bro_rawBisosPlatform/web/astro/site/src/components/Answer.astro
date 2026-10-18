@@ -1,0 +1,9 @@
+---
+// What a capability's .here URL answered when the snapshot was taken.
+const { c } = Astro.props
+const ok = typeof c.httpStatus === "number" && c.httpStatus < 400
+---
+{!c.url ? <span class="muted">no .here</span>
+  : c.isThisSite ? <span class="ok">this site</span>
+  : c.httpStatus == null ? <span class="bad">no answer</span>
+  : <span class={ok ? "ok" : "bad"}>{c.httpStatus}</span>}

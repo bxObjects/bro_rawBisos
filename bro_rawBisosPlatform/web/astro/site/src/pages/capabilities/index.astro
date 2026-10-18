@@ -1,0 +1,20 @@
+---
+import Base from "../../layouts/Base.astro"
+import CapabilityTable from "../../components/CapabilityTable.astro"
+import { capabilitiesSnapshot as s, capabilityGroups } from "../../lib/content.mjs"
+---
+<Base title="Capabilities">
+  <h1>Capabilities</h1>
+  <p>
+    One table per <code>realm/capabilityType</code>, in the order the walk materializes them. The gate is the
+    leaf's <code>cbmProc.control</code>: <em>enabled</em> is materialized with the tree, <em>available</em> is
+    planted but not materialized automatically, <em>disabled</em> is skipped. <em>Answers</em> is what the
+    <code>.here</code> URL returned when this snapshot was taken ({s.generatedAt}).
+  </p>
+  {[...capabilityGroups()].map(([key, members]) => (
+    <section>
+      <h2><a href={`/capabilities/${key}/`}>{key}</a></h2>
+      <CapabilityTable capabilities={members} />
+    </section>
+  ))}
+</Base>

@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* Overview and Relevant Pointers
+platform-cbs.pcs
+cbs: Capability Bundle Specification  -- Based on a cba-sysd.cs seed
+ws: An Web Service  --- /Service Component/ --- platform.here, this platform's capabilities
+n:  No Data    -- Materialization is purely based on Realm-BPO
+p:  Platform    -- Materialization is based on Platform-BPO (Site-BPO is not used)
+
+No sbom (Node and Gatsby come from the reactPlus leaf) and no units (nginx serves static files):
+only platform-assemble.cs, which snapshots the CBM tree, builds the site and installs its dns entry
+and vhost. Its leaf is the last of collective/hereWeb's branchesOrdered, so it is built after every
+other capability has been materialized. As gatsbyBxSidebar-cbs.pcs is.
+#+end_org """
+
+from bisos.capability import cba_sysd_seed
+from bisos.capability import cba_seed
+
+cba_seed.setup(
+    seedType="systemd",  # Extend using cba_sysd_seed.setup
+    loader=None,
+    sbom=None,
+    assemble="/bisos/platform/web/gatsby/cbm/platform-assemble.cs",
+    materialize=None,
+)
+
+sysdUnitsListPlatform = [
+]
+
+cba_sysd_seed.setup(
+    sysdUnitsList=sysdUnitsListPlatform,
+)
+
+cba_sysd_seed.plantWithWhich("cba-sysd.cs")

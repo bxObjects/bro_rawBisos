@@ -1,0 +1,318 @@
+#+title: Work Plan
+#+DATE: <2026-06-10 Wed 13:54>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:4
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by aiActivity.cs --- not regenerated):
+#   Date:      2026-10-16T22:13:09+00:00
+#   User:      bystar
+#   Templates: /bisos/git/auth/bxRepos/bisos/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiateSub --activity=custom --noLink=AI-Activity.org
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/web/gatsby
+  File: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/web/gatsby/AI-WorkPlan.org
+  Companion Docs: AI-Activity.org, AI-DevStatus.org, README.org
+####+END:
+
+This Work Plan file drives the AI collaborative development.
+Interactions are broken down into "Stages". Each Stage has a set
+of TODOs that I work with Claude to accomplish.
+
+Note to a fresh Claude: read this file together with AI-WORKFLOW.org,
+AI-Activity.org and AI-DevStatus.org to orient yourself. The =<<Context Confirmation>>=
+TODO below is the standard first step, or use =/bx-confirm0= as the automated equivalent.
+TODOs tagged =:ai:= are assigned to Claude. After completing a TODO, summarize results
+under =----- Results: ------= and mark it DONE.
+
+* Stage 0: Confirm AI's Understanding of This Repo's Context
+
+Goal: Confirm AI's understanding of the context and capture that in [[Context Confirmation]] TODO.
+
+
+* Stage 0 TODOs
+** +
+** LOOP [#A] <<Context Confirmation>> for AI (typically triggered by /bx-confirm0) :aiAndMe:
+SCHEDULED: <2026-06-09 Tue>
+Must be repeated each time a new Claude instance is started here.
+Based on the series of files starting from CLAUDE.md in this repo,
+describe succinctly what you have understood.
+Enumerate explicitly which files you have imported and which you have considered.
+Prompt the user to confirm that the desired/appropriate model (/model) is being used for this project.
+Since this is to be repeated, leave the todo tag as LOOP.
+** -
+
+* Stage 1: Add Platform Layers Info 
+
+<<Stage 1>>
+
+Goal: Consider the Platform as in 4 layers
+
+1) Box Layer:  Hardware or Virtualized resource
+   1.1) Type: rawMetal, Host, VM, Docker, PrivDocker, PodmanSysd
+   1.2) Profile: CPU type, Nu of Cores, RAM, Disk, NetworkLinks
+2) OS Layer: 
+   2.1) Debian Rev
+   2.2) Debian Profile: Gnome, etc
+3) BISOS
+   3.1) Network IP Addrs
+   3.2) end of link for /bisos/platform, /bisos/site
+   3.3) BISOS-Evolution
+     3.3.1) RawBisos
+     3.3.2) RawBisosCBMs
+     3.3.3) Sited-BISOS
+
+* Stage 1 TODOs
+** +
+** DONE [#A] <<1.1>> Show these layers on the home page of platform.here :ai:
+CLOSED: [2026-10-17 Sat 17:48] SCHEDULED:<2026-10-17 Sat 01:37>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND: <2026-10-01 Thu 10:32>
+:END:
+The above layering is to be determined statically and displayed based on what it is.
+----- Results: ------
+- Agreed 2026-10-17: four layers, Box, OS, BISOS, BISOS-Evolution (BISOS and its evolution are two
+  layers); the capabilities run on top. "Statically" = detected at build time, nothing by hand.
+  Nesting shown ("PrivDocker, on a VM"); Host = bare metal running VMs or containers, rawMetal = bare
+  metal that does not; OS profile from the desktop session, with vnc- when a VNC server is installed;
+  the evolution stages as defined in README.org; facter for the profile, own checks for the rest.
+  The layering will evolve: each layer is data (summary + items), so a new fact is one item.
+- bin/platformLayers.py (new) writes src/data/platformLayers.json. src/components/LayerStack.js
+  shows the stack on the home page (summaries, evolution stages) and on the new /platform page
+  (every item with its source). platform-assemble.cs -i gatsbyBuild now runs both generators;
+  gatsby-node.js refuses to build without either snapshot.
+- On this platform: Box "PrivDocker, on a VM (Amazon EC2 r5.24xlarge)" (CPU, RAM, disk marked as
+  shared with the host; no cgroup limits); OS "Debian 13.1 (trixie), vnc-xfce" (xfce4-session,
+  tigervnc-standalone-server; vncserver and novnc active; the kernel is the host's EL8 4.18); BISOS:
+  bro_rawBisosPlatform and bro_rawBisosSite; Evolution: RawBisosCBMs (7 of 12 enabled leaves last ok:
+  the five leaves materialized only directly have no leaf outcome yet).
+- Verified: built through gatsbyBuild; http://platform.here/ and /platform/ answer 200 and show the
+  values above. Not exercised: the VM, Host, rawMetal, Docker, Podman and Sited-BISOS branches (no
+  such platform here); facter absent (the items then say "unknown").
+- README.org: new section "The Platform's Layers" with the rules.
+- Then (user, 2026-10-17): each layer in the sidebar too, top down under Platform Layers. One page
+  per layer (/platform/evolution, bisos, os, box; src/templates/layer.js, generated from the snapshot
+  like the capability pages), not anchors on /platform: the sidebar highlights by path. Labels are
+  the layer names only; the stack's headings link to the layer pages. All five pages answer 200.
+- Then (user, 2026-10-17): the layers at the sidebar's top level, after Platform Layers, so they
+  are always in view rather than folded under it.
+** -
+
+
+* Stage 2: A Common Structure for Gatsby Sites 
+
+<<Stage 2>>
+
+Goal: Create a consistent base for creation of gatsby sites and their content
+
+As a starting point we have 3 gatsby sites that we want to keep consistent
+
+1) /bxRepos/bisos-web/gatsby-starter-bystar-nestedSidebar
+   
+2) /bxRepos/bisos-web/csPlayer-webUi
+
+3) /bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPlatform/web/gatsby
+
+(1) is a staring point for new sites and needs to be updated as we add new common features
+
+(2) is a relatively rich wrapper that combines other sites
+
+(3) is an example of using (1)
+
+The base directory structure and workflow for these need to be consistent.
+
+
+* Stage 2 TODOs
+** +
+** TODO [#A] <<2.1>> Create a common better directory structure for gatsby sites :aiAndMe:
+SCHEDULED: <2026-10-17 Sat 18:13>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND: <2026-10-17 Sat 18:13>
+:END:
+Start doing this at bro_rawBisosPlatform.
+- At the base level, we will have
+  - README.org, aiActivity files, ./bin, ./cbm, ./site, siteProc.spcs, ./content
+    All the gatsb related files go under ./site
+    ./reactProcs.spcs is to be renamed siteProc.spcs
+    ./content is a blank directory  with just a readme.org -- Running a script here would add content to the site
+----- Results: ------
+- Agreed 2026-10-17: cbm/ holds the capability files (the leaf stays planted in sys/cbm; only its
+  cbsSpec changes); bin/ becomes content/bin/; siteProc.spcs stays at the top, adjusted to the new
+  structure; content/ is the content side (its scripts and their output). Stage 2's title fixed.
+- Done at bro_rawBisosPlatform/web/gatsby (nothing was under git yet, so plain mv):
+  - site/: everything Gatsby (package*.json, gatsby-*.js, tailwind/postcss, src/, and the build
+    output node_modules/, public/, .cache/).
+  - cbm/: platform-cbs.pcs, -assemble.cs, -wvd.pcs (root now site/public), -here-dns.pcs. The leaf's
+    cbsSpec and the CBS's assemble path point into cbm/.
+  - content/: README.org, bin/platformCapabilities.py, bin/platformLayers.py, data/ (their JSON, not
+    under git). The site reads it as @content/data/<x>.json, a webpack alias in site/gatsby-node.js,
+    so site/ holds presentation only.
+  - gatsbyBuild runs every executable in content/bin/ (none is fine: the starter's case), then npm ci
+    and gatsby build in site/.
+  - siteProc.spcs (was reactProc.spcs): the reactProc seed works on the current directory (it finds
+    gatsby-config.js there and asserts the framework), so the file makes its own path absolute and
+    changes into site/ before the seed runs; its own chapter, "Site Process", gives the commands as
+    run from the top (content, develop on platform_dev 25018, build, serve).
+- Found: reactProc_seedInfo.setup() hands examplesFuncsList to csCmndsList_seedInfo, so a planted
+  file's examples were never shown (the starter's "Seed Extensions" never appeared); the seed runs a
+  planted examples_csu() instead, which siteProc.spcs now defines. Recorded in AI-Outputs.org with a
+  siteDir parameter for the seed (bisos.webCap); not changed from here.
+- Verified: npx gatsby clean, then the leaf's cbm_materialize: "ran: cbs_materialize ok"; /,
+  /platform/, /platform/box/, /capabilities/ and a capability page answer 200, a missing page 404;
+  the vhost's root is site/public; git sees no build output or data.
+- README.org (Layout rewritten), content/README.org (new), the gatsby-site activity and the
+  gatsby-site-authorship skill updated to this structure.
+- Next (not done): the same structure for the starter (1), where content/ is empty, and for
+  csPlayer-webUi (2).
+
+** TODO [#A] <<2.2>> Move improved features of csPlayer back to starter :aiAndMe:
+SCHEDULED: <2026-10-17 Sat 18:13>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND: <2026-10-17 Sat 18:13>
+:END:
+Start doing this at bro_rawBisosPlatform.
+- At the base level, we will have
+  - README.org, aiActivity files, ./bin, ./cbm, ./site, siteProc.spcs, ./content
+    All the gatsb related files go under ./site
+    ./reactProcs.spcs is to be renamed siteProc.spcs
+    ./content is a blank directory  with just a readme.org -- Running a script here would add content to the site
+----- Results: ------
+
+
+
+
+** -
+
+
+
+* Stage 3: From Gatsby to Astro, With a Content Tree
+
+<<Stage 3>>
+
+Goal: replace Gatsby with Astro as the engine of BISOS static sites, and make a site's pages come from
+a content tree on the file system, =content/tree/=, in the model of the ByStar Plone 3 ContentTree.
+
+Decided 2026-10-17 (user): Gatsby is in maintenance mode, and our investment in it is small. The
+content is LaTeX processed by HeVeA (already HTML, not MDX); LCNT documents carry their metadata
+as file parameters; the same LaTeX model produces Reveal presentations. All ByStar Plone 3 sites
+were built from a =ContentTree/= on disk; some are multilingual (Farsi, French), and RTL is a
+requirement. Astro over Docusaurus: Astro takes HeVeA's HTML as it is (Docusaurus's MDX rejects
+raw HTML) and its build can read the parameter files directly. A proof of concept first; replacing
+Gatsby is the immediate focus; reproducing freeprotocols.intra in a PALS is deferred.
+
+The legacy model (=/bxRepos/mb-ephemera/pub-shuttle/lcaPlone3=, the FPF site): =ContentTree/= is a
+BISOS walkable tree (=_tree_= node/leaf, =_treeProc_=); a node's =objectType= is =folder=, =page=,
+=pageLcnt= (body built from an LCNT document by HeVeA), =files= or =custom= (=lcntLists=); its
+parameters are one file each (=folderTitle=, =pageTitle=, =pageDescription=, =pubState=,
+=excludeFromNav=, =layoutLeftPortlets=, ...); a page's body is =contentBody.html=; the left
+navigation order is =nodesOrdered= / =leavesOrdered=. The old slider (=homeSlider=) is ignored;
+Reveal will replace it.
+
+* Stage 3 TODOs
+** +
+** TODO [#A] <<3.1>> Proof of concept: content/tree rendered by Astro :aiAndMe:
+SCHEDULED: <2026-10-17 Sat>
+A subset of the FPF ContentTree as =content/tree/=, read by an Astro site in the common structure
+(=content/=, =site/=); a Plone-like layout (tabs, breadcrumbs, left tree); the =pageLcnt= Home
+built with HeVeA 2.36; RTL for Persian; =files= assets. Not comprehensive.
+----- Results: ------
+- 2026-10-17, in =../astroPoc/= (its README has the mapping table): a subset of the FPF ContentTree
+  (Home, projects with all its children, participate, announcements, contentImages) plus a Persian
+  test page, as =content/tree/=; Astro 7.3.8 (pinned; 7.4.0 was two days old) reads it at build time
+  (=site/src/lib/contentTree.mjs=, one catch-all page, a Plone-like layout: tabs, breadcrumbs, left
+  tree). 16 pages in under a second.
+- The legacy parameter files are read as they are (=objectType=, =folderTitle=, =pageTitle=,
+  =pageDescription=, =pubState=, =excludeFromNav=, =contentBody.html=); added: =nodesOrdered= (the
+  order that lived in =plone3Proc.sh=), =contentLang= (inherited; fa/ar/he -> rtl), and at the
+  root =defaultPage=, =siteTitle=. So a site's ContentTree/ can be copied in nearly unchanged.
+- HeVeA 2.36 rebuilt Home (=pageLcnt=) from its 2013 =bodyWebPage.tex= (only XeTeX font commands
+  warned); body only, the slider's raw HTML left out. =content/bin/hva/bx-rtl.hva= marks =fa= /
+  =faPar= as =lang="fa" dir="rtl"= (bxtex's =bx-enfa.hva= defines them empty): candidate for bxtex.
+  Legacy HeVeA 1.10 bodies render unchanged.
+- RTL verified with headless Chrome: the Persian page mirrors (tabs, navigation column, text);
+  English inside Persian is placed correctly. Fixed on the way: the site's own English text needs
+  =dir="ltr"= on Persian pages.
+- Not done (by scope): =cbm/= and a =.here= name, =lcntLists= (=custom=), search, Reveal decks, the
+  per-language trees of a multilingual site.
+
+** TODO [#A] <<3.2>> Move platform.here from Gatsby to Astro :aiAndMe:
+=site/= becomes an Astro site; =content/= and =cbm/= stay; =content/tree/= where it fits.
+----- Results: ------
+- 2026-10-17: platform.here rebuilt in Astro in =web/astro/= (the user's choice of a new directory):
+  the AI files, README, =content/= and =cbm/= copied from =web/gatsby/=; =site/= rewritten as an Astro
+  7.3.8 site with the same 23 pages (Home, Platform Layers and one page per layer, Capabilities with
+  one page per group and per leaf, rawBisosCBMs, Sitemap, 404). No React, no client-side JavaScript:
+  Astro components at build time, the sidebar folding with =<details>=; plain CSS.
+- =site/src/lib/content.mjs= reads =content/data/= (refusing to build without it, naming the script);
+  =menu.mjs= is the sidebar and the sitemap. =cbm/=: =gatsbyBuild= renamed =siteBuild= (=npm ci=,
+  =npx astro build=), the vhost root =site/dist=, paths to =web/astro=. The leaf's =cbsSpec= points
+  to =web/astro/cbm/platform-cbs.pcs=.
+- =siteProc.spcs=: on the generic csCmndsList seed. The reactProc seed (=bisos.webCap=) knows React
+  and Gatsby only, so it cannot serve an Astro site; a static-site seed is a follow-up.
+- Verified: the leaf's =cbm_materialize=: "ran: cbs_materialize ok"; every page 200, a missing page
+  the site's 404; headless Chrome at desktop and phone width. Fixed on the way: Astro's
+  =compressHTML= drops the space between text and an inline element at a line break (now off); on a
+  phone the layer tables stack.
+- Not done: =web/gatsby/= is left in place, superseded, for the user to remove; its AI-WorkPlan copy
+  is stale (this one continues).
+
+** TODO [#A] <<3.3>> An Astro starter in the common structure, and the activity and skill :aiAndMe:
+The starter's successor (with =content/tree/=), and =gatsby-site= / =gatsby-site-authorship=
+renamed and rewritten for Astro. The repo: =bisos-web/astro-starter-bystar= (created by the user).
+----- Results: ------
+- 2026-10-18: =astro-starter-bystar= filled: =astroProc.spcs=, =cbm/astroStarter-*= (from platform.here's),
+  =content/tree/= (an example tree documenting the model: Home, The Content Tree as a pageLcnt with two
+  child pages, Building and Serving, a Persian RTL pageLcnt, a files node with a logo), =site/= (Astro
+  7.3.8: the tree reader, the Plone-like layout with RTL, the catch-all page, a 404), README.org.
+  banna: astroStarter 24019 (127.0.22.122), astroStarter_dev 25019.
+- Built and served through its own =astroProc.spcs= and =cbm/astroStarter-assemble.cs -i fullUpdate=:
+  http://astroStarter.here, 8 pages; siteVerify 200s and the 404; screenshots: tabs, left tree, the LaTeX
+  page, the Persian page mirrored, the logo from the files node. Not planted as a CBM leaf.
+- Activity =gatsby-site= -> =astro-site= and skill =gatsby-site-authorship= -> =astro-site-authorship=
+  (renamed; neither had been committed), both rewritten for Astro, the content tree and astroProc
+  (including importing a Plone 3 site). This directory's activity is =astro-site=.
+
+** TODO [#B] <<3.4>> Migrate the ByStar Plone 3 sites; freeprotocols.intra in a PALS (deferred) :aiAndMe:
+----- Results: ------
+
+** TODO [#A] <<3.5>> astroProc and contentTree in bisos.webCap; sites switch to astroProc.spcs :aiAndMe:
+Decided 2026-10-18 (user): fold static-site processing into =bisos.webCap= (beside reactProc and
+djangoProc; fewer packages; tool-specific processing over neutral data); keep the engine-neutral
+content-tree code in its own module (=contentTree_csu=), so =astroProc= stays thin.
+----- Results: ------
+- 2026-10-18, =bisos.webCap= (editable in bisos3): =contentTree_csu.py= (readTree, validate, bodyFile,
+  lcntBodies with HeVeA and an RTL / no-footer =.hva=, filesPlace, ploneImport; five Cmnds),
+  =astroProc_seed.py=, =astroProc_seedInfo.py= (siteBase, fqdn, devPortNu; examplesFuncsList through
+  =addCmnds_seedInfo=), =astroProc_csu.py= (contentBuild, siteBuild, siteVerify, siteInfo, examples),
+  =bin/astroProc-seed.cs= (a devbin symlink made; setup.py's scripts list needs a Blee regeneration).
+  Written in COMEEGA form from reactProc's files; Blee will refresh the dblock bodies.
+- reactProc fixed: =setup(siteDir=...)= used by the framework detection and the printed commands;
+  =examplesFuncsList= reaches the examples run (the Gatsby starter's "Seed Extensions" now show).
+  Unchanged without siteDir. AI-Outputs: the entry is DONE.
+- platform.here: =siteProc.spcs= replaced by =astroProc.spcs=; its assemble's siteBuild runs
+  =./astroProc.spcs -i siteBuild=. Rebuilt through the leaf: cbs_materialize ok, 23 pages, siteVerify ok.
+- Tested: contentTree on the FPF ContentTree (import: per-node processors dropped, projects' order
+  carried into nodesOrdered, Home built by HeVeA, files placed) and on the starter's tree (validates
+  clean). Found and fixed: legacy pages carry their body as content.html or contentPreface.html too.
+
+** -
+
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# eval: (setq-local org-log-done 'time)
+# End:

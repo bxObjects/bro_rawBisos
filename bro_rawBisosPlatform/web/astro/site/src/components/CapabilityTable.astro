@@ -1,0 +1,35 @@
+---
+// One row per capability: the gate as enabled / available / disabled columns, the .here link, what
+// it answered, and its package.
+import Answer from "./Answer.astro"
+import { gates } from "../lib/content.mjs"
+
+const { capabilities } = Astro.props
+---
+<div class="tableWrap">
+  <table class="caps">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        {gates.map((g) => <th class="gate">{g}</th>)}
+        <th>.here</th>
+        <th>Answers</th>
+        <th>Package</th>
+      </tr>
+    </thead>
+    <tbody>
+      {capabilities.map((c) => (
+        <tr>
+          <td>
+            <a href={c.slug} class="capName">{c.name}</a>
+            <div class="small muted">{c.description}</div>
+          </td>
+          {gates.map((g) => <td class={`gate ${g}`}>{c.gate === g ? "●" : ""}</td>)}
+          <td class="nowrap">{c.url ? <a href={c.url}>{c.hereName}.here</a> : <span class="muted">---</span>}</td>
+          <td class="center"><Answer c={c} /></td>
+          <td>{c.repoUrl ? <a href={c.repoUrl}>{c.package}</a> : <span class="muted">/bisos/asc</span>}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

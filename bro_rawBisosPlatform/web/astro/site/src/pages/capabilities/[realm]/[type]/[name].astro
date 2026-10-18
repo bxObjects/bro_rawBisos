@@ -1,0 +1,40 @@
+---
+// One page per CBM leaf.
+import Base from "../../../../layouts/Base.astro"
+import Answer from "../../../../components/Answer.astro"
+import { capabilitiesSnapshot as s, capabilities } from "../../../../lib/content.mjs"
+
+export function getStaticPaths() {
+  return capabilities.map((c) => ({
+    params: { realm: c.realm, type: c.capabilityType, name: c.name },
+    props: { c },
+  }))
+}
+
+const { c } = Astro.props
+const group = `${c.realm}/${c.capabilityType}`
+const leafDir = `${s.cbmBase}/${group}/${c.name}`
+const cbsName = c.cbsSpec.split("/").pop()
+---
+<Base title={c.name}>
+  <h1>{c.name}</h1>
+  <p>{c.description}</p>
+  {c.url && <p><a href={c.url} class="button">Open {c.hereName}.here</a></p>}
+  <table class="items">
+    <tbody>
+      <tr><th>Gate</th><td>{c.gate} <span class="muted">(cbmProc.control)</span></td></tr>
+      <tr><th>Last outcome</th><td>{c.lastStatus ? <code>{c.lastStatus}</code> : <span class="muted">none yet</span>}</td></tr>
+      <tr><th>.here</th><td>{c.url ? <a href={c.url}>{c.hereName}.here</a> : "---"}</td></tr>
+      <tr><th>Answers</th><td><Answer c={c} /> <span class="muted">at {s.generatedAt}</span></td></tr>
+      <tr><th>Address</th><td>{c.hereIp ? <code>{c.hereIp}</code> : "---"}{c.portNu && <span> --- nginx proxies to <code>127.0.0.1:{c.portNu}</code></span>}</td></tr>
+      <tr><th>Package</th><td>{c.repoUrl ? <a href={c.repoUrl}>{c.package}</a> : "/bisos/asc"}</td></tr>
+      <tr><th>CBS</th><td><code class="breakAll">{c.cbsSpec}</code></td></tr>
+      <tr><th>Leaf</th><td><code class="breakAll">{leafDir}/</code></td></tr>
+    </tbody>
+  </table>
+  <h2>Operating It</h2>
+  <pre>{`cd ${leafDir}
+./cbmProc.spcs -i cbm_status         # the gate and the outcome log
+./cbmProc.spcs -i cbm_materialize    # materialize, if enabled
+${cbsName} -i examples   # the CBS itself`}</pre>
+</Base>

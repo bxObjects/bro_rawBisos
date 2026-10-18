@@ -1,0 +1,124 @@
+#+title: platform.here --- This Platform's Capabilities
+#+DATE: <2026-10-16 Fri>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
+
+* Overview
+
+=http://platform.here= is a static Gatsby site that lists this Raw-BISOS platform's capabilities: one
+table per =realm/capabilityType= with the leaf's gate (enabled, available, disabled), a link to its
+=.here= site, what that site answered, and its package. From it one gets to every capability's URL.
+It also shows the platform's layers, and summarizes the rawBisosCBMs concepts
+(=bxGenesis/start/rawBisosCBMs/README.org=).
+
+It is itself a CBM: the leaf =sys/cbm/collective/hereWeb/platform/=, last in the walk's
+=branchesOrdered=, so a =sysCbmManage.cs -i fullyMaterialize= builds it after every other
+capability and its tables show their outcome.
+
+* The Platform's Layers
+
+The home page stacks the platform's four layers under its capabilities; =/platform= has every
+detected value and where it came from, and each layer has a page of its own (=/platform/<id>/=),
+always in view at the sidebar's top level, top down. From the bottom:
+
+| Layer           | What it says                                  | On the first platform           |
+|-----------------+-----------------------------------------------+---------------------------------|
+| Box             | type (rawMetal, Host, VM, Docker, PrivDocker, | PrivDocker, on a VM (Amazon EC2 |
+|                 | PodmanSysd); CPU, cores, RAM, disk, links     | r5.24xlarge)                    |
+| OS              | Debian release; profile (headless, xfce, ...) | Debian 13.1 (trixie), vnc-xfce  |
+| BISOS           | addresses; where /bisos/platform, site lead   | bro_rawBisosPlatform, ...Site   |
+| BISOS-Evolution | RawBisos -> RawBisosCBMs -> Sited-BISOS       | RawBisosCBMs                    |
+
+=content/bin/platformLayers.py= detects them at build time and writes =content/data/platformLayers.json=:
+facts
+from =facter= (as =bisos.facter='s CMDB uses), plus checks facter does not make. Each layer is a summary
+and a list of items (label, value, source); the pages show whatever items there are, so a new fact
+is one item in the generator. The rules, as agreed (2026-10-17):
+
+- *Nesting*: in a container, the box is the container type and what it runs on, e.g. "PrivDocker,
+  on a VM". PrivDocker: every capability effective for PID 1. PodmanSysd: Podman with systemd as
+  PID 1. VM: a hypervisor's DMI vendor. Host: bare metal running libvirtd, docker, podman or
+  containerd; rawMetal: bare metal that does not.
+- *Shared numbers*: in a container, CPU, RAM and disk are the host's; they are marked so, and a
+  cgroup limit is shown where there is one. The kernel is the host's too.
+- *OS profile*: the installed desktop session (xfce, gnome, kde, ...), with =vnc-= when a VNC server
+  is installed; headless when there is no session.
+- *Evolution*: RawBisos when =/bisos/platform= leads to =bro_rawBisosPlatform=; RawBisosCBMs when, in
+  addition, an enabled leaf last materialized ok; Sited-BISOS when the platform or site leads to a
+  real BPO.
+
+* A Snapshot, Not a Live View
+
+The tables are what the CBM tree said when the site was built. =content/bin/platformCapabilities.py=
+reads each leaf under =/bisos/platform/sys/cbm/= (=cbmProc.spcs= parsed as text, =cbmProc.control=,
+the last line of =cbmProc.status=), takes the =.here= name, IP and port from =bisos.banna=, probes
+each =.here= URL once, and writes =content/data/capabilities.json=. The pages, the sidebar and one
+page per leaf are built from that file. Refresh with =cbm/platform-assemble.cs -i gatsbyBuild=.
+
+Checking live from the browser was set aside: each =.here= name is a different origin.
+
+* Layout
+
+The common structure of BISOS Gatsby sites (AI-WorkPlan 2.1; the =gatsby-site= activity): the
+capability, the content and the Gatsby site are kept apart.
+
+#+begin_example
+web/gatsby/
+  README.org, AI-*.org, CLAUDE.md   this site, and its AI collaboration
+  siteProc.spcs                     the site's process: content, develop, build, serve
+  cbm/                              the capability: CBS, assemble, vhost, dns entry
+  content/                          what the site shows: bin/ scripts write data/
+  site/                             the Gatsby site: package.json, gatsby-*.js, src/
+#+end_example
+
+| File                                  | What it is                                                  |
+|---------------------------------------+-------------------------------------------------------------|
+| =siteProc.spcs=                       | a reactProc seed, run from here; it changes into =site/=    |
+|                                       | (the seed works on the current directory); its own chapter, |
+|                                       | "Site Process", has the commands as run from here           |
+| =cbm/platform-cbs.pcs=                | the CBS: no sbom, no units, only the assemble step          |
+| =cbm/platform-assemble.cs=            | =gatsbyBuild= (=content/bin/*=, =npm ci=, =gatsby build=),  |
+|                                       | =hereDns=, =webVirtDom=                                     |
+| =cbm/platform-here-dns.pcs=           | =platform.here= in =/etc/hosts= (127.0.22.120)              |
+| =cbm/platform-wvd.pcs=                | the nginx vhost: static files from =site/public/=, the 404  |
+| =content/bin/platformCapabilities.py= | CBM tree + banna -> =content/data/capabilities.json=        |
+| =content/bin/platformLayers.py=       | facter + checks -> =content/data/platformLayers.json=       |
+| =site/gatsby-node.js=                 | pages from the content; the =@content= alias to =content/=  |
+| =site/src/data/menuData.js=           | the sidebar: fixed pages + entries from the content         |
+| =site/src/pages/=                     | Home, Platform Layers, Capabilities, rawBisosCBMs, Sitemap  |
+| =site/src/templates/=                 | one page per layer, per =realm/capabilityType=, per leaf    |
+| =site/src/components/=                | the starter's, plus =CapabilityTable.js=, =LayerStack.js=   |
+
+=content/README.org= says how to add content. Node and Gatsby come from the =reactPlus= leaf. =npm
+ci= installs exactly =site/package-lock.json=. =site/node_modules/=, =site/public/=, =site/.cache/=
+and =content/data/*= are not under git.
+
+* Where It Came From
+
+A copy, not a fork, of =bisos-web/gatsby-starter-bystar-nestedSidebar=: its components, styles,
+Tailwind setup and lock file were kept; its demo pages were not. The 404 page is the starter's. Its
+CBS files were generated afresh (from bisos.geneweb's), not copied from the starter.
+
+* Usage
+
+#+begin_src bash
+cd /bisos/platform/sys/cbm/collective/hereWeb/platform
+./cbmProc.spcs -i cbm_materialize          # as the walk does it
+
+cd /bisos/platform/web/gatsby
+./siteProc.spcs                                    # the site's process commands
+./cbm/platform-assemble.cs -i gatsbyBuild          # refresh the content and rebuild
+./cbm/platform-assemble.cs -i fullUpdate           # + dns entry + vhost
+./content/bin/platformCapabilities.py --noProbe    # one content script, without probing URLs
+#+end_src
+
+* Known Limits
+
+- Only leaves with a =cbmProc.spcs= are listed; declared leaves (a README only) are not.
+- The =.here= name is the capability name unless =hereNameOf= in the generator says otherwise
+  (=gatsbyBxSidebar= is =starterSidebar.here=).
+- This site's own row is not probed (it is built before its vhost exists): it says "this site".
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 3)
+# End:

@@ -1,0 +1,21 @@
+---
+// One level of the sidebar. Entries with children are <details>, open along the current page's
+// path; they fold and unfold without any JavaScript.
+import { onPath } from "../lib/menu.mjs"
+
+const { items, path } = Astro.props
+---
+<ul class="menu">
+  {items.map((item) => (
+    <li>
+      {item.children ? (
+        <details open={onPath(item, path)}>
+          <summary><a href={item.path} class={item.path === path ? "current" : undefined}>{item.label}</a></summary>
+          <Astro.self items={item.children} path={path} />
+        </details>
+      ) : (
+        <a href={item.path} class={item.path === path ? "current" : undefined}>{item.label}</a>
+      )}
+    </li>
+  ))}
+</ul>

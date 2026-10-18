@@ -1,0 +1,24 @@
+---
+// One page per realm/capabilityType group.
+import Base from "../../../../layouts/Base.astro"
+import CapabilityTable from "../../../../components/CapabilityTable.astro"
+import { capabilitiesSnapshot as s, capabilityGroups } from "../../../../lib/content.mjs"
+
+export function getStaticPaths() {
+  return [...capabilityGroups()].map(([key, members]) => {
+    const [realm, type] = key.split("/")
+    return { params: { realm, type }, props: { key, members } }
+  })
+}
+
+const { key, members } = Astro.props
+const [realm, type] = key.split("/")
+---
+<Base title={key}>
+  <h1>{key}</h1>
+  <p>
+    Realm <strong>{realm}</strong>, capability type <strong>{type}</strong>: the leaves under
+    <code>{s.cbmBase}/{key}/</code>, in walk order.
+  </p>
+  <CapabilityTable capabilities={members} />
+</Base>

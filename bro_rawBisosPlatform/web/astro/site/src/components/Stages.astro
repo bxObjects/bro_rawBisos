@@ -1,0 +1,12 @@
+---
+// The BISOS-Evolution stages, the current one marked; each stage's test as its tooltip.
+const { stages } = Astro.props
+---
+<div class="stages">
+  {stages.map((s, i) => (
+    <>
+      {i > 0 && <span class="muted">→</span>}
+      <span title={s.test} class={`stage ${s.current ? "current" : s.reached ? "reached" : ""}`}>{s.name}</span>
+    </>
+  ))}
+</div>

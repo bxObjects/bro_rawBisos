@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro"
+import LayerStack from "../components/LayerStack.astro"
+import Answer from "../components/Answer.astro"
+import { capabilitiesSnapshot as s, capabilities } from "../lib/content.mjs"
+
+const reachable = capabilities.filter((c) => c.url)
+const { enabled, available, disabled } = s.counts
+---
+<Base title="Home">
+  <h1>This Platform's Capabilities</h1>
+  <p>
+    <strong>{s.host}</strong> is a Raw-BISOS platform. Its capabilities are the CBM leaves planted under
+    <code>{s.cbmBase}</code>: {capabilities.length} of them, <span class="ok">{enabled} enabled</span>,
+    <span class="warn">{available} available</span> and <span class="muted">{disabled} disabled</span>. Every
+    hereWeb capability is reachable as <code>http://&lt;name&gt;.here</code> on this host. See
+    <a href="/capabilities/">Capabilities</a> for the tables and <a href="/rawBisosCBMs/">rawBisosCBMs</a> for
+    the concepts.
+  </p>
+
+  <h2><a href="/platform/">The Layers</a></h2>
+  <LayerStack />
+
+  <h2>The .here Sites</h2>
+  <div class="cards">
+    {reachable.map((c) => (
+      <a href={c.url} class="card">
+        <div class="cardHead"><strong>{c.hereName}.here</strong><span class="small"><Answer c={c} /></span></div>
+        <div class="small muted">{c.description}</div>
+        <div class="small muted">gate: {c.gate}</div>
+      </a>
+    ))}
+  </div>
+
+  <p class="small muted">
+    Logins follow the rawBisos convention: user <code>admin</code>, password the service's name (for example
+    <code>admin / grafana</code>). Insecure by design; securing a host is a separate layer.
+  </p>
+</Base>

@@ -1,0 +1,18 @@
+---
+// A layer's items: label, value (with detail), and, when asked, where the value came from.
+const { items, withSource = false } = Astro.props
+---
+<table class="items">
+  <tbody>
+    {items.map((item) => (
+      <tr>
+        <th>{item.label}</th>
+        <td>
+          <span class="breakAll">{item.value}</span>
+          {item.detail && <div class="small muted">{item.detail}</div>}
+        </td>
+        {withSource && <td class="small muted">{item.source}</td>}
+      </tr>
+    ))}
+  </tbody>
+</table>

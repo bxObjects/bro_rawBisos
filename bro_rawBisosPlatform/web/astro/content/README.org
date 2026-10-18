@@ -1,0 +1,22 @@
+#+title: content/ --- What platform.here Shows
+
+The site's content, kept apart from its presentation (=../site/=):
+
+- =bin/= --- scripts that add content. Each executable here writes its part into =data/=. The build
+  (=../cbm/platform-assemble.cs -i siteBuild=) runs every one of them, in name order, before
+  building the site; the first failure stops the build. None at all is fine: the site then shows
+  only its fixed pages.
+- =data/= --- what the scripts wrote (JSON, per host and per build; not under git). The site reads it
+  at build time (=../site/src/lib/content.mjs=).
+
+Here:
+
+| Script                        | Writes                     | What it is                            |
+|-------------------------------+----------------------------+---------------------------------------|
+| =bin/platformCapabilities.py= | =data/capabilities.json=   | the CBM leaves: gates, last outcomes, |
+|                               |                            | =.here= links and what they answer    |
+| =bin/platformLayers.py=       | =data/platformLayers.json= | the layers: Box, OS, BISOS,           |
+|                               |                            | BISOS-Evolution                       |
+
+To add content: put an executable in =bin/= that writes =data/<x>.json=, then pages in =../site/= that
+read it (in =../site/src/lib/content.mjs=; for generated pages, a =getStaticPaths()= in the page).

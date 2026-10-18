@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Desktop - hide hamburger, show sidebar */
+@media (min-width: 769px) {
+  button.md\:hidden,
+  button[class*="md:hidden"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  aside.desktop-sidebar {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
