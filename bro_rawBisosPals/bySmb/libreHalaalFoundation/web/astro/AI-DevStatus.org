@@ -34,8 +34,8 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
   - =site/= is the astro-starter-bystar template (no breadcrumbs, Site Map, RTL tabs at the right).
   - The banner is =content/tree/contentImages/files/lhfBanner.jpg=, built from
     =content/siteStyle/lhfBanner.tex= (XeLaTeX, Comic Neue, rebuild commands in its header).
-  - WorkPlan: 2.1 TODO (built, waiting for /bx-done), 2.2 DONE, 2.3/2.4 TODO, 2.5 built (TODO),
-    2.6 rewritten (TODO). Nothing in this session is committed; the whole =bySmb/= is untracked.
+  - WorkPlan: 2.1, 2.2, 2.5, 2.6 DONE; 2.3 and 2.4 TODO (astroProc.spcs). Committed 2026-10-19
+    (bro_rawBisos 1f8c358, with bisos.pals, bisos.dnsCap and bisos.capability).
   - =README.org= here is still the astroPoc's (says "superseded"): out of date.
 
 * Architecture

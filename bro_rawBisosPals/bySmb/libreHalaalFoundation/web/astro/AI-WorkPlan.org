@@ -97,7 +97,7 @@ Produce and re-produce libre-halaal.org.here based on what is here.
 
 * Stage 2 TODOs
 ** +
-** TODO [#A] <<2.1>> Create the needed tools for mass adding of the likes of libre-halaal.org.here to /etc/hosts :aiAndMe:
+** DONE [#A] <<2.1>> Create the needed tools for mass adding of the likes of libre-halaal.org.here to /etc/hosts :aiAndMe:
 SCHEDULED:<2026-10-18 Sun 21:53>
 :PROPERTIES:
 :ORIGIN: Mohsen
@@ -217,7 +217,7 @@ SCHEDULED:<2026-10-18 Sun 21:53>
 Update astroProc.spcs to be consistent with the model of  /bisos/platform/sys/cbm/collective/hereWeb/ftoBranchProc.spcs
 ----- Results: ------
 
-** TODO [#A] <<2.5>>  Link this directory to /bisos/platform/sys/pals so that a rawBisosCBM  triggers it. :aiAndMe:
+** DONE [#A] <<2.5>>  Link this directory to /bisos/platform/sys/pals so that a rawBisosCBM  triggers it. :aiAndMe:
 SCHEDULED:<2026-10-18 Sun 21:53>
 :PROPERTIES:
 :ORIGIN: Mohsen
@@ -290,8 +290,10 @@ Design (user's model, refined with Claude, agreed 2026-10-19):
   failed (the defect above) but the PyCS main exits 0 on failure. Left in place.
 - NOT run: the whole sysCbmManage.cs -i fullyMaterialize (it would also materialize every enabled
   collective leaf); its pals part runs the same command lines as the test above.
+- Closed 2026-10-19 (committed: dnsCap bc8dab1, capability c746703, pals 65d85b6, bro_rawBisos 1f8c358).
+  The leaf is left available: fullyMaterialize builds the site once it is enabled (cbm_enable).
 
-** TODO [#A] <<2.6>> Re-write README of bisos.pals to capture .here related tools :aiAndMe:
+** DONE [#A] <<2.6>> Re-write README of bisos.pals to capture .here related tools :aiAndMe:
 SCHEDULED:<2026-10-18 Sun 21:53>
 :PROPERTIES:
 :ORIGIN: Mohsen
