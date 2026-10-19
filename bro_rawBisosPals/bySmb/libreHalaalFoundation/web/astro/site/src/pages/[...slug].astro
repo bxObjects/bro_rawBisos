@@ -1,0 +1,21 @@
+---
+// One page per content/tree node that has a page, at its tree path; / is the root's defaultPage.
+// Pages in src/pages/ with fixed paths take precedence over this one: a site adds data-driven pages
+// there (reading content/data/), next to its tree.
+import TreeLayout from "../layouts/TreeLayout.astro"
+import { contentTree, pageNodes } from "../lib/contentTree.mjs"
+
+export function getStaticPaths() {
+  const root = contentTree()
+  // app nodes are rendered by their own fixed pages (site/src/pages/<path>.astro).
+  const paths = pageNodes().filter((node) => !node.page.isApp).map((node) => ({
+    params: { slug: node.urlPath.replace(/^\/|\/$/g, "") || undefined },
+    props: { node },
+  }))
+  if (root.defaultNode && !root.page) paths.push({ params: { slug: undefined }, props: { node: root.defaultNode } })
+  return paths
+}
+
+const { node } = Astro.props
+---
+<TreeLayout node={node} />

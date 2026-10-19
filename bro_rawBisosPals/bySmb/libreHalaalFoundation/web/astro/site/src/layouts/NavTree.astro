@@ -1,0 +1,17 @@
+---
+// The left navigation: a node's visible children, expanded along the current page's path.
+import { navChildren, hrefOf, linkAttrs } from "../lib/contentTree.mjs"
+
+const { node, current, openPaths } = Astro.props
+const children = navChildren(node)
+---
+{children.length > 0 && (
+  <ul class="navTree">
+    {children.map((c) => (
+      <li>
+        <a href={hrefOf(c)} {...linkAttrs(c)} class={c === current ? "current" : undefined} lang={c.lang} dir={c.dir}>{c.title}</a>
+        {openPaths.has(c.urlPath) && <Astro.self node={c} current={current} openPaths={openPaths} />}
+      </li>
+    ))}
+  </ul>
+)}

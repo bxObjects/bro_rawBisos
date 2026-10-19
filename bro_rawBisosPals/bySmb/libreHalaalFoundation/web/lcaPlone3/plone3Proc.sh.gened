@@ -1,0 +1,234 @@
+#!/bin/bash
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+minimal"
+# {{{ DBLOCK-top-of-file
+typeset RcsId="$Id: plone3Proc.sh.gened,v 1.1.1.1 2013/04/08 16:43:38 lsipusr Exp $"
+#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org
+# }}} DBLOCK-top-of-file
+####+END:
+
+####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedPlone3NewProc.sh"
+# {{{ DBLOCK-seed-spec
+if [ "${loadFiles}X" == "X" ] ; then
+    /opt/public/osmt/bin/seedPlone3NewProc.sh -l $0 "$@" 
+    exit $?
+fi
+# }}} DBLOCK-seed-spec
+####+END:
+
+leavesExcludes=""
+
+leavesOrdered=""
+
+nodesExcludes=""
+
+nodesOrdered=""
+
+####+BEGIN: bx:dblock:ploneProc:bash:leavesList :types ""
+# {{{ DBLOCK-leavesList
+leavesList="
+"
+# }}} DBLOCK-leavesList
+####+END:
+
+####+BEGIN: bx:dblock:ploneProc:bash:nodesList :types ""
+# {{{ DBLOCK-nodesList
+nodesList="
+"
+# }}} DBLOCK-nodesList
+####+END:
+
+# {{{ EXTRAs
+
+function examplesHookPost {
+    bystarAcctPathAnalyze $( pwd )    # Setsup bystarUid, bystarUidHome ...
+cat  << _EOF_
+--- EXTRAs ---
+${G_myName} ${extraInfo} -i initialFullUpdate
+${G_myName} ${extraInfo} -i initialBaseSetup
+${G_myName} ${extraInfo} -i initialUpdateAll
+--- Initial Build Cleanups
+${G_myName} ${extraInfo} -i unsymlinkToInitialContentTree
+--- Clean and Prep For Initial VC Upload (export, update) ---
+${G_myName} ${extraInfo} -i vcUploadFull        # prepForVcUpload + cleanForVcUpload + exportVcUpload
+${G_myName} ${extraInfo} -i prepForVcUpload     # Create ./ploneProc.sh ./Home/ ...
+${G_myName} ${extraInfo} -i cleanForVcUpload    # Delete symlinks and remove .gened
+${G_myName} ${extraInfo} -i exportVcUpload      #
+--- On Going Version Control ---
+${G_myName} ${extraInfo} -i vcUpdate
+---- Example Over Write Of .common  ----
+--- Clean For VC Upload (export, update) ---
+${G_myName} ${extraInfo} -i cleanForVcUpload
+--- Version Control ---
+${G_myName} ${extraInfo} -i initialVcExport
+${G_myName} ${extraInfo} -i vcUpdate
+---- Example Over Write Of .common  ----
+cp -r -H footer.common footer
+deCvs footer
+---- Prepare For Extraction From Existing Plone or Wget Site ----
+${G_myName} ${extraInfo} -i prepareForPloneExtract
+---- Initial Templates Development ----
+diff ./plone3Proc.sh.gened  /libre/ByStar/InitialTemplates/lcaPlone/Base/plone3Proc.sh.gened
+cp ./plone3Proc.sh.gened  /libre/ByStar/InitialTemplates/lcaPlone/Base/plone3Proc.sh.gened
+cp  /libre/ByStar/InitialTemplates/lcaPlone/Base/plone3Proc.sh.gened ./plone3Proc.sh.gened 
+_EOF_
+ return
+}
+
+
+function vis_initialFullUpdate {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo vis_initialBaseSetup
+
+    opDo vis_initialUpdateAll
+}
+
+
+function vis_initialBaseSetup {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i initialBaseSetup
+    opDo popd
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i initialBaseSetup
+    opDo popd
+}
+
+
+function vis_initialUpdateAll {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i initialUpdateAll
+    opDo popd
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i initialUpdateAll
+    opDo popd
+}
+
+
+function vis_vcUploadFull {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+prepForVcUpload + cleanForVcUpload + exportVcUpload
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i vcUploadFull
+    opDo popd
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i vcUploadFull
+    opDo popd
+
+    lpReturn
+}
+
+
+function vis_prepForVcUpload {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+Create the initial plone3Proc.sh Make copies of Home.gened. 
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+ 
+    opDoRet FN_fileSafeCopyOver /libre/ByStar/InitialTemplates/lcaPlone/Base/plone3Proc.sh.start  ./plone3Proc.sh
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i prepForVcUpload
+    opDo popd
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i prepForVcUpload
+    opDo popd
+
+    lpReturn
+}
+
+
+function vis_cleanForVcExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i cleanForVcExport
+    opDo popd
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i cleanForVcExport
+    opDo popd
+
+    opDo lcaCvsAdmin.sh -h -v -n showRun -i allRecurseDeCvs
+
+    lpReturn
+}
+
+
+function vis_vcUploadExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./ContentTree
+    opDo ./plone3Proc.sh.gened -v -n showRun -i vcUploadExport
+    opDo popd
+
+    opDo pushd ./SiteStyle
+    opDo ./plone3Proc.sh.gened -v -n showRun -i vcUploadExport
+    opDo popd
+
+    lpReturn
+}
+
+function vis_prepareForPloneExtract {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    FN_dirCreatePathIfNotThere ploneExtract
+    
+    opDo cp /libre/ByStar/InitialTemplates/lcaPlone/Starts/plone3FtpRegen.sh ./ploneExtract/plone3FtpRegen.sh
+ 
+    lpReturn
+}
+
+
+
+
+
+# }}} EXTRAs
+
+####+BEGIN: bx:dblock:bash:end-of-file :types ""
+# {{{ DBLOCK-end-of-file
+#local variables:
+#major-mode: shellscript-mode
+#fill-column: 90
+# end:
+# }}} DBLOCK-end-of-file
+####+END:

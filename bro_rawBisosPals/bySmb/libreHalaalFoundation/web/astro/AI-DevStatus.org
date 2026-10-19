@@ -1,0 +1,121 @@
+#+title: Development Status & Continuation Handoff
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by aiActivity.cs --- not regenerated):
+#   Date:      2026-10-18T20:23:31+00:00
+#   User:      bystar
+#   Templates: /bisos/git/auth/bxRepos/bisos/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiateSub --activity=astro-site
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro
+  File: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro/AI-DevStatus.org
+  Activity: astro-site
+  Companion Docs: AI-Activity.org, AI-DevStatus.org, README.org
+####+END:
+
+This file is a working-state handoff so development can continue on another
+machine (which has this repo but NOT the developer's =~=). It captures the
+architecture, what works, what is untested and the design decisions made so far.
+
+This file is maintained by Claude. Updates are typically triggered by the
+=/bx-status-update= slash command, after major interactions, or before a release.
+
+Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; nothing committed).
+
+* Current State
+  - This directory is the Libre-Halaal Foundation's site, =http://libre-halaal.org.here=, the first PALS
+    made a functional part of BISOS (Stage 1/2 of AI-WorkPlan.org). It is served on this host from
+    =site/dist= at =127.0.55.1=, and reachable as a CBM of the PALS-BXO =bro_rawBisosPals=.
+  - The Libre-Halaal Foundation is the renamed Free Protocols Foundation (same work). The content tree
+    (=content/tree=) is FPF's Plone 3 ContentTree subset from the astroPoc, now renamed throughout:
+    "Libre-Halaal Foundation", "LHF", links to =libre-halaal.org= (=www.=, =web.=, =donate.=).
+  - =site/= is the astro-starter-bystar template (no breadcrumbs, Site Map, RTL tabs at the right).
+  - The banner is =content/tree/contentImages/files/lhfBanner.jpg=, built from
+    =content/siteStyle/lhfBanner.tex= (XeLaTeX, Comic Neue, rebuild commands in its header).
+  - WorkPlan: 2.1 TODO (built, waiting for /bx-done), 2.2 DONE, 2.3/2.4 TODO, 2.5 built (TODO),
+    2.6 rewritten (TODO). Nothing in this session is committed; the whole =bySmb/= is untracked.
+  - =README.org= here is still the astroPoc's (says "superseded"): out of date.
+
+* Architecture
+  - This directory (a PALS site, astro-site activity):
+    | Path             | What                                                                           |
+    |------------------+--------------------------------------------------------------------------------|
+    | =uri/here/value= | =libre-halaal.org.here= --- the site's name; every cbm/ file derives from it   |
+    | =astroProc.spcs= | bisos.webCap's astroProc seed: content build, Astro build (still says          |
+    |                  | =platform.here= and banna's =platform_dev= port: WorkPlan 2.3)                 |
+    | =cbm/=           | four symlinks to bisos.pals =py3/bin/=: =pals-cbs.spcs=, =pals-assemble.cs=,   |
+    |                  | =pals-here-dns.spcs=, =pals-wvd.spcs=                                          |
+    | =content/=       | =tree/= (pages), =siteStyle/= (logo.html, lhfBanner.tex), =bin/= (README only) |
+    | =site/=          | the starter's Astro site (package =libre-halaal-foundation=)                   |
+  - bisos.pals (=/bisos/git/bxRepos/bisos-pip/pals=): =palsHere.py= / =palsHereInfo.cs= (.here names),
+    =palsOfSys.py= / =palsOfSys.cs= (PALS-BXOs, their CBMs, platform leaves), the four generic files.
+    README.org there documents the model, with the figure =py3/images/palsModel.png=.
+  - On the host:
+    - =/bisos/var/palsHere/uri.list=: =127.0.55.1  libre-halaal.org.here  # pals=<this dir> added=...=
+    - =/etc/hosts=: a =palsHere= dblock (=palsHereInfo.cs -i palsForEtcHosts=) beside banna's.
+    - =/etc/nginx/sites-{available,enabled}/libre-halaal.org.here=: static, root =site/dist=.
+    - =/bisos/platform/sys/pals/bro_rawBisosPals/{path,origin}/value=; declaration
+      =bro_rawBisosPals/sys/cbm/libreHalaal/{capabilityType,cbsSpec}/value=; leaf
+      =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal/= (gate =available=).
+  - Trigger: =sysCbmManage.cs -i fullyMaterialize= walks =collective/hereWeb=, then =sys/cbm/pals=
+    (bisos.capability, uncommitted); a leaf runs =pals-cbs.spcs= -> =pals-assemble.cs -i fullUpdate=
+    (siteBuild via astroProc.spcs, hereDns, webVirtDom).
+
+* What Works
+  Verified on this host (Debian 13), 2026-10-18/19:
+  - .here: =pals-here-dns.spcs -i dnsCap_update= adds the name to the list and fills /etc/hosts;
+    getent and ping resolve =libre-halaal.org.here= to 127.0.55.1. 16 checks of palsHere.py
+    (scratch list).
+  - Serving: =pals-assemble.cs -i webVirtDom=; =/= 200, a missing page 404 (the site's own),
+    platform.here unaffected.
+  - Template: breadcrumbs gone, =/sitemap/= 200, فارسی tab at the right, =/persian/= is =dir="rtl"=
+    (headless Chrome screenshots); 18 pages built.
+  - Rename: no "Free Protocols Foundation", "FPF" or =freeprotocols.org= left in the built site.
+  - PALS model: 21 checks of palsOfSys.py; the pals walk finds the leaf; with the gate enabled for the
+    test, =cbm_materialize= ran leaf -> CBS -> assemble end to end (site 200); gate set back to
+    available.
+
+* What Is Untested
+  - The whole =fullyMaterialize= (it would materialize every enabled collective leaf too).
+  - The leaf left =available=: =fullyMaterialize= builds this site only once it is =enabled=.
+  - A second platform; a fresh host (the =bySmb/= tree is untracked, so a clone does not have it).
+  - Whether the =libre-halaal.org= links resolve (PLPC documents, projects, donation server).
+  - =palsActivate= (not built); platform.here's snapshot shows this leaf with "bro_rawBisosPals" as type.
+
+* Key Design Decisions
+  - PALS-BXO declares, platform holds state (user's model, refined, 2026-10-19; WorkPlan 2.5):
+    =/bisos/platform/sys/pals/<palsBxo>/= (path, origin), =<palsBxo>/sys/cbm/<cbm>/= (capabilityType,
+    relative cbsSpec), leaves at =sys/cbm/pals/<palsBxo>/<cbm>/= (user chose this over
+    =pals/<type>/<cbm>/=). FileParams throughout.
+  - .here names (WorkPlan 2.1): host-local =/bisos/var/palsHere/uri.list=, 127.0.55.x assigned once and
+    stored, never reused (retire by commenting out), provenance per line; =palsHereIpOf()= for vhosts.
+    dnsCap creates the palsHere dblock (=hostsDblockCommands=), not a pals-side step.
+  - Spread-planted files (=.spcs=, WorkPlan 2.2): one generic file per role in bisos.pals, symlinked into
+    each PALS's cbm/; the PALS is the nearest directory up with =uri/here/value=; paths never resolved.
+  - Banner as LaTeX (user): Comic Sans MS is not free, Comic Neue + FakeBold=2.2 is the nearest; renamed
+    =lhfBanner.jpg= so browsers do not keep the cached FPF image under the old URL.
+  - Superseded and moved out (kept in the session scratchpad only): the astroPoc's =content/bin=
+    scripts (=lcntBodies.py=, =filesNodes.py=, =hva/=) --- bisos.webCap's contentTree_csu does that work.
+  - Negative results:
+    - A leaf followed the CBS symlink (=resolveCbsSpec= used =Path.resolve=), so =pals-cbs.spcs= ran
+      as the generic file and found no PALS. Fixed in bisos.capability (=.absolute()=). Those failed runs
+      still logged "ran: cbs_materialize ok" in the leaf's cbmProc.status (PyCS exits 0 on failure);
+      the two lines (01:26, 01:27 on 2026-10-19) are left in place.
+    - dnsCap's ensure and update backups in the same second had one name; the original /etc/hosts was
+      overwritten once (=/etc/hosts.20261018231503= is NOT the original). Fixed (=.preEnsure=).
+    - The first request right after an nginx reload got the default page: reloads are asynchronous.
+    - =palsForEtcHosts= must set no opResults: the framework prints them into the dblock.
+  - Out of the import chain:
+    - AI-WorkPlan.org 2.1, 2.2, 2.5, 2.6 --- the decisions above, with their Results.
+    - AI-Outputs.org (blee-binders/evolution): dnsCap ensure (DONE), the CBS-symlink fix (DONE), the bare
+      =ftoBranchProc.spcs= in sysCbmManage that depends on =.= in PATH (TODO), aiCommandsSkillsTrees.
+    - bisos.pals README.org ("PALS on a Platform", ".here Names") and its figure.
+  - Installed in bisos3 as editable (were PyPI copies): bisos.pals, bisos.dnsCap, bisos.capability;
+    devbin symlinks for palsHereInfo.cs, palsOfSys.cs by hand. Debian packages added: texlive-xetex,
+    fonts-comic-neue.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:

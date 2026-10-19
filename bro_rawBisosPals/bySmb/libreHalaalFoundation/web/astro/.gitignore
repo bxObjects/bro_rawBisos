@@ -1,0 +1,7 @@
+# Build output and dependencies
+site/node_modules/
+site/dist/
+site/.astro/
+# Placed by content/bin/filesNodes.py from the files nodes of content/tree
+site/public/contentImages/
+__pycache__/

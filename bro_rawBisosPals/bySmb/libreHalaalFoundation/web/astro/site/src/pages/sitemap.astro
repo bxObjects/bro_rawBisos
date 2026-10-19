@@ -1,0 +1,25 @@
+---
+// The site map: every page of the content tree that is in the navigation, as a nested list, top down
+// in navigation order (as the Plone 3 sites' Site Map was). Linked from the header's site actions.
+import TreeLayout from "../layouts/TreeLayout.astro"
+import { contentTree, navChildren, hrefOf } from "../lib/contentTree.mjs"
+
+const root = contentTree()
+
+function listOf(node) {
+  const children = navChildren(node)
+  if (!children.length) return ""
+  const items = children.map((c) => {
+    const label = `<a href="${hrefOf(c)}" lang="${c.lang}" dir="${c.dir}">${c.title}${c.linkUrl ? " ↗" : ""}</a>`
+    return `<li>${c.page || c.linkUrl ? label : `<span>${c.title}</span>`}${listOf(c)}</li>`
+  })
+  return `<ul class="sitemap">${items.join("")}</ul>`
+}
+
+const siteMap = {
+  ...root,
+  parent: undefined,
+  page: { title: "Site Map", description: "", css: "", html: listOf(root) },
+}
+---
+<TreeLayout node={siteMap} />

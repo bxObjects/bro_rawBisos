@@ -1,0 +1,19 @@
+#+title: bro_rawBisosPals/sys/cbm --- the CBMs this PALS-BXO declares
+
+Each directory here declares one CBM of this PALS-BXO, as FileParams:
+
+- =capabilityType/value= --- e.g. =hereWeb=
+- =cbsSpec/value= --- the CBM's CBS, as a path relative to this PALS-BXO's root
+
+Declarations only: nothing here is host state. A platform that lists this PALS-BXO in
+=/bisos/platform/sys/pals/= plants, from these declarations, its own CBM leaves under
+=/bisos/platform/sys/cbm/pals/bro_rawBisosPals/<name>/= (with the host's gate and status log), and its
+CBM walk materializes them.
+
+#+begin_src bash
+palsOfSys.cs -i palsCbmsList bro_rawBisosPals                     # what is declared here
+palsOfSys.cs -i palsCbmAdd bro_rawBisosPals <name> <cbsRelPath>   # declare one (--capabilityType=hereWeb)
+palsOfSys.cs -i palsLeavesPlant                                   # plant the platform's leaves
+#+end_src
+
+The model: bisos.pals README.org, "PALS on a Platform: PALS-BXOs and Their CBMs".

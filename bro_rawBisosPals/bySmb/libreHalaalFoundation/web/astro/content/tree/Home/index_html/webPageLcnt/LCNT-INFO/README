@@ -1,0 +1,111 @@
+# Last Updated: Thu Jul 19 13:35:22 PDT 2007
+
+Read lcnLcntRoadmap.sh Below is just a summary
+
+These informations are used for lcntProcs.sh and
+can be divided into 4 major areas:
+  - Content General Info
+  - Content Processor Info
+  - Content Publication Info
+  - Content Specific Info
+
+
+Content General Info
+--------------------
+author1                Author information as listed in the
+(primary author)       /lcnt/REGISTRY/author
+		       It can also be a custom author info
+		       which in this case whatever written
+		       in this file, will be used AS-IS
+		       for Cover Page and Access Page.
+author2..author(n)     All the author author will have the same
+		       format as author1.  A document can has
+		       many authors.
+lcntNu:                As in cover page
+			 For document type:
+			    When Permanent assigned
+			    When Record, date based
+			    When draft, date based
+			    When Private, assigned
+			    When Repub, assigned but not necessarily
+			       in numbers form
+			 For sw type:
+			    assigned but not in number form.
+			    Instead it's module name.
+			    
+date                   Document Date
+description            As will appear on access page
+mainTitle              As in cover page
+shortTitle             As on every page of the book formal
+subTitle               As in cover page
+subSubTitle            As in cover page
+organization           As in cover page
+contentOrigin          Owner of the doument: neda, fpf, mohsen
+		       Publication Url e.g.  generated/doc.free/neda/lcnt
+version                As in cover page
+docGroup               One of ByStar, LEAP, LibreServices
+accessPageInclusion    one of: html
+                       If this file exist, the accessPage will include the INLINE html
+
+Content Processor Info
+----------------------
+lcntQualifier           One of: current
+			    /neda/lcnt/603/current
+			    /neda/Records/0611091/SeattleUniversity/
+
+type                   document, sw, video, ...
+contentSrcFormat       One of: ttytex, odp
+pubCategory            One of: Permanent, Records, Draft, Private
+		       In combination with lcntQualifier produces publication
+                       URL.
+
+
+Content Publication Info
+------------------------
+primaryUrl:            As in cover page
+		       Primary Publication Location
+pubDestUrls            List of sites, the doc will be exported to
+
+
+Content Specific Info
+---------------------
+docSrcList             prefix of (main) main.ttytex or main.odp
+
+swDocs                 List of Reference Documentations available for the
+		       software in the form of PLPC number.
+		       
+swManPages             List of manual pages in the form of PLPC number.
+swDataSheets           List of data sheets in the form of PLPC number.
+
+publishable1
+publishable2
+
+
+
+For the purpose of publication, we generate files:
+------------------------------------------------------
+destPath1/destPath2/destPath3/destPath4/destPath5/destPath6
+
+which correspond to the following directory tree in the content dir:
+/content/generated/doc.free/neda/PLPC/110102/current
+        /    1    /    2   /  3 /  4 /   5  /   6
+
+For lgpc doc: destination path are based on LCNT-INFO
+		       /lcnt/lgpc/neda/permanent/engineering/nedaLibreGenesis
+		       /content/generated/doc.free/neda/PLPC/110102/current
+
+For republish doc: destination path are based location
+(below example is for republication which we don't have to generate pdf/ps/html)
+		       /info/externalLimited           /technology/press/ieee/vcThwatrsInnovation
+                       /content/republished/doc.limited/technology/press/ieee/vcThwatrsInnovation
+
+For republish doc: destination path are based location
+(below example is for republication which we need to generate pdf/ps/html from ttytex)
+		       /lcnt/lgpc/mohsen/repub/externalPublic/politics/iran/cia/mosadegh
+		       /content/republished/doc.public       /politics/iran/cia/mosadegh
+
+For sw: destination path are based location
+		       /lcnt/sw                  /neda/leap/emsd/EMSD-MulPub
+		       /content/generated/sw.free/neda/leap/emsd/EMSD-MulPub
+
+

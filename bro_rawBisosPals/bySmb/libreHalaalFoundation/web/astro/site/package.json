@@ -1,0 +1,16 @@
+{
+  "name": "libre-halaal-foundation",
+  "private": true,
+  "description": "libre-halaal.org.here: the Libre-Halaal Foundation's site, from its content tree (astro-starter-bystar template)",
+  "type": "module",
+  "version": "1.0.0",
+  "author": "Mohsen Banan <https://github.com/mohsenBanan>",
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "7.3.8"
+  }
+}

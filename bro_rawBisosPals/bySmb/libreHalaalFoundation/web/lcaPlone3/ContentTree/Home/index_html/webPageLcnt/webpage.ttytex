@@ -1,0 +1,274 @@
+%%% -*- Mode: LaTeX; -*-
+%       RCS: $Id: webpage.ttytex,v 1.2 2013/05/04 04:17:14 lsipusr Exp $
+
+%%%#+BEGIN: bx:dblock:lcnt:warning-intro :class "memo" :langs "en+fa"
+%{{{ DBLOCK-warning-intro
+%%%   This is a ByStar Top Level LaTeX document.
+%%%   It primarily is made of Dynamic Blocks (dblock).
+%%%   If you are not familiar with how dblock works. STOP now.
+%%%   WARNING: Any edits inside of a dblock will be overwritten.
+%%%
+%%%   Structure of a document is as follows:
+%%%
+%%%      - dblock:lcnt:warning-intro
+%%%
+%%%      - dblock:lcnt:header-begin
+%%%      - dblock:lcnt:style-params
+%%%      - dblock:lcnt:header-end
+%%%
+%%%      - dblock:lcnt:front-begin
+%%%      - dblock:lcnt:copyright
+%%%      - dblock:lcnt:front-end
+%%%
+%%%      - dblock:lcnt:main-begin
+%%%        List of Inputs
+%%%      - dblock:lcnt:main-end
+%}}} DBLOCK-warning-intro
+%%%#+END:
+
+%%%#+BEGINNOT: bx:dblock:lcnt:header-begin :class "memo" :langs "en+fa"
+%{{{ DBLOCK-header-begin
+
+\documentclass{article}
+
+\usepackage{hevea} 
+%HEVEA\usepackage[utf8]{inputenc}
+
+\htmlhead{
+\vspace{0.0in}
+}
+
+\htmlfoot{
+\bigskip
+}
+
+
+\usepackage{fontspec}
+\setmainfont[Mapping=tex-text]{Linux Libertine O}
+
+\usepackage{morefloats}
+
+\usepackage{rcs}
+\usepackage{makeidx}
+\usepackage{supertabular}
+\usepackage{lscape}
+\usepackage{array} 
+\usepackage{framed}
+\usepackage{listings}
+
+\usepackage{color}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{caption}
+
+\usepackage{bidi}
+\usepackage{fontspec}
+\usepackage{xltxtra}
+\usepackage{xunicode}
+
+\makeatletter
+\@ifpackageloaded{caption}{\input{caption-xetex-bidi.def}}{}
+\makeatother
+
+\newfontinstance{\persian}[Script=Arabic]{XB Zar}
+% for in-line Arabic we need R-L control
+\newenvironment{fa}{\beginR\persian}{\endR}
+
+% simple environment for R-L paragraphs
+\newenvironment{faPar}
+{\everypar={\setbox0\lastbox \beginR
+\box0 \persian}}{}
+
+%}}} DBLOCK-header-begin
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:style-params :class "memo" :langs "en+fa"
+%{{{ DBLOCK-style-params
+% ===== STYLE PARAMETERS =====
+
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true ,       % false: boxed links; true: colored links
+    linkcolor=darkblue,     % color of internal links
+    citecolor=red,          % color of links to bibliography
+    filecolor=darkgreen,    % color of file links
+    urlcolor=darkred        % color of external links
+}
+
+
+\setlength{\textwidth}{6.0in}
+\addtolength{\oddsidemargin}{-0.75in}
+\addtolength{\evensidemargin}{-0.75in}
+
+\topmargin      0.00 in
+\textheight     8.50 in
+
+\setlength{\textwidth}{16.5cm}
+\setlength{\topmargin}{-0.3in}
+\setlength{\textheight}{8.5in}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0 true pc
+
+\addtolength{\parskip}{5pt}
+
+%}}} DBLOCK-style-params
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:header-end :class "memo" :langs "en+fa"
+%{{{ DBLOCK-header-end
+
+\begin{document}
+%}}} DBLOCK-header-end
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-begin :class "memo" :langs "en+fa"
+%{{{ DBLOCK-front-begin
+%}}} DBLOCK-front-begin
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:copyright :class "memo" :langs "en+fa"
+%{{{ DBLOCK-copyright
+%}}} DBLOCK-copyright
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:front-end :class "memo" :langs "en+fa"
+%{{{ DBLOCK-frontend
+%}}} DBLOCK-front-end
+%%%#+END:
+
+%%%#+NOTBEGIN: bx:dblock:lcnt:main-begin :class "memo" :langs "en+fa"
+%{{{ DBLOCK-main-begin
+
+\thispagestyle{empty}
+
+% \begin{rawhtml}
+%  <a href="/">English</a> [en] &nbsp;&nbsp;&nbsp;&nbsp;
+%  <a href="Persian">فارسی</a> [fa][Farsi/Persian] &nbsp;&nbsp; 
+%  <a href="French">Français</a> [fr] &nbsp;&nbsp; 
+% \end{rawhtml}
+
+
+%%%#+BEGIN: bx:dblock:global:insert-file :types "./galleriaJasonData.tex"
+\begin{rawhtml}
+    <div class="content">
+
+        <div id="galleria"></div> 
+	<script>
+	  var data = [
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/fpfProjs.html',
+          title: 'fpfProjs',
+          description: 'fpfProjs description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/constituent.html',
+          title: 'By* Digital Ecosystem',
+          description: 'constituent description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/joiningByStar.html',
+          title: 'joiningByStar',
+          description: 'joiningByStar description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/bxDeOverview.html',
+          title: 'bxDeOverview',
+          description: 'bxDeOverview description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/bxDomainsTable.html',
+          title: 'bxDomainsTable',
+          description: 'bxDomainsTable description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+	  ];
+       	</script>
+    </div>
+\end{rawhtml}
+
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:global:insert-file :types "/libre/ByStar/InitialTemplates/web/galleria/bxDblock/galleriaRunJs.tex"
+\begin{rawhtml}
+   <script>
+
+
+    // Load the twelve theme
+    //Galleria.loadTheme('galleria.twelve.js');
+
+    /*
+      Galleria.configure({
+      thumbnails: 'lazy'
+      });
+    */
+    
+
+    // Initialize Galleria
+    Galleria.run('#galleria', {
+	debug: true,
+	data_source: data,
+	autoplay: 7000, // will move forward every 7 seconds
+	thumbnails: true,  // thumbnails: 'lazy',
+	pauseOnInteraction: true,
+	carousel: true, // Not a Slider model
+	transition: 'flash' // fade | flash | pulse | slide
+    });
+
+    // Galleria.lazyLoad();
+
+    </script>
+\end{rawhtml}
+%%%#+END:
+
+\input{bodyWebPage.tex}
+
+
+%%%#+BEGIN: bx:dblock:lcnt:main-end :class "memo" :langs "en+fa"
+%{{{ DBLOCK-main-end
+
+\end{document}
+%}}} DBLOCK-main-end
+%%%#+END:
+
+%%%#+BEGIN: bx:dblock:lcnt:latex:end-of-file :class "memo" :langs "en+fa"
+%{{{ DBLOCK-end-of-file
+%local variables:
+%major-mode: latex-mode
+%folded-file: nil
+%fill-column: 90
+% end:
+%}}} DBLOCK-end-of-file
+%%%#+END:

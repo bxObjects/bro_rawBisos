@@ -1,0 +1,322 @@
+#+title: Work Plan
+#+DATE: <2026-06-10 Wed 13:54>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:4
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by aiActivity.cs --- not regenerated):
+#   Date:      2026-10-18T20:23:31+00:00
+#   User:      bystar
+#   Templates: /bisos/git/auth/bxRepos/bisos/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiateSub --activity=astro-site
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro
+  File: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro/AI-WorkPlan.org
+  Activity: astro-site
+  Companion Docs: AI-Activity.org, AI-DevStatus.org, README.org
+####+END:
+
+This Work Plan file drives the AI collaborative development.
+Interactions are broken down into "Stages". Each Stage has a set
+of TODOs that I work with Claude to accomplish.
+
+Note to a fresh Claude: read this file together with AI-WORKFLOW.org,
+AI-Activity.org and AI-DevStatus.org to orient yourself. The =<<Context Confirmation>>=
+TODO below is the standard first step, or use =/bx-confirm0= as the automated equivalent.
+TODOs tagged =:ai:= are assigned to Claude. After completing a TODO, summarize results
+under =----- Results: ------= and mark it DONE.
+
+* Stage 0: Confirm AI's Understanding of This Repo's Context
+
+Goal: Confirm AI's understanding of the context and capture that in [[Context Confirmation]] TODO.
+
+
+* Stage 0 TODOs
+** +
+** LOOP [#A] <<Context Confirmation>> for AI (typically triggered by /bx-confirm0) :aiAndMe:
+SCHEDULED: <2026-06-09 Tue>
+Must be repeated each time a new Claude instance is started here.
+Based on the series of files starting from CLAUDE.md in this repo,
+describe succinctly what you have understood.
+Enumerate explicitly which files you have imported and which you have considered.
+Prompt the user to confirm that the desired/appropriate model (/model) is being used for this project.
+Since this is to be repeated, leave the todo tag as LOOP.
+** -
+
+* Stage 1: Overview and Purpose
+
+<<Stage 1>>
+
+Goal: The purpose of this directory is to establish the practice of the following concepts:
+
+1) Make PALS a Functional Aspect of BISOS
+   - Do it first for .here
+   - Update /bxRepos/bisos-pip/pals in that context
+
+2) Setup the needed environment for transformation of Plone3/ContentTree to astro/content/tree
+   Do that in the context of this directory
+
+3) Use this tree as a first example of a full live public domain
+
+4) Reproduce the above 3 which are of BySMB factory to ByName
+
+5) Capture needed aiActivity related skills, commands and AI-Activity.org
+
+Back Ground:  PALS, BXOs, BPOs, CBMs and ByStar Factories
+
+@import  /bxRepos/bisos-pip/pals/palsWithBcm/README.org
+
+Read in all of /bxRepos/bisos-pip/pals.
+As it stands it is almost entirely obsolete but still perhaps slightly relevant. Do not delete it for now.
+
+
+* Stage 1 TODOs
+** +
+** LOOP [#A] <<1.1>> Confirm understanding of [[Stage 1]]  :ai:
+SCHEDULED:<2026-10-18 Sun 21:52>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:52>
+:END:
+Read al of the above Stage 1 and confirm your understanding of [[Stage 1]]
+Do not update anything.
+----- Results: ------
+
+* Stage 2: This Directory as a First Implementation of a PALS based Astro at .here
+
+<<Stage 2>>
+
+Goal: Connect existing implementations of CBMs, astroProc.spcs, and .here in the context of PALS 
+
+Produce and re-produce libre-halaal.org.here based on what is here.
+
+* Stage 2 TODOs
+** +
+** TODO [#A] <<2.1>> Create the needed tools for mass adding of the likes of libre-halaal.org.here to /etc/hosts :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+Build something similar to ####+BEGIN: bx:dblock:global:run-result-stdout :command "bannaInfo.cs -i bannaForEtcHosts"
+for PALS that have a ./uri/here/
+- The command will be palsHereInfo.cs -i palsForEtcHosts
+- The implementation of command will go in bisos.pals mimicing bannaInfo.cs
+- The ipAddrs will start from 127.0.55.1 and increment as others are added.
+- Prior to execution of the pyDblock, the current ./uri/here is added to a persistent list.
+- Similar to banna, we will add a blank BEGIN-END to /etc/hosts
+- For this the generated line will be: "127.0.55.1 libre-halaal.org.here"
+Decided (user, 2026-10-18):
+- The persistent list is host-local: =/bisos/var/palsHere/uri.list=.
+- Each PALS's =pals-here-dns.spcs= (in its =cbm/=; today's =platform-here-dns.pcs=, see [[2.2]]) is the
+  trigger: run by the CBS's assemble as =-i dnsCap_update=, it adds its =./uri/here= value to that list,
+  idempotently, keyed by the name (not the directory), then updates =/etc/hosts=.
+  A .spcs: its fqdn comes from =./uri/here/value= of the PALS it is planted in, not hardcoded.
+- The IP is assigned when the name is added (the next free 127.0.55.x) and stored in its line; it is
+  never reused or renumbered, so removing a line moves no other name (banna's rule, commit 115db49).
+- Each line carries provenance: the PALS directory and the date it was added.
+- =palsForEtcHosts= reads only that list; the pyDblock in =/etc/hosts= is updated from it.
+- bisos.pals also exports a lookup, =palsHereIpOf(name)=, so a PALS's vhost (=cbm/*-wvd.pcs=) does not
+  depend on =/etc/hosts= being current (as banna's =hereIpOf()=).
+- The blank BEGIN/END block: dnsCap_update already creates banna's when absent
+  (=dnsCap_ensureHostsDblock=), but that names only banna's command. Decided: fix it in bisos.dnsCap
+  --- it takes the block's command from the seedInfo (default banna's), and =pals-here-dns.spcs= asks
+  for the palsHere block (recorded in AI-Outputs.org).
+----- Results: ------
+- Built 2026-10-18, in three repos (none committed):
+  - bisos.pals: py3/bisos/pals/palsHere.py (the list, address assignment, palsHereIpOf(), plant-path
+    parsing, dnsCapSetup()); palsHere_csu.py (Cmnds palsForEtcHosts, palsHereList, palsHereIpOf,
+    palsHereAdd); bin/palsHereInfo.cs (from bannaInfo.cs); bin/pals-here-dns.spcs, the one generic
+    trigger, planted here as cbm/pals-here-dns.spcs -> that file.
+  - bisos.dnsCap: CmndsControlInfo.hostsDblockCommands (default banna's) and preUpdateFuncs;
+    dnsCap_ensureHostsDblock and dnsCap_verify loop over the commands; dnsCap_update runs the
+    preUpdateFuncs first and now fails if the ensure step fails. Fixed: ensure's backup gets a
+    .preEnsure suffix (update's backup in the same second overwrote it).
+  - Here: cbm/platform-here-dns.pcs removed (identical to bro_rawBisosPlatform/web/astro's);
+    platform-assemble.cs hereDns runs ./pals-here-dns.spcs -i dnsCap_update.
+- Retired names: commented out in uri.list, never deleted; their address still counts as used.
+- Installed: bisos.pals and bisos.dnsCap now editable in bisos3 (were PyPI copies);
+  devbin/palsHereInfo.cs symlink by hand.
+- Verified: 16 checks of palsHere.py on a scratch list (address 1, idempotent add, a retired address
+  not reused, bad names and a stray plant rejected, a duplicate address refused, a symlinked plant finds
+  its PALS); ensure on a copy of /etc/hosts adds only the palsHere skeleton, then is a no-op; a
+  banna-only file (kafka-here-dns.pcs) still ensures and verifies banna's block only.
+- Done on this host: /bisos/var/palsHere/uri.list has 127.0.55.1 libre-halaal.org.here;
+  ./pals-here-dns.spcs -i dnsCap_update added and filled the palsHere block of /etc/hosts (the diff is
+  that block only); dnsCap_verify passes; getent and ping resolve libre-halaal.org.here to 127.0.55.1.
+  /etc/hosts.20261018231503 is NOT the original (the backup collision, fixed after this run); the
+  original differed only by the new block.
+- Left: bisos.pals setup.py (Blee) --- scripts lacks palsHereInfo.cs and pals-here-dns.spcs; requires
+  lacks bisos.dnsCap and bisos.csSeed (imported lazily, by dnsCapSetup()). A failed palsHereIpOf exits
+  0 (the PyCS main discards the outcome, as bisos.kafka found). README of bisos.pals: [[2.6]].
+
+** DONE [#A] <<2.2>>  In ./cbm -- rename those copies to pals-cbs.pcs based on ./uri/here :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+pals-xxx.pcs becomes a convention. All of these can probably made generic and
+can become symlinks to bisos.pals/py3/bin.
+If possible, let's do that.
+----- Results: ------
+- Done 2026-10-18: all four are generic, in bisos.pals py3/bin, and cbm/ holds only symlinks to them:
+  pals-cbs.spcs, pals-assemble.cs, pals-here-dns.spcs (2.1), pals-wvd.spcs. Named .spcs, not .pcs,
+  for the reason decided in 2.1: each takes its parameters from where it is planted --- the PALS is
+  the nearest directory above with uri/here/value (palsHere.palsDirOfPlant), never resolved, so the
+  symlink finds its PALS. pals-assemble.cs is a .cs (not planted on a seed).
+  - pals-cbs.spcs: assemble = the pals-assemble.cs beside it (no absolute /bisos/platform path).
+  - pals-assemble.cs: from platform-assemble.cs; siteBase from its location, not Path.resolve().
+  - pals-wvd.spcs: server_name = uri/here/value; root = <PALS, resolved>/site/dist.
+  - palsHere.plantOf(): the plant's unresolved path (seed record, else sys.argv[0]).
+- platform-cbs.pcs, platform-wvd.pcs (identical to bro_rawBisosPlatform/web/astro's) and
+  platform-assemble.cs (that, plus the 2.1 edits now in pals-assemble.cs) removed; cbm/__pycache__ too.
+- Verified: the assemble's menu names libre-halaal.org.here; pals-wvd.spcs -i configFileStdout gives
+  the right vhost; pals-assemble.cs -i hereDns (a no-op: already listed) and -i webVirtDom installed
+  /etc/nginx/sites-{available,enabled}/libre-halaal.org.here (nginx -t ok); http://libre-halaal.org.here/
+  200 with the site, a missing page 404; platform.here unaffected. (The first request right after the
+  reload got nginx's default page: the reload had not finished.)
+- NOT run: pals-cbs.spcs -i cbs_assemble / cbs_materialize (its assemble path is checked only by
+  reading) --- siteBuild runs astroProc.spcs, which still says platform.here and banna's platform_dev
+  port: [[2.3]]. site/dist is still the 2026-10-17 astroPoc build (FPF content).
+- Left: bisos.pals setup.py (Blee) scripts also lacks pals-cbs.spcs, pals-wvd.spcs, pals-assemble.cs.
+  The ALERT "Missing .../currents/fp" from pals-wvd.spcs appears with platform-wvd.pcs too.
+
+** TODO [#A] <<2.3>>  astroProc.spcs can be as is for a first cut for initilal production :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+We use it as is with the bash fto  for full production of the equivalen of plone3.
+----- Results: ------
+
+** TODO [#A] <<2.4>>  Redo [[2.3]] with python fto model  :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+Update astroProc.spcs to be consistent with the model of  /bisos/platform/sys/cbm/collective/hereWeb/ftoBranchProc.spcs
+----- Results: ------
+
+** TODO [#A] <<2.5>>  Link this directory to /bisos/platform/sys/pals so that a rawBisosCBM  triggers it. :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+Details to be ironed out.
+Design (user's model, refined with Claude, agreed 2026-10-19):
+- A platform may have many PALS-BXOs, some not activated (not cloned from GitLab yet); each PALS-BXO
+  may have many CBMs. Utilities that manage both are in bisos.pals: =palsOfSys.cs=.
+- Three places, split by who owns the state:
+  | Place                                   | Kind | Holds                                          |
+  |-----------------------------------------+------+------------------------------------------------|
+  | =/bisos/platform/sys/pals/<palsBxo>/=     | host | =path/value= (absent: not activated),           |
+  |                                         |      | =origin/value= (where to clone it from)         |
+  | =<palsBxo>/sys/cbm/<cbmName>/=            | repo | =capabilityType/value= (hereWeb ...),           |
+  |                                         |      | =cbsSpec/value= (relative to the PALS-BXO root) |
+  | =/bisos/platform/sys/cbm/pals/<palsBxo>/= | host | generated CBM leaves =<cbmName>/=: cbmProc.spcs, |
+  |                                         |      | cbmProc.control (gate), cbmProc.status         |
+- Why the split: the gate (enabled/available/disabled) and the status log are per-host decisions and
+  outcomes; in a shared PALS-BXO they would make every materialization a commit. The PALS-BXO only
+  declares; the platform holds state, as standard CBM leaves (the =pals= realm of rawBisosCBMs), so the
+  existing walker and cbm_* verbs work unchanged.
+- Values are FileParams (=<name>/value=). cbsSpec is relative (hosts check out at different paths);
+  the platform's path/value is host state, so absolute. Entries are named by capability
+  (=libreHalaal=), not by why they exist.
+- =palsOfSys.cs=: palsList (each PALS-BXO, activated or not, and its CBMs), palsAdd <bxoPath>
+  [--origin=], palsCbmsList [pals], palsCbmAdd <pals> <name> <cbsRelPath> --type=, palsLeavesPlant
+  (generate/refresh platform leaves from the lists; idempotent; never overwrites a gate or status),
+  later palsActivate <pals> (clone).
+- Trigger: sysCbmManage fullyMaterialize walks only collective/hereWeb (sysCbmManage_csu.py:225); it
+  must also walk the pals realm, after collective (nginx, Node) and before platform.here (its snapshot).
+  Preferred: in bisos.capability, so one command still does everything.
+- For libreHalaalFoundation: /bisos/platform/sys/pals/bro_rawBisosPals/ (path: this checkout);
+  bro_rawBisosPals/sys/cbm/libreHalaal/ (hereWeb; bySmb/libreHalaalFoundation/web/astro/cbm/pals-cbs.spcs);
+  leaf /bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal/ (gate available to start).
+- To remove: bySmb/libreHalaalFoundation/sys/ (half-baked per-site sys: empty readmes, a copied pbsi);
+  bro_rawBisosPals/sys/bin and sys/pbsi unless they are wanted.
+- Documented in bisos.pals README.org with a figure (palsModel-graphviz.pcs) --- see [[2.6]].
+----- Results: ------
+- 2026-10-19: design recorded above and documented: bisos.pals py3/images/palsModel-graphviz.pcs (one
+  named graph, palsModel; png/pdf/svg/jpg/gv and title/caption sidecars rendered) and README.org
+  section "PALS on a Platform: PALS-BXOs and Their CBMs" (legend, figure, walk-through, palsOfSys.cs
+  command table marked "designed, not yet built").
+- Built 2026-10-19 (uncommitted):
+  - bisos.pals: palsOfSys.py (lists, declarations, leavesPlant; legacy bare value migrated),
+    palsOfSys_csu.py (palsList, palsAdd, palsCbmsList, palsCbmAdd, palsLeavesPlant), bin/palsOfSys.cs;
+    devbin symlink by hand. palsActivate not built (a Planned Improvement).
+  - bisos.capability: fullyMaterialize (cbmDispatch) also walks sys/cbm/pals, after collective/hereWeb,
+    by ./ftoBranchProc.spcs. And a defect fixed: cbmProc_seedInfo.resolveCbsSpec() followed symlinks
+    (Path.resolve), so a leaf ran a symlinked CBS as bisos.pals's generic file, which then found no PALS;
+    it now makes the path absolute without resolving (as its own header already said: "use as-is").
+    bisos.capability is now editable in bisos3 (was 0.23 from PyPI; the repo differed only by
+    sysCbmManage_csu.py and this fix).
+- Applied on this host: /bisos/platform/sys/pals/bro_rawBisosPals/ migrated to path/value
+  (/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals) + origin/value (git@mb2_github:bxObjects/bro_rawBisos.git
+  --- the remote of bro_rawBisos: bro_rawBisosPals is a directory in it, not a repository of its own);
+  bro_rawBisosPals/sys/cbm/libreHalaal/ declared (hereWeb, relative cbsSpec) and sys/cbm/readme.org
+  written; leaf /bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal/ planted, gate available;
+  sys/cbm/pals/ftoBranchProc.spcs planted. bySmb/libreHalaalFoundation/sys/ removed (empty readmes and a
+  copied pbsi; tarred in the session scratchpad). bro_rawBisosPals/sys/bin and sys/pbsi left: ask.
+- Verified: 21 checks of palsOfSys.py on a scratch platform (legacy migration, idempotence, refusals,
+  gate and status kept, stale leaf reported); the pals walk finds the leaf (cbm_status); with the gate
+  enabled for the test, fto_forwardToLeaves cbm_materialize ran leaf -> pals-cbs.spcs (by its planted
+  path) -> pals-assemble.cs fullUpdate (siteBuild 18 pages, hereDns, webVirtDom), site 200; gate set back
+  to available. A collective leaf (kafka) still answers cbm_status after the resolve change.
+- The leaf's cbmProc.status has two false "ran: cbs_materialize ok" lines (01:26:10, 01:27:37): those runs
+  failed (the defect above) but the PyCS main exits 0 on failure. Left in place.
+- NOT run: the whole sysCbmManage.cs -i fullyMaterialize (it would also materialize every enabled
+  collective leaf); its pals part runs the same command lines as the test above.
+
+** TODO [#A] <<2.6>> Re-write README of bisos.pals to capture .here related tools :aiAndMe:
+SCHEDULED:<2026-10-18 Sun 21:53>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND:<2026-10-18 Sun 21:53>
+:END:
+----- Results: ------
+- Partly done 2026-10-19: README.org gained two sections --- "PALS on a Platform: PALS-BXOs and Their
+  CBMs" (the 2.5 model, with the palsModel figure) and "PALS .here Names and the Generic cbm/ Files"
+  (2.1 and 2.2: uri.list, palsHereInfo.cs, the four generic cbm/ files). TOC updated by hand.
+- Rewritten 2026-10-19 on the readme-authorship skeleton: title fixed; Overview; Part of BISOS;
+  Command-Only PyCS Facility; the PALS concept (kept); the model with its figure; PALS .here Names;
+  Installation (bisos.pals, its commands, and which other packages the generic files need); Usage
+  (palsOfSys.cs, palsHereInfo.cs, a site's cbm/ symlinks); Key Files; Documentation and Blee-Panels;
+  Support; Planned Improvements (palsActivate, platform.here's pals shape, setup.py, the earlier
+  PALS-BPO commands). The facter text is gone. Lines within 105 except the toc-org line for "Part of
+  BISOS" (generated; kafka's README has the same). The top-controls dblock is left for Blee to fill.
+
+
+** -
+
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# eval: (setq-local org-log-done 'time)
+# End:

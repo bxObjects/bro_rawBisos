@@ -1,0 +1,369 @@
+#!/bin/bash
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+minimal"
+# {{{ DBLOCK-top-of-file
+typeset RcsId="$Id: plone3Proc.sh.gened,v 1.2 2013/05/04 00:57:46 lsipusr Exp $"
+#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org
+# }}} DBLOCK-top-of-file
+####+END:
+
+####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedPlone3NewProc.sh"
+# {{{ DBLOCK-seed-spec
+if [ "${loadFiles}X" == "X" ] ; then
+    /opt/public/osmt/bin/seedPlone3NewProc.sh -l $0 "$@" 
+    exit $?
+fi
+# }}} DBLOCK-seed-spec
+####+END:
+
+leavesExcludes=""
+
+leavesOrdered=""
+
+nodesExcludes=""
+
+nodesOrdered=""
+
+####+BEGIN: bx:dblock:ploneProc:bash:leavesList :types ""
+# {{{ DBLOCK-leavesList
+leavesList="
+"
+# }}} DBLOCK-leavesList
+####+END:
+
+####+BEGIN: bx:dblock:ploneProc:bash:nodesList :types ""
+####+END:
+
+# {{{ EXTRAs
+
+function examplesHookPost {
+    bystarAcctPathAnalyze $( pwd )    # Setsup bystarUid, bystarUidHome ...
+cat  << _EOF_
+--- EXTRAs ---
+${G_myName} ${extraInfo} -i initialFullUpdate   # initialBaseSetup + initialUpdateAll
+----  Initial Bases Setup ----
+${G_myName} ${extraInfo} -i initialBaseSetup    # Make the symlinks and baseAssembles for .gened
+${G_myName} ${extraInfo} -i initialHomeSliderBase
+${G_myName} ${extraInfo} -i initialAlbumsBase
+---- Initial Update / ReBuildUpdate ----
+${G_myName} ${extraInfo} -i initialUpdateAll    # Generate the ploneSite from scratch
+${G_myName} ${extraInfo} -i initialLibrary
+${G_myName} ${extraInfo} -i initialHomeSliderReBuildUpdate
+${G_myName} ${extraInfo} -i initialAlbumsReBuildUpdate
+--- Initial Build Cleanups
+${G_myName} ${extraInfo} -i unsymlinkToInitialContentTree
+--- Clean and Prep For Initial VC Upload (export, update) ---
+${G_myName} ${extraInfo} -i vcUploadFull        # prepForVcUpload + cleanForVcUpload + exportVcUpload
+${G_myName} ${extraInfo} -i prepForVcUpload     # Create ./plone3Proc.sh ./Home/ ...
+${G_myName} ${extraInfo} -i cleanForVcExport    # Delete symlinks and remove .gened
+${G_myName} ${extraInfo} -i vcUploadExport      #
+--- On Going Version Control ---
+${G_myName} ${extraInfo} -i vcUpdate
+---- Example Over Write Of .common  ----
+cp -r -H footer.common footer
+deCvs footer
+---- Initial Templates Development ----
+diff ./plone3Proc.sh.gened  /libre/ByStar/InitialTemplates/lcaPlone/NewInitialContentTree/Base/Poly/DEFAULT/plone3Proc.sh.gened
+cp ./plone3Proc.sh.gened  /libre/ByStar/InitialTemplates/lcaPlone/NewInitialContentTree/Base/Poly/DEFAULT/plone3Proc.sh.gened
+cp   /libre/ByStar/InitialTemplates/lcaPlone/NewInitialContentTree/Base/Poly/DEFAULT/plone3Proc.sh.gened ./plone3Proc.sh.gened
+_EOF_
+ return
+}
+
+
+function vis_initialFullUpdate {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo vis_initialBaseSetup
+
+    opDo vis_initialUpdateAll
+}
+
+
+function vis_initialBaseSetup {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i linkToInitialContentTree
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleContentTreeBody 
+}
+
+function vis_initialUpdateAll {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+Update means, do to remote the latest local.
+The order is important. We want to make sure that we get
+the desired order in the left navigation.
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo pushd ${here}/Home.gened
+    opDo ./plone3Proc.sh -i initialUpdateAll
+    opDo popd
+
+    # ./images.common
+    opDo pushd ${here}/images.common
+    opDo ./plone3Proc.sh -i initialUpdateAll
+    opDo popd
+
+    opDo pushd ${here}/contact.common/
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/siteSearch.common
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/bystarSearch.common
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/pgp.gened
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/aboutThisWebsite.common
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/help.common
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo pushd ${here}/siteControl.common
+    opDo plone3Proc.sh -v -n showRun  -i treeRecurse fullUpdate
+    opDo popd
+
+    opDo vis_initialHomeSliderReBuildUpdate
+
+    opDo vis_initialAlbumsReBuildUpdate
+}
+
+function vis_initialLibrary {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+1) Run ./lcntLists/plone3Proc.sh  -- 2) Run vis_lcntExcludeFromNav -- 3) Run ./library.Common
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze ${here}
+
+    opDo pushd ${here}/lcntLists
+    opDo plone3Proc.sh -v -n showRun  -i initialUpdateAll 
+    opDo popd
+    #opDo bystarLcntProc.sh -h -v -n showRun -p bystarUid=${bystarUid} -i plone3Upload PLPC-100101 PLPC-110001 PLPC-110020
+ 
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i lcntExcludeFromNavExport
+
+    # ./library.common/
+    opDo pushd ${here}/library.common
+    opDo ./plone3Proc.sh -v -n showRun  -i initialUpdateAll 
+    opDo popd
+
+    lpReturn
+}
+
+
+
+function vis_initialHomeSliderBase {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze ${here}
+
+    opDo bystarPlone3GalleriaManage.sh -h -v -n showRun -p bystarUid=${bystarUid} -p album=homeSlider -i galleriaBaseFullPrep
+
+    lpReturn
+}
+
+function vis_initialHomeSliderReBuildUpdate {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze ${here}
+
+    inBaseDirDo ${here}/homeSlider  ./plone3Proc.sh -v -n showRun  -i reBuildFullUpdate
+
+    lpReturn
+}
+
+
+function vis_initialAlbumsBase {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze ${here}
+
+    opDo bystarPlone3GalleriaManage.sh -h -v -n showRun -p bystarUid=${bystarUid} -p album=albums -i albumsFolderBasePrep
+    opDo bystarPlone3GalleriaManage.sh -h -v -n showRun -p bystarUid=${bystarUid} -p album=albums/ephemera -i galleriaBaseFullPrep
+
+    lpReturn
+}
+
+function vis_initialAlbumsReBuildUpdate {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    typeset here=$( pwd )
+
+    bystarAcctPathAnalyze ${here}
+
+    inBaseDirDo ${here}/albums  ./plone3Proc.sh -v -n showRun  -i fullUpdate
+
+    inBaseDirDo ${here}/albums/ephemera  ./plone3Proc.sh -v -n showRun  -i reBuildFullUpdate
+
+    lpReturn
+}
+
+
+function vis_unsymlinkToInitialContentTree {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i unlinkToInitialContentTree
+
+    lpReturn
+}
+
+
+function vis_vcUploadFull {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+prepForVcUpload + cleanForVcUpload + exportVcUpload
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    bystarUidHome=$( FN_absolutePathGet ~${bystarUid} )
+
+    opDo vis_prepForVcUpload
+
+    opDo vis_cleanForVcUpload
+
+    opDo vis_vcUploadExport
+
+    lpReturn
+}
+
+
+function vis_prepForVcUpload {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+Create the initial plone3Proc.sh Make copies of Home.gened. 
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+ 
+    bystarUidHome=$( FN_absolutePathGet ~${bystarUid} )
+ 
+    opDoRet FN_fileSafeCopyOver /libre/ByStar/InitialTemplates/lcaPlone/NewInitialContentTree/Base/Poly/DEFAULT/plone3Proc.sh.start    ${bystarUidHome}/lcaPlone3/ContentTree/plone3Proc.sh
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleSpecific contentTreeAssemble_homeStart
+
+    if [ ! -d ${bystarUidHome}/lcaPlone3/ContentTree/Home.gened ] ; then
+	opDo vis_initialBaseSetup
+    fi
+
+    # Copy From Home.gened to Home
+    # ~ea-59064/lcaPlone3/ContentTree/Home.gened/index_html/
+    opDo pushd ${bystarUidHome}/lcaPlone3/ContentTree/Home.gened/index_html
+    opDo ./plone3Proc.sh -v -n showRun -i objectLocalPrep
+    opDo popd
+
+    opDo cp ${bystarUidHome}/lcaPlone3/ContentTree/Home.gened/index_html/pageTitle ${bystarUidHome}/lcaPlone3/ContentTree/Home/index_html/pageTitle
+    opDo cp ${bystarUidHome}/lcaPlone3/ContentTree/Home.gened/index_html/content.html ${bystarUidHome}/lcaPlone3/ContentTree/Home/index_html/content.html
+
+    lpReturn
+}
+
+
+function vis_cleanForVcExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i unlinkToInitialContentTree
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleDeleteContentTreeBody
+
+    opDo /bin/rm -r ./plone3Proc.sh.gened.[0-9][0-9]*  ./plone3Proc.sh.[0-9][0-9]*  ./Home.[0-9][0-9]* ./lcntLists.[0-9][0-9]* 
+
+    lpReturn
+}
+
+
+function vis_vcUploadExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo echo NOTYET vcUploadExport
+
+    lpReturn
+}
+
+
+
+# }}} EXTRAs
+
+####+BEGIN: bx:dblock:bash:end-of-file :types ""
+# {{{ DBLOCK-end-of-file
+#local variables:
+#major-mode: shellscript-mode
+#fill-column: 90
+# end:
+# }}} DBLOCK-end-of-file
+####+END:

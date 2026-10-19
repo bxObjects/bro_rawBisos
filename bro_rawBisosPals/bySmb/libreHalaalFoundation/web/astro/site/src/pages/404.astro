@@ -1,0 +1,13 @@
+---
+// The site's 404 page (nginx: error_page 404 /404.html), in the tree's layout.
+import TreeLayout from "../layouts/TreeLayout.astro"
+import { contentTree } from "../lib/contentTree.mjs"
+
+const root = contentTree()
+const notFound = {
+  ...root,
+  parent: undefined,
+  page: { title: "Page not found", description: "", css: "", html: '<p>The page does not exist. Go <a href="/">home</a>.</p>' },
+}
+---
+<TreeLayout node={notFound} />

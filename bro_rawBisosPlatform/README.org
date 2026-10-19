@@ -53,13 +53,16 @@ bro_rawBisosPlatform/           # symlinked to /bisos/platform/
 ├── panel/                      # Blee panels for this BRO's contents
 └── sys/                        # "this platform" --- the running state
     ├── bin/                    # platform-level scripts (placeholder)
-    ├── pals/
+    ├── pals/                   # the PALS-BXOs of this platform (bisos.pals palsOfSys.cs)
     │   └── bro_rawBisosPals/
-    │       └── value           # FP pointer to sibling repo dir
+    │       ├── path/value      # FP: its checkout (absent: not activated)
+    │       └── origin/value    # FP: where to clone it from
     └── cbm/                    # Capability Bundle Materialization tree
         ├── platform/           # realm: platform-owned capabilities
         ├── site/               # realm: site-owned capabilities
-        ├── pals/               # realm: PAL-owned capabilities
+        ├── pals/               # realm: PAL-owned capabilities, planted by palsOfSys.cs
+        │   ├── ftoBranchProc.spcs
+        │   └── bro_rawBisosPals/libreHalaal/   # <palsBxo>/<cbm>/: cbmProc.{spcs,control,status}
         ├── user/               # realm: user-owned capabilities
         └── collective/         # realm: shared across realms
             ├── hereWeb/        # capability type: HTTP via .here
@@ -115,17 +118,21 @@ sys/cbm/<realm>/<capabilityType>/<capabilityName>/
 Five sibling realms exist. Each is a *domain of customization* ---
 who or what owns this capability's lifecycle.
 
-| Realm         | Owned / customized by      | Typical capabilities              |
-|---------------+----------------------------+-----------------------------------|
-| =platform/=   | the platform itself        | container platform, VM host       |
-| =site/=       | a ByStar-Rims-Site         | gitlab BPO server, registrars     |
+| Realm         | Owned / customized by      | Typical capabilities               |
+|---------------+----------------------------+------------------------------------|
+| =platform/=   | the platform itself        | container platform, VM host        |
+| =site/=       | a ByStar-Rims-Site         | gitlab BPO server, registrars      |
 | =pals/=       | a PAL                      | private email, content publication |
-| =user/=       | a =/bxo/= account          | per-user services                 |
-| =collective/= | shared across other realms | airflow, nextcloud, lcnt, ...     |
+| =user/=       | a =/bxo/= account          | per-user services                  |
+| =collective/= | shared across other realms | airflow, nextcloud, lcnt, ...      |
 
-All five realms share the same two-level organisation (the same
-=capabilityType/capabilityName/= structure), though at present only
-=collective/= has planted content in this BRO.
+The realms share the same two-level organisation (the same
+=capabilityType/capabilityName/= structure), except =pals/=, which is
+=<palsBxo>/<cbmName>/=: its leaves are planted from each PALS-BXO's own declarations
+(=<palsBxo>/sys/cbm/<cbmName>/=) by bisos.pals's =palsOfSys.cs -i palsLeavesPlant=, and hold
+this host's gate and status. =collective/= and =pals/= have planted content in this BRO;
+=fullyMaterialize= walks =collective/hereWeb= and then =pals/=. The model: bisos.pals
+README.org, "PALS on a Platform".
 
 ** Capability types (second level)
 

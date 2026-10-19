@@ -1,0 +1,5 @@
+#+title: content/bin/ --- Content Scripts
+
+Executables here write the site's generated content into =../data/<x>.json=; the build runs each
+one (=astroProc.spcs -i contentBuild=). Read-only scripts; one line of output each. Example:
+platform.here's =platformCapabilities.py= and =platformLayers.py=.

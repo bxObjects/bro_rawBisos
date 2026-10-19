@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+
+<!-- ####+BEGIN: bx:dblock:global:file-insert-process-cond :cond "./incMobReDir.el" :file "/libre/ByStar/InitialTemplates/web/mobRedir/bxDblock/mobileDetectReDirect.js" :load "./dblockProcess.el" :exec "bx:dblock:process"  -->
+	<script>
+
+var mfp_url='www.freeprotocols.org/mob';
+var mfp_host_name=document.location.hostname;
+var mfp_request_uri=document.location.pathname;
+var mfp_no_mobile=location.search;
+var mfp_cookie=document.cookie;
+
+function mf_detect(){
+    var mfp_ua=navigator.userAgent.toLowerCase();
+    var mfp_devices=['vnd.wap.xhtml+xml','sony','symbian','nokia','samsung','mobile','windows ce','epoc','opera mini','nitro','j2me','midp-','cldc-','netfront','mot','up.browser','up.link','audiovox','blackberry','ericsson','panasonic','philips','sanyo','sharp','sie-','portalmmm','blazer','avantgo','danger','palm','series60','palmsource','pocketpc','smartphone','rover','ipaq','au-mic','alcatel','ericy','vodafone','wap1','wap2','teleca','playstation','lge','lg-','iphone','android','htc','dream','webos','bolt','nintendo'];
+    for(var i in mfp_devices){
+	if(mfp_ua.indexOf(mfp_devices[i])!=-1){return true}
+    }
+}
+
+if(mfp_no_mobile!='?nomobile=1'&&mfp_cookie.indexOf('mfp_no_mobile')==-1) {
+    mfp_is_mobile=mf_detect();
+    if(mfp_is_mobile){
+        /* window.location = "http://www.example.com"; */  /* better xross browser than document.location  */  
+	/* window.location=mfp_url+"?h="+mfp_host_name+"&r="+mfp_request_uri */
+	window.location=mfp_url+mfp_request_uri
+    }
+} else {
+    if(mfp_cookie.indexOf('mfp_no_mobile')!=-1){}
+    else{
+	mfp_cookie_expires=new Date();
+	mfp_cookie_expires.setTime(mfp_cookie_expires.getTime()+1000*60*60*24);
+	document.cookie="mfp_no_mobile=1; expires="+mfp_cookie_expires.toGMTString()+";path=/;"
+    }
+}
+	</script>
+	<noscript>
+	<meta http-equiv="refresh" content="0; URL=www.freeprotocols.org/mob">
+	</noscript>
+
+<!-- ####+END: -->
+
+<!-- ####+BEGIN: bx:dblock:global:file-insert-replace-cond :cond "./incMobReDir.el" :file "/libre/ByStar/InitialTemplates/web/galleria/bxDblock/galleriaSizeSpec-height.html" :fileVar1 "./galleriaHeight"  -->
+        <style>
+
+            /* This rule is read by Galleria to define the gallery height: */
+            #galleria{height:300px}
+
+        </style>
+
+<!-- ####+END: -->
+
+<!-- ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./incMobReDir.el" :file "/libre/ByStar/InitialTemplates/web/galleria/themes/tweleve.bx/galleria.twelve.css.styled" -->
+
+	<!-- THIS DOES NOT WORK IN PLONE: link rel="stylesheet" href="./galleria.twelve.css" -->
+
+        <style>
+
+/*
+ * Galleria Twelve Theme
+ * Copyright (c) 2011, Aino
+ * Licensed under the MIT license.
+ * Modified for ByStar and Plone3 -- MB 2013-02-01
+ */
+
+#galleria-loader{height:1px!important}
+
+#sviews-jqfx-galleria-images-1 {
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background: none repeat scroll 0 0 #FFFFFF;
+    height: 400px;
+    margin: 0 auto;
+    padding: 12px;
+    width: 666px;
+} 
+ 
+.galleria-container {
+    color: #FFFFFF;
+    font: 11px/1.4 arial,sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+.galleria-container img {
+    -moz-user-select: none;
+}
+.galleria-stage {
+    background: none repeat scroll 0 0 #000000;
+    bottom: 30px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.galleria-container.fullscreen .galleria-stage {
+    bottom: 0;
+}
+.galleria-bar {
+    background: url("/galleria/themes/twelve/bar.png") repeat-x scroll 0 0 transparent;
+    bottom: 0;
+    height: 31px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+}
+.galleria-s1, .galleria-s2, .galleria-s3, .galleria-s4 {
+    background: url("/galleria/themes/twelve/separator.png") repeat scroll 0 0 transparent;
+    bottom: 1px;
+    height: 29px;
+    left: 28px;
+    position: absolute;
+    width: 2px;
+}
+.galleria-s2 {
+    left: 58px;
+}
+.galleria-s3 {
+    left: auto;
+    right: 29px;
+}
+.galleria-s4 {
+    left: auto;
+    right: 58px;
+}
+.galleria-progress {
+    background: none repeat scroll 0 0 #AAAAAA;
+    height: 2px;
+    left: 0;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 3;
+}
+.galleria-thumblink, .galleria-fullscreen, .galleria-play, .galleria-popout {
+    background: url("/galleria/themes/twelve/thumbs.png") no-repeat scroll 50% 50% transparent;
+    bottom: 1px;
+    cursor: pointer;
+    height: 29px;
+    left: 0;
+    position: absolute;
+    width: 29px;
+}
+.galleria-fullscreen, .galleria-popout {
+    background-image: url("/galleria/themes/twelve/fullscreen.png");
+    background-position: 8px 7px;
+    left: auto;
+    right: 0;
+}
+.galleria-popout {
+    background-image: url("/galleria/themes/twelve/popout.png");
+    background-position: 50% 50%;
+    right: 30px;
+}
+.galleria-play {
+    background-image: url("/galleria/themes/twelve/playpause.png");
+    background-position: 10px 9px;
+    left: 30px;
+}
+.galleria-play.playing {
+    background-position: 10px -91px;
+}
+.galleria-fullscreen.open {
+    background-position: 8px -93px;
+}
+.galleria-thumblink:hover, .galleria-thumblink.open, .galleria-fullscreen:hover, .galleria-play:hover, .galleria-popout:hover {
+    background-color: #000000;
+}
+.galleria-thumbnails-container {
+    background: url("/galleria/themes/twelve/bg.png") repeat scroll 0 0 transparent;
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 2;
+}
+.galleria-thumbnails-list {
+    bottom: 41px;
+    left: 10px;
+    overflow: auto;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.galleria-thumbnails .galleria-image {
+    border: 3px solid #FFFFFF;
+    cursor: pointer;
+    float: left;
+    height: 45px;
+    margin: 0 7px 7px 0;
+    width: 80px;
+}
+.galleria-thumbnails .galleria-image:hover {
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    opacity: 0.9;
+}
+.galleria-info {
+    bottom: 1px;
+    color: #BBBBBB;
+    height: 29px;
+    left: 70px;
+    line-height: 29px;
+    overflow: hidden;
+    position: absolute;
+    right: 70px;
+}
+.galleria-info > *, .galleria-info-text > * {
+    display: inline;
+}
+.galleria-info-title {
+    color: #FFFFFF;
+    font-weight: 700;
+    padding: 0 10px;
+}
+.galleria-info-text {
+    padding-left: 10px;
+}
+.galleria-counter {
+    background: url("/galleria/themes/twelve/separator.png") no-repeat scroll 100% 0 transparent;
+    display: inline-block;
+    padding-right: 10px;
+}
+.galleria-loader {
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+    border-radius: 6px 6px 6px 6px;
+    background: url("/galleria/themes/twelve/loader.gif") no-repeat scroll 50% 50% #000000;
+    display: none;
+    height: 48px;
+    left: 50%;
+    margin: -24px 0 0 -24px;
+    opacity: 0.8;
+    position: absolute;
+    top: 50%;
+    width: 48px;
+    z-index: 2;
+}
+.galleria-image-nav {
+    height: 36px;
+    left: 0;
+    margin-top: -18px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+.galleria-image-nav-left, .galleria-image-nav-right {
+    background: url("/galleria/themes/twelve/nav.png") repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 36px;
+    left: 20px;
+    position: absolute;
+    width: 36px;
+    z-index: 2;
+}
+.galleria-image-nav-right {
+    background-position: -36px 0;
+    left: auto;
+    right: 20px;
+    z-index: 2;
+}
+.galleria-image-nav-left:hover {
+    background-position: 0 -36px;
+}
+.galleria-image-nav-right:hover {
+    background-position: -36px -36px;
+}
+.galleria-thumb-nav-left, .galleria-thumb-nav-right {
+    background-position: -495px 5px;
+    cursor: pointer;
+    display: none;
+    height: 40px;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    top: 0;
+    width: 23px;
+    z-index: 3;
+}
+.galleria-thumb-nav-right {
+    background-position: -578px 5px;
+    border-right: medium none;
+    left: auto;
+    right: 0;
+}
+.galleria-thumbnails-container .disabled, .galleria-thumbnails-container .disabled:hover {
+    cursor: default;
+    opacity: 0.2;
+}
+.galleria-thumb-nav-left:hover, .galleria-thumb-nav-right:hover {
+    background-color: #111111;
+    opacity: 1;
+}
+.galleria-carousel .galleria-thumb-nav-left, .galleria-carousel .galleria-thumb-nav-right {
+    display: block;
+}
+.galleria-lightbox-content {
+    background: url("/galleria/themes/twelve/loader_pos.gif") no-repeat scroll 50% 50% transparent;
+}
+
+        </style>
+
+<!-- ####+END: -->
+
+<!-- ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./incMobReDir.el" :file "/libre/ByStar/InitialTemplates/web/galleria/bxDblock/galleriaLoadJs.html" -->
+        <!-- load jQuery -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+
+        <!-- load Galleria -->
+        <script src="/galleria/galleria-1.2.9.min.js"></script>
+
+	<script src="/galleria/themes/twelve/galleria.twelve.js"></script>
+
+<!-- ####+END: -->
+
+
+
+</HEAD>
+<BODY >
+<!--HEVEA command line is: /usr/bin/hevea -o heveaHtml-webpage/webpage.html -I /lcnt/bxdpt/hevea/macros bx-fixups.hva bx-enfa.hva bx-faen.hva framed.hva webpage.ttytex -->
+<!--HTMLHEAD-->
+
+
+<!--ENDHTML-->
+<!--CUT DEF section 1 --><P>
+    <div class="content">
+
+        <div id="galleria"></div> 
+	<script>
+	  var data = [
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/fpfProjs.html',
+          title: 'fpfProjs',
+          description: 'fpfProjs description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/constituent.html',
+          title: 'By* Digital Ecosystem',
+          description: 'constituent description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/joiningByStar.html',
+          title: 'joiningByStar',
+          description: 'joiningByStar description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/bxDeOverview.html',
+          title: 'bxDeOverview',
+          description: 'bxDeOverview description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+            ,
+	  {
+          iframe: 'http://web.freeprotocols.org/plone/homeSlider/bxDomainsTable.html',
+          title: 'bxDomainsTable',
+          description: 'bxDomainsTable description See: <a href="http://www.neda.com">neda.com</a>',
+          // link: 'http://my.destination.com',
+          // layer: '<div> <h2>This image is gr8</h2><p>And this text will be on top of the image</p></div>'
+	  }
+	  ];
+       	</script>
+    </div>
+</P><P>
+   <script>
+
+
+    // Load the twelve theme
+    //Galleria.loadTheme('galleria.twelve.js');
+
+    /*
+      Galleria.configure({
+      thumbnails: 'lazy'
+      });
+    */
+    
+
+    // Initialize Galleria
+    Galleria.run('#galleria', {
+	debug: true,
+	data_source: data,
+	autoplay: 7000, // will move forward every 7 seconds
+	thumbnails: true,  // thumbnails: 'lazy',
+	pauseOnInteraction: true,
+	carousel: true, // Not a Slider model
+	transition: 'flash' // fade | flash | pulse | slide
+    });
+
+    // Galleria.lazyLoad();
+
+    </script>
+</P><!--TOC section Purpose and Goals-->
+<H2 CLASS="section"><!--SEC ANCHOR -->Purpose and Goals</H2><!--SEC END --><P>The Free Protocols Foundation (FPF) is a global independent public forum,
+dedicated to the support of the internet engineering profession towards 
+our profession’s responsibility to society and humanity.</P><P>Proper functioning of the internet engineering profession requires certain freedoms and
+demands certain societal agreements that are needed to bring about collaborative and
+cumulative environments for development of poly-existentials in general and software and
+Internet services in particular.</P><P>Our goals are three fold:</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Within the existing corrupt Western legal framework of Copyright and Patents,
+facilitate development of 
+<A HREF="http://www.freeprotocols.org/">Free Protocols</A>
+,
+<A HREF="http://www.fsf.org/">Halaal/Libre Software</A>
+and 
+<A HREF="http://www.libreservices.org/">Halaal/Libre Services</A>
+.
+</LI><LI CLASS="li-enumerate">Work towards Abolishment of the Western so-called Intellectual Property Rights (IPR)
+Regime. We believe that the Western IPR Regime of Patents and Copyright are an obstacle
+to progress of the engineering profession and are detrimental to society. In:
+<DIV CLASS="center">
+<A HREF="http://www.persoarabic.org/PLPC/120033">The Nature of Poly-Existentials:</A><BR>
+Basis for Abolishment of The Western So-Called Intellectual Property Rights Regime<BR>
+</DIV>
+we describe our logic and strategy.
+</LI><LI CLASS="li-enumerate">Promote development and usage of halaal «حلال» manner-of-existence
+of software and halaal manner-of-existence of internet application services. Discourage
+development and usage of Haraam Software and Haraam Internet Application Services. We
+do this based on an ethical belief system that recognizes responsibility of the
+engineering profession to society, which in turn demands the Halaal manner-of-existence
+of Software. See
+<DIV CLASS="center">
+<A HREF="http://www.persoarabic.org/PLPC/120041">Defining Halaal Manner-Of-Existence Of Software</A><BR>
+And Defining Halaal Internet Application Services<BR>
+</DIV>
+for more details. Based on this definition, software and Internet
+services such as Microsoft Windows, Apple, Google, Facebook, etc, are
+haraam because their manner-of-existence is proprietary, restricted
+and internally opaque. 
+Our use of the sensitive words “halaal” and
+“haraam” are described in:
+<DIV CLASS="center">
+<A HREF="http://www.persoarabic.org/PLPC/120041">Introducing Halaal and Haraam into Globish</A><BR>
+Based on Moral Philosophy of Abstract Halaal<BR>
+</DIV>
+</LI></OL><P>Ultimately, we want to arrive at societal policies that are based on the halaal
+manner-of-existence of software.</P><P>Towards the above goals, FPF supports a number of projects. FPF projects model permits
+smaller teams to take on specific aspects of our overall activities and move those forward
+effectively. FPF projects include:</P><!--TOC section Contents-->
+<H2 CLASS="section"><!--SEC ANCHOR -->Contents</H2><!--SEC END --><UL CLASS="TofC"><LI>
+<A HREF="#htoc1">1  Halaal Internet Application Services</A>
+<UL CLASS="TofC"><LI>
+<A HREF="#htoc2">1.1  Libre Services (LibreServices.org)</A>
+</LI><LI><A HREF="#htoc3">1.2  Autonomous Libre Services</A>
+</LI><LI><A HREF="#htoc4">1.3  Federated Libre Services</A>
+</LI></UL>
+</LI><LI><A HREF="#htoc5">2  Blee (ByStar Libre Emacs Environment)</A>
+</LI><LI><A HREF="#htoc6">3  Halaal/Libre ByStar Digital Ecosystem</A>
+</LI><LI><A HREF="#htoc7">4  PersoArabic.org</A>
+</LI><LI><A HREF="#htoc8">5  The Wap Trap</A>
+</LI><LI><A HREF="#htoc9">6  Libre Texting</A>
+</LI><LI><A HREF="#htoc10">7  Patent Battles – Defense Against Patent Assertions</A>
+</LI><LI><A HREF="#htoc11">8  FPF Patent Free Protocols Procedures</A>
+</LI><LI><A HREF="#htoc12">9  Towards Abolishment Of Western IPR Regime</A>
+</LI></UL><!--TOC section Halaal Internet Application Services-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc1">1</A>  Halaal Internet Application Services</H2><!--SEC END --><P>Towards the goal of promoting development and use of Halaal Software and Halaal Internet
+Application Services within the existing Western legal framework of Copyright and Patents,
+we have formed the general frame works of “Libre Services”, “Autonomous Libre Services” and 
+“Federations Of Autonomous Services.”</P><P>Top level web page for this project is: <A HREF="http://www.freeprotocols.org/projects/libreServices">http://www.freeprotocols.org/projects/libreServices</A>.</P><!--TOC subsection Libre Services (LibreServices.org)-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc2">1.1</A>  Libre Services (LibreServices.org)</H3><!--SEC END --><P>Libre Services are free software ideology for Internet services.</P><P>The main web site for this project is:
+<A HREF="http://www.libreservices.org">libreservices.org</A></P><P>Key relevant documents for this project are:</P><BLOCKQUOTE CLASS="quote">
+<B>Libre Services</B><BR>
+ <B>A non-proprietary model for delivery of Internet services</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/100101">http://www.freeprotocols.org/PLPC/100101</A>
+</BLOCKQUOTE><!--TOC subsection Autonomous Libre Services-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc3">1.2</A>  Autonomous Libre Services</H3><!--SEC END --><P>An Autonomous Libre Services is a Libre Service where the primary user of the service is
+the “owner” of the service. 
+The concept of Autonomous Libre Services focuses on preserving
+privacy by providing control over information to users with safe guards of
+functional transparency, information portability and non-retention controls.
+Formal definitions are provided in:
+</P><BLOCKQUOTE CLASS="quote">
+<B>Defining Halaal Manner-Of-Existence Of Software</B><BR>
+ <B>And Defining Halaal Internet Application Services</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/120041">http://www.freeprotocols.org/PLPC/120041</A>
+</BLOCKQUOTE><!--TOC subsection Federated Libre Services-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc4">1.3</A>  Federated Libre Services</H3><!--SEC END --><P>The concept of Federation of Libre Services is layered above Autonomous Libre Services and
+focuses on interactions amongst Autonomous Libre Services and faciltation of information
+aggregation amongst Libre Services.</P><P>Key relevant documents for this project is:
+</P><BLOCKQUOTE CLASS="quote">
+<B>ByStar Federation of Autonomous Libre Services</B><BR>
+ <B>Overview of Concepts and Models</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/180015">http://www.freeprotocols.org/PLPC/180015</A>
+</BLOCKQUOTE><!--TOC section Blee (ByStar Libre Emacs Environment)-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc5">2</A>  Blee (ByStar Libre Emacs Environment)</H2><!--SEC END --><P>Key relevant documents for this project is:</P><BLOCKQUOTE CLASS="quote">
+<B>Blee – ByStar Libre Emacs Environment:</B><BR>
+ <B>A User Environment For The Halaal/Libre ByStar Digital Ecosystem</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/180004">http://www.freeprotocols.org/PLPC/180004</A>
+</BLOCKQUOTE><!--TOC section Halaal/Libre ByStar Digital Ecosystem-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc6">3</A>  Halaal/Libre ByStar Digital Ecosystem</H2><!--SEC END --><P>Key relevant documents for this project is:</P><BLOCKQUOTE CLASS="quote">
+<B>The Halaal/Libre ByStar Digital Ecosystem</B><BR>
+ <B>A Moral Alterantive To The Proprietary Digital Ecosystem</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/180016">http://www.freeprotocols.org/PLPC/180016</A>
+</BLOCKQUOTE><!--TOC section PersoArabic.org-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc7">4</A>  PersoArabic.org</H2><!--SEC END --><P>PersoArabic.org focuses on Halaal/Libre ByStar Digital Ecosystem in the context of
+writing, web publishing, communicating and processing in Persian and in Arabic.</P><P>The main web site for this project is:
+<A HREF="http://www.persoarabic.org">persoarabic.org</A></P><P>Top level web page for this project is: <A HREF="http://www.freeprotocols.org/projects/persoArabic">http://www.freeprotocols.org/projects/persoArabic</A>.</P><!--TOC section The Wap Trap-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc8">5</A>  The Wap Trap</H2><!--SEC END --><P>In 2000, we provided a detailed criticism of a set of specifications called the “Wireless
+Application Protocol”, or WAP. We warned that WAP is booby-trapped with patents and that
+WAP is entirely unfit to play the role of a Mobile Messaging industry standard. </P><P>Top level web page for this project is: <A HREF="http://www.freeprotocols.org/projects/wapTrap">http://www.freeprotocols.org/projects/wapTrap</A>.</P><P>Key relevant documents for this project are:</P><BLOCKQUOTE CLASS="quote">
+<B>The WAP Trap</B><BR>
+ <B>An Expose of the Wireless Application Protocol</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/100014">http://www.freeprotocols.org/PLPC/100014</A>
+</BLOCKQUOTE><P><BR>
+</P><BLOCKQUOTE CLASS="quote">
+<B>Le WAP a la trappe</B><BR>
+ <B>Un expose sur le Wireless Application Protocol</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/100015">http://www.freeprotocols.org/PLPC/100015</A>
+</BLOCKQUOTE><P><BR>
+</P><BLOCKQUOTE CLASS="quote">
+<B>WAP - The Patent Problem</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/100025">http://www.freeprotocols.org/PLPC/100025</A>
+</BLOCKQUOTE><!--TOC section Libre Texting-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc9">6</A>  Libre Texting</H2><!--SEC END --><P>Top level web page for this project is: <A HREF="http://www.freeprotocols.org/projects/libreTexting">http://www.freeprotocols.org/projects/libreTexting</A>.</P><P>Key relevant documents for this project is:</P><BLOCKQUOTE CLASS="quote">
+<B>Libre Texting</B><BR>
+ <B>A Collaborative Initiative And a Reference Implementation</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/110015">http://www.freeprotocols.org/PLPC/110015</A>
+</BLOCKQUOTE><!--TOC section Patent Battles – Defense Against Patent Assertions-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc10">7</A>  Patent Battles – Defense Against Patent Assertions</H2><!--SEC END --><P>Top level web page for this project is: <A HREF="http://www.freeprotocols.org/projects/patentBattles">http://www.freeprotocols.org/projects/patentBattles</A>.</P><P><BR>
+</P><!--TOC section FPF Patent Free Protocols Procedures-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc11">8</A>  FPF Patent Free Protocols Procedures</H2><!--SEC END --><P>This project focuses on establishment of the Free Protocols Foundations
+processses to ensure the development and maintenance of patent-free protocols.</P><P>Key relevant documents for this project are:</P><BLOCKQUOTE CLASS="quote">
+<B>The Free Protocols Foundation Policies and Procedures</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/100201">http://www.freeprotocols.org/PLPC/100201</A>
+</BLOCKQUOTE><P>
+<BR>
+</P><BLOCKQUOTE CLASS="quote">
+<B>Author’s Patent Free Statement for RFC-2188</B><BR>
+ <A HREF="http://www.freeprotocols.org/Records/200002071">http://www.freeprotocols.org/Records/200002071</A>
+</BLOCKQUOTE><P>
+<BR>
+</P><BLOCKQUOTE CLASS="quote">
+<B>Author’s Patent Free Statement for RFC-2524</B><BR>
+ <A HREF="http://www.freeprotocols.org/Records/200002072">http://www.freeprotocols.org/Records/200002072</A>
+</BLOCKQUOTE><!--TOC section Towards Abolishment Of Western IPR Regime-->
+<H2 CLASS="section"><!--SEC ANCHOR --><A NAME="htoc12">9</A>  Towards Abolishment Of Western IPR Regime</H2><!--SEC END --><P>Key relevant documents for this project is:</P><BLOCKQUOTE CLASS="quote">
+<B>The Nature of Poly-Existentials:</B><BR>
+ <B>Basis for Abolishment of The Western So-Called Intellectual Property Rights Regime</B><BR>
+ <A HREF="http://www.freeprotocols.org/PLPC/120033">http://www.freeprotocols.org/PLPC/120033</A>
+</BLOCKQUOTE><!--CUT END -->
+<!--HTMLFOOT-->
+
+<BR>
+<BR>
+<!--ENDHTML-->
+<!--FOOTER--></BODY>
+</HTML>

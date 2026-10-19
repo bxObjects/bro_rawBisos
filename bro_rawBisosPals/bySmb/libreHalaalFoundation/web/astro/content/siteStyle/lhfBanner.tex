@@ -1,0 +1,30 @@
+% The site's banner: content/tree/contentImages/files/lhfBanner.jpg (shown by content/siteStyle/logo.html).
+% Named lhfBanner (not bannerLogo, the old FPF banner's name) so browsers do not keep showing the cached FPF one.
+% In the style of the Free Protocols Foundation banner it replaces: a slanted, bold comic face; each word's
+% initial large and black, the rest of the word blue (#0000FF) at about half its size, on one baseline.
+% Comic Sans MS is not free; Comic Neue (Debian fonts-comic-neue) is the nearest free face.
+%
+% Rebuild (xelatex: texlive-xetex), then rasterize at the old banner's size (692x85):
+%   xelatex lhfBanner.tex
+%   magick -density 600 lhfBanner.pdf -background white -alpha remove -resize 692x85 \
+%          -gravity center -extent 692x85 -quality 95 ../tree/contentImages/files/lhfBanner.jpg
+\documentclass[border=4pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xcolor}
+
+% FakeBold: Comic Neue Bold is lighter than the old banner's Comic Sans MS Bold.
+\setmainfont{Comic Neue}[BoldFont=* Bold, BoldItalicFont=* Bold Italic, BoldItalicFeatures={FakeBold=2.2}]
+
+\definecolor{bannerBlue}{HTML}{0000FF}
+
+% \bannerWord{Initial}{rest}: the initial at 60pt in black, the rest at 31pt in blue (the old 78:40 ratio).
+\newcommand{\bannerWord}[2]{%
+  {\fontsize{60}{60}\selectfont\color{black}#1}%
+  {\fontsize{31}{31}\selectfont\color{bannerBlue}#2}}
+
+\begin{document}
+\bfseries\itshape
+\bannerWord{L}{ibre}\hspace{0.3em}{\fontsize{31}{31}\selectfont\color{bannerBlue}-}\hspace{0.3em}%
+\bannerWord{H}{alaal}\hspace{0.9em}%
+\bannerWord{F}{oundation}
+\end{document}

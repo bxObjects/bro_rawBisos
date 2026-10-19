@@ -54,6 +54,23 @@ side.
 Other subdirectories (=bro_rawBisosPals=, =bro_rawBisosSite=,
 =bro_rawBisosUser=, =bro_rawBisosDefaultUser=) untouched this session.
 
+2026-10-18/19 (the pals realm and the first PALS site; uncommitted). Planned and recorded in
+=bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro/= (its own initiateSub: AI-WorkPlan.org 2.1--2.6,
+AI-DevStatus.org); the tools are in bisos.pals (=palsOfSys.cs=, =palsHereInfo.cs=). Here:
+- =bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro/= --- the Libre-Halaal Foundation's Astro site,
+  =http://libre-halaal.org.here= (untracked as a whole). Its =cbm/= holds symlinks to bisos.pals's
+  generic files.
+- =bro_rawBisosPals/sys/cbm/libreHalaal/= --- this PALS-BXO's declaration of that CBM
+  (=capabilityType/value=, =cbsSpec/value= relative to =bro_rawBisosPals=); =sys/cbm/readme.org= says
+  what the directory is. =bro_rawBisosPals/sys/bin= and =sys/pbsi= (earlier ideas) are left for a
+  decision.
+- =bro_rawBisosPlatform/sys/pals/bro_rawBisosPals/= --- the platform's entry moved from a bare =value= to
+  =path/value= and =origin/value= (origin = this repo's remote: =bro_rawBisosPals= is not its own repo).
+- =bro_rawBisosPlatform/sys/cbm/pals/= --- the pals realm: =ftoBranchProc.spcs= and the leaf
+  =bro_rawBisosPals/libreHalaal/= (gate =available=), both planted by =palsOfSys.cs -i palsLeavesPlant=.
+  =fullyMaterialize= (bisos.capability) walks it after =collective/hereWeb=. Its =cbmProc.status= holds
+  two false "ok" lines (2026-10-19 01:26, 01:27): runs that failed before a bisos.capability fix.
+
 * Architecture
 
 ** Repo layout

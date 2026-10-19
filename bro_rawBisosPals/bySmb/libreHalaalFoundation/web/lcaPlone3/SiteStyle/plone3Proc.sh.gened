@@ -1,0 +1,364 @@
+#!/bin/bash
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+minimal"
+# {{{ DBLOCK-top-of-file
+typeset RcsId="$Id: plone3Proc.sh.gened,v 1.1.1.1 2013/04/08 16:43:38 lsipusr Exp $"
+#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org
+# }}} DBLOCK-top-of-file
+####+END:
+
+####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedPlone3NewStyles.sh"
+# {{{ DBLOCK-seed-spec
+if [ "${loadFiles}X" == "X" ] ; then
+    /opt/public/osmt/bin/seedPlone3NewStyles.sh -l $0 "$@" 
+    exit $?
+fi
+# }}} DBLOCK-seed-spec
+####+END:
+
+leavesExcludes=""
+
+leavesOrdered=""
+
+nodesExcludes=""
+
+nodesOrdered=""
+
+####+BEGIN: bx:dblock:ploneProc:bash:leavesList :types ""
+# {{{ DBLOCK-leavesList
+leavesList="
+"
+# }}} DBLOCK-leavesList
+####+END:
+
+####+BEGIN: bx:dblock:ploneProc:bash:nodesList :types ""
+# {{{ DBLOCK-nodesList
+nodesList="
+"
+# }}} DBLOCK-nodesList
+####+END:
+
+# {{{ EXTRAs
+
+function examplesHookPost {
+    bystarAcctPathAnalyze $( pwd )    # Setsup bystarUid, bystarUidHome ...
+cat  << _EOF_
+--- EXTRAs ---
+${G_myName} ${extraInfo} -i initialFullUpdate    # initialBaseSetup + initialUpdateAll
+${G_myName} ${extraInfo} -i initialBaseSetup
+${G_myName} ${extraInfo} -i initialUpdateAll
+--- Initial Build Cleanups
+${G_myName} ${extraInfo} -i unsymlinkToInitialContentTree
+--- Clean and Prep For Initial VC Upload (export, update) ---
+${G_myName} ${extraInfo} -i vcUploadFull        # prepForVcUpload + cleanForVcUpload + exportVcUpload
+${G_myName} ${extraInfo} -i prepForVcUpload     # Create ./ploneProc.sh ./Home/ ...
+${G_myName} ${extraInfo} -i cleanForVcExport    # Delete symlinks and remove .gened
+${G_myName} ${extraInfo} -i vcUploadExport      #
+--- On Going Version Control ---
+${G_myName} ${extraInfo} -i vcUpdate
+---- Example Over Write Of .common  ----
+cp -r -H footer.common footer
+deCvs footer
+---- Initial Templates Development ----
+diff ./plone3Proc.sh.gened /libre/ByStar/InitialTemplates/lcaPlone/InitialSiteStyle/Base/Poly/DEFAULT/plone3Proc.sh.gened
+cp ./plone3Proc.sh.gened /libre/ByStar/InitialTemplates/lcaPlone/InitialSiteStyle/Base/Poly/DEFAULT/plone3Proc.sh.gened
+cp  /libre/ByStar/InitialTemplates/lcaPlone/InitialSiteStyle/Base/Poly/DEFAULT/plone3Proc.sh.gened ./plone3Proc.sh.gened
+_EOF_
+ return
+}
+
+function vis_initialFullUpdate {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo vis_initialBaseSetup
+
+    opDo vis_initialUpdateAll
+}
+
+
+function vis_initialBaseSetup {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+    
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i linkToInitialSiteStyle
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleSiteStyleBody 
+}
+
+
+function vis_initialUpdateAll {
+    G_funcEntry
+    function describeF {  cat  << _EOF_
+Update means, do to remote the latest local.
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    opDo pushd ./personal_bar.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./footer.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./colophon.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Removes the top actions links from the banner area
+    opDo pushd ./site_actions.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Remove the SearchBox from the banner area
+    opDo pushd ./searchbox.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Remove the comments box
+    opDo pushd ./comments.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+
+    # CSS Selections
+    opDo pushd ./css.common/ByStarSideNavCol3
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # TabsTopDisable
+    opDo pushd ./tabsTopDisable.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./tabsTopSiteSearch.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./tabsTopSiteMap.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./tabsTopByStarSearch.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Accessibility NOTYET Spelling Error
+    opDo pushd ./tabsTopAccessability.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./tabsTopHelp.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./tabsTopContact.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # opDo pushd ./tabsTopLogin.common
+    # opDo ./plone3Proc.sh -i objectUpdate
+    # opDo popd
+
+    opDo pushd ./navigationLeftPortlet.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./portletsLeftLoginDelete.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    opDo pushd ./portletsRightCalendarDelete.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # General Retracts -- /Members /news /events
+    opDo pushd ./adjustments.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+
+    # Setup Mailhost
+    opDo pushd ./mailhost.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Setup favicon -- Favorites icon
+    opDo pushd ./favicon.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Relax Security Filters 
+    opDo pushd ./controlPanel_filter.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    # Relax Security Filters -- Disable All Transforms
+    opDo pushd ./disableTransform.common
+    opDo ./plone3Proc.sh -i objectUpdate
+    opDo popd
+
+    ###########  Custom Initial Generations ##########
+
+    # Setup Banner/Logo
+    opDo pushd ./logoText.gened
+    opDo ./plone3Proc.sh -i initialUpdateAll
+    opDo popd
+
+
+    ########### NOTYET -- NOT YET IMPLEMENTED FEATURES ##########
+
+    #   ##### IMPORTANT #####
+    # It is 
+    # bystarPlone3Styles.sh -p uid=any -h -v -n showRun -p ploneStyle=ByStarSideNavCol3 -p bystarUid=ea-59062 -i fullUpdate
+    # Which Works and Needs To Be Absorbed.
+    #
+    # function vis_surroundingsUpdate {
+    #     opDo bystarPlone3Portlets.sh -p bystarUid=${bystarUid} -i ploneManagePortletsRightCalendarDelete
+    #     opDo bystarPlone3Portlets.sh -p bystarUid=${bystarUid} -i ploneManagePortletsLeftLoginDelete
+    #
+
+ 
+    # # Global Section
+    # opDo pushd ./global_sections.common/
+    # opDo echo NOTYET, Global Sections Seems Not Needed.
+    # opDo popd
+
+    # NOTYET: Get Rid Of These if they are not needed.
+    #
+    # global_sections.common:
+    # images.common:
+    # links.common:
+    # logo.common:
+    # tabs.common:
+
+}
+
+
+
+function vis_unsymlinkToInitialContentTree {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i unlinkToInitialContentTree
+
+    lpReturn
+}
+
+
+function vis_vcUploadFull {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+prepForVcUpload + cleanForVcUpload + exportVcUpload
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    bystarUidHome=$( FN_absolutePathGet ~${bystarUid} )
+
+    opDo vis_prepForVcUpload
+
+    opDo vis_cleanForVcUpload
+
+    opDo vis_vcUploadExport
+
+    lpReturn
+}
+
+
+function vis_prepForVcUpload {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+Create the initial plone3Proc.sh Make copies of Home.gened. 
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+ 
+    bystarUidHome=$( FN_absolutePathGet ~${bystarUid} )
+ 
+    # ~ea-59064/lcaPlone3/SiteStyle/plone3Proc.sh
+    opDoRet FN_fileSafeCopyOver /libre/ByStar/InitialTemplates/lcaPlone/InitialSiteStyle/Base/Poly/DEFAULT/plone3Proc.sh.start  ${bystarUidHome}/lcaPlone3/SiteStyle/plone3Proc.sh
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleSpecific siteStyleAssemble_logoTextStart
+
+    if [ ! -d ${bystarUidHome}/lcaPlone3/SiteStyle/logoText.gened ] ; then
+	opDo vis_initialBaseSetup
+    fi
+
+    # Copy From Home.gened to Home
+    # ~ea-59064/lcaPlone3/SiteStyle/logoText.gened
+    opDo pushd ${bystarUidHome}/lcaPlone3/SiteStyle/logoText.gened
+    opDo ./plone3Proc.sh -v -n showRun -i objectLocalPrep
+    opDo popd
+
+    opDo cp ${bystarUidHome}/lcaPlone3/SiteStyle/logoText.gened/logo.html ${bystarUidHome}/lcaPlone3/SiteStyle/logoText/logo.html
+
+    lpReturn
+}
+
+
+function vis_cleanForVcExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i unlinkToInitialSiteStyle
+
+    opDo bystarPlone3Initial.sh -h -v -n showRun -p bystarUid=${bystarUid} -i baseAssembleDeleteSiteStyleBody
+
+    opDo /bin/rm -r ./plone3Proc.sh.gened.[0-9][0-9]*  ./plone3Proc.sh.[0-9][0-9]*  ./logoText.[0-9][0-9]*
+
+    lpReturn
+}
+
+
+function vis_vcUploadExport {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    bystarAcctPathAnalyze $( pwd ) 
+
+    opDo echo NOTYET vcUploadExport
+
+    lpReturn
+}
+
+
+
+# }}} EXTRAs
+
+
+####+BEGIN: bx:dblock:bash:end-of-file :types ""
+# {{{ DBLOCK-end-of-file
+#local variables:
+#major-mode: shellscript-mode
+#fill-column: 90
+# end:
+# }}} DBLOCK-end-of-file
+####+END:

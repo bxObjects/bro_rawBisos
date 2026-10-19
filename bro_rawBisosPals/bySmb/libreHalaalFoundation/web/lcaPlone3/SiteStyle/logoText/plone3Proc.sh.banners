@@ -1,0 +1,529 @@
+#!/bin/osmtKsh
+#!/bin/osmtKsh
+
+typeset RcsId="$Id: plone3Proc.sh.banners,v 1.1.1.1 2013/04/08 16:43:38 lsipusr Exp $"
+
+
+if [ "${loadFiles}X" == "X" ] ; then
+  seedPlone3Proc.sh -l $0 "$@"
+  exit $?
+fi
+
+
+sitePages="
+"
+
+
+siteFolders="
+"
+
+#
+#
+#
+
+function examplesHookPost {
+    extraInfo="-h -v -n showRun"
+cat  << _EOF_
+--- EXTRAs ---
+${G_myName} ${extraInfo} -i fullUpdateAll
+--- 
+${G_myName} ${extraInfo} -i bannerCreate
+${G_myName} ${extraInfo} -i bannerProcess
+${G_myName} ${extraInfo} -i bannerUpload
+${G_myName} ${extraInfo} -i bannerUpload ./ftp_logo.jpg 
+---
+${G_myName} ${extraInfo} -i bannerUpdate
+${G_myName} ${extraInfo} -i footerUpdate
+${G_myName} ${extraInfo} -i colophonUpdate
+${G_myName} ${extraInfo} -i stylesUpdate
+${G_myName} ${extraInfo} -i initialUpdateAll
+_EOF_
+ return
+
+#${G_myName} ${extraInfo} -i updateSurroundings
+
+}
+
+
+function vis_fullUpdateAll {
+    vis_initialUpdateAll
+}
+
+
+
+vis_initialUpdateAll () {
+    opDo vis_bannerUpdate
+    #opDo vis_updateSurroundings
+    opDo vis_footerUpdate
+    opDo vis_colophonUpdate
+    opDo vis_stylesUpdate $@
+}
+
+
+vis_updateSurroundings () {
+    bystarAcctPathAnalyze `pwd`
+
+  bystarServiceSupportHookRun createBannersSpecific updateSurroundings
+}
+
+
+vis_bannerCreate () {
+    bystarAcctPathAnalyze `pwd`
+
+    destDir=$( pwd )
+  bystarServiceSupportHookRun createBannersSpecific bannerGenLatex > ${destDir}/banner.tex
+
+
+    opDo ls -l ${destDir}/banner.tex
+}
+
+
+
+vis_bannerProcess () {
+    bystarAcctPathAnalyze `pwd`
+    destDir=$( pwd )
+
+    opDo latex ${destDir}/banner.tex
+    opDo dvipng -x 1500 -o ${destDir}/banner.png ${destDir}/banner.dvi
+
+
+echo Verify by:
+echo gimp ${destDir}/banner.png
+
+    opDo ls -l ${destDir}/banner.png
+}
+
+
+vis_bannerUpload () {
+    EH_assert [[ $# -le 1 ]]
+
+    bystarAcctPathAnalyze `pwd`
+
+    destDir=$( pwd )
+
+    if [ $# -eq 1 ] ; then
+	# ./ftp_logo.jpg 
+	opDo bystarPlone3Features.sh -p bystarUid=${bystarUid} -i logoUpload ${destDir}/$1
+    else
+	opDo bystarPlone3Features.sh -p bystarUid=${bystarUid} -i logoUpload ${destDir}/banner.png
+    fi
+}
+
+
+vis_bannerUpdate () {
+    bystarAcctPathAnalyze `pwd`
+
+   opDo vis_bannerCreate
+   opDo vis_bannerProcess
+   opDo vis_bannerUpload
+
+}
+
+
+vis_footerUpdate () {
+    EH_assert [[ $# -eq 0 ]]
+    EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+
+    bystarAcctPathAnalyze `pwd`
+    destDir=$( pwd )
+
+    # ./footer.html 
+    opDo bystarPlone3Features.sh -p bystarUid=${bystarUid} -i footerUpload ${destDir}/footer.html
+}
+
+vis_colophonUpdate () {
+    EH_assert [[ $# -eq 0 ]]
+    EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+
+    bystarAcctPathAnalyze `pwd`
+    destDir=$( pwd )
+
+    # ./colophon.html 
+    opDo bystarPlone3Features.sh -p bystarUid=${bystarUid} -i colophonUpload ${destDir}/colophon.html
+}
+
+vis_stylesUpdate () {
+    #EH_assert [[ $# -eq 0 ]]
+    EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+
+    #
+    # NOTYET, missing processing of ploneStyle
+    #
+
+    opDo bystarPlone3Styles.sh -p ploneStyle=ByStarSideNavCol3 -p bystarUid=${bystarUid} -i fullUpdate
+}
+
+
+
+
+createBannersSpecific_BYSMB_COMMITTED () {
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Plum}{\makebox[4in]{\textcolor{black}{Welcome to the website of}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{ ${cp_acctMainBaseDomain} }}\\
+\end{minipage}
+
+\end{document}
+
+
+_EOF_
+}
+
+
+    $1
+}
+
+createBannersSpecific_BYSMB_TRIAL () {
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Plum}{\makebox[4in]{\textcolor{black}{Welcome to the website of}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{ ${cp_acctMainBaseDomain} }}\\
+\end{minipage}
+
+\end{document}
+
+
+_EOF_
+}
+
+
+    $1
+}
+
+createBannersSpecific_BCA_TRIAL () {
+    ANT_raw "createBannersSpecific_BCA_TRIAL"
+
+    createBannersSpecific_BCA_COMMITTED   $@
+}
+
+
+createBannersSpecific_BCA_COMMITTED () {
+    ANT_raw "createBannersSpecific_BCA_COMMITTED"
+
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Plum}{\makebox[4in]{\textcolor{black}{Controlled Account of Master Accout:}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{Controlled Account Name Comes Here}}\\
+\end{minipage}
+
+\end{document}
+
+
+_EOF_
+}
+ 
+    $1
+}
+
+createBannersSpecific_BYALIAS_COMMITTED () {
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Plum}{\makebox[4in]{\textcolor{black}{ByAlias Public Page of}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{${cp_AliasName} }}\\
+\end{minipage}
+
+\end{document}
+
+
+_EOF_
+}
+ 
+    $1
+}
+
+
+createBannersSpecific_BYALIAS_TRIAL () {
+  ANT_raw "createBannersSpecific_BYALIAS_TRIAL"
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Plum}{\makebox[4in]{\textcolor{black}{ByAlias Public Page of}}}\\
+\colorbox{Yellow}{\makebox[4in]{${cp_AliasName} }}\\
+\end{minipage}
+
+\end{document}
+
+
+_EOF_
+}
+
+ 
+    $1
+}
+
+
+createBannersSpecific_BYNAME_COMMITTED () {
+  ANT_raw "createBannersSpecific_BYNAME_COMMITTED"
+
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+
+\begin{minipage}[t]{5in}
+\colorbox{Orange}{\makebox[4in]{\textcolor{black}{ByName Public Web Page of}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{${cp_FirstName} ${cp_LastName} }}\\
+\end{minipage}
+
+\end{document}
+
+_EOF_
+    }
+
+    $1
+}
+
+
+createBannersSpecific_BYNAME_TRIAL () {
+
+    updateSurroundings () {
+	opDo bystarPloneFeature.sh -h -v -n showRun -p bystarUid=${bystarUid} -i footer_add
+	opDo bystarPloneFeature.sh -h -v -n showRun -p bystarUid=${bystarUid} -i colophon_add
+	opDo bystarPloneFeature.sh -h -v -n showRun -p bystarUid=${bystarUid} -p style=horizontal -i topright_add
+        opDo bystarPloneFeature.sh -h -v -n showRun -p bystarUid=${bystarUid} -i cssTemplate_update
+    }
+    
+
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+\begin{minipage}[t]{5in}
+\colorbox{Orange}{\makebox[4in]{\textcolor{black}{ByName Public Web Page of}}}\\
+\colorbox{Yellow}{\makebox[4in]{${cp_FirstName} ${cp_LastName} }}\\
+\end{minipage}
+
+\end{document}
+
+_EOF_
+    }
+
+
+    $1
+}
+
+createBannersSpecific_BYMEMORY_COMMITTED () {
+
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+
+\begin{minipage}[t]{5in}
+\colorbox{black}{\makebox[4in]{\textcolor{white}{In Memory of}}}\\
+\colorbox{OliveGreen}{\makebox[4in]{${cp_FirstName} ${cp_LastName} }}\\
+\end{minipage}
+
+\end{document}
+
+_EOF_
+    }
+
+    $1
+}
+
+createBannersSpecific_BYMEMORY_TRIAL () {
+    ANT_raw "createBannersSpecific_BYNAME_TRIAL"
+
+    bannerGenLatex () {
+      opDoExit cat <<  _EOF_
+
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{arabtex}
+
+\setlength{\textwidth}{9cm}
+\setlength{\topmargin}{-2cm}
+\setlength{\textheight}{5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+\parindent 0mm
+
+\begin{document}
+
+\pagestyle{empty}
+
+\setfarsi \novocalize 
+\vfill
+
+
+\begin{minipage}[t]{5in}
+\colorbox{black}{\makebox[4in]{\textcolor{white}{In Memory of}}}\\
+\colorbox{Yellow}{\makebox[4in]{${cp_FirstName} ${cp_LastName} }}\\
+\end{minipage}
+
+\end{document}
+
+_EOF_
+    }
+
+    $1
+}
+
+
+createBannersSpecific_DEFAULT_DEFAULT () {
+   EH_problem "Not Supported for $1 --${bystarServiceType}_${bystarServiceSupportType}"
+}
+

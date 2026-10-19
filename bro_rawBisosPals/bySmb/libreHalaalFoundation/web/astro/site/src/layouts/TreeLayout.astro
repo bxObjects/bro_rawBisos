@@ -1,0 +1,83 @@
+---
+// Plone-like page: header (logo or title, and the Site Map among the site actions), global tabs (the root's visible children), the left
+// navigation tree of the current top-level section, and the page. No breadcrumbs: the tabs and the left
+// tree show where a page is. The left tree is shown when the section has visible children (a section
+// that is a single page, such as Home, is full width), unless the page's layoutLeftPortlets says none or
+// all. An app node's page fills the main area with what the fixed page passes in (its slot).
+// Language and direction come from the node (contentLang, inherited): RTL pages mirror.
+import NavTree from "./NavTree.astro"
+import { contentTree, ancestors, navChildren, logoHtml, hrefOf, linkAttrs } from "../lib/contentTree.mjs"
+import "../styles/site.css"
+
+const { node } = Astro.props
+const root = contentTree()
+const trail = ancestors(node)                      // root ... node
+const section = trail[1]                           // the current top-level node, if any
+const openPaths = new Set(trail.map((n) => n.urlPath))
+const page = node.page
+const leftNav = page.leftNav === "none" ? false
+  : page.leftNav === "all" ? Boolean(section)
+  : Boolean(section) && navChildren(section).length > 0
+const logo = logoHtml()
+// The tab bar is the same on every page: left-to-right sections at the left, right-to-left ones
+// (Persian, Arabic, Hebrew) at the far right, where their readers look first.
+const ltrTabs = navChildren(root).filter((t) => t.dir !== "rtl")
+const rtlTabs = navChildren(root).filter((t) => t.dir === "rtl")
+---
+<!doctype html>
+<html lang={node.lang} dir={node.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{page.title || node.title} — {root.title}</title>
+    {page.description && <meta name="description" content={page.description} />}
+    <Fragment set:html={page.css ? `<style>${page.css}</style>` : ""} />
+  </head>
+  <body>
+    <div class="frame">
+      <header class="siteHeader">
+        <nav class="siteActions" aria-label="Site" lang="en" dir="ltr"><a href="/sitemap/">Site Map</a></nav>
+        {logo ? <div class="logo" dir="ltr" set:html={logo} /> : (
+          <div class="titleBlock" lang={root.lang} dir={root.dir}>
+            <a href="/" class="siteTitle">{root.title}</a>
+            {root.tagline && <p>{root.tagline}</p>}
+          </div>
+        )}
+        <nav class="tabs" aria-label="Sections" dir="ltr">
+          {[ltrTabs, rtlTabs].map((group, i) => group.length > 0 && (
+            <div class="tabGroup" dir={i ? "rtl" : "ltr"}>
+              {group.map((t) => (
+                <a href={hrefOf(t)} {...linkAttrs(t)} class={t === section ? "selected" : undefined} lang={t.lang} dir={t.dir}>{t.title}{t.linkUrl && " ↗"}</a>
+              ))}
+            </div>
+          ))}
+        </nav>
+      </header>
+      <div class={leftNav ? "columns" : "columns noLeft"}>
+        {leftNav && (
+          <aside class="leftNav">
+            <details class="navFold" open>
+              <summary>{section.title}</summary>
+              <a class="sectionTitle" href={section.urlPath}>{section.title}</a>
+              <NavTree node={section} current={node} openPaths={openPaths} />
+            </details>
+          </aside>
+        )}
+        <main class="content">
+          {page.isApp && <slot />}
+          {!page.isApp && (
+            <>
+              <h1>{page.title || node.title}</h1>
+              {page.description && <p class="description">{page.description}</p>}
+              <article set:html={page.html} />
+            </>
+          )}
+        </main>
+      </div>
+      <footer class="siteFooter" lang="en" dir="ltr">
+        Built with Astro from <code>content/tree</code> (the ByStar Plone 3 ContentTree model);
+        <a href="https://github.com/bisos-web/astro-starter-bystar">astro-starter-bystar</a>.
+      </footer>
+    </div>
+  </body>
+</html>
