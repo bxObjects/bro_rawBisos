@@ -25,13 +25,18 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
-  [To be filled in by Claude after first substantive interaction]
+  Not yet written up in full; this records only the change of 2026-10-21.
+  - Boxed (folder) tabs, as in astro-starter-bystar (its =AI-DevStatus.org= has the rationale):
+    =site/src/styles/site.css= in this site's older form (literal colours, no =.tabGroup=): =.tabs=
+    gap 0.3 rem and =padding-block-start: 0.4rem=; =.tabs a= =white-space: nowrap=, =background: #c8d6df=,
+    =border-radius: 6px 6px 0 0=. Uncommitted at the time of writing.
 
 * Architecture
   [Key components, file structure, entry points]
 
 * What Works
-  [Verified functionality]
+  - Boxed tabs (2026-10-21): =siteBuild= 26 pages; platform.here 200 at =/=, 404 for a missing page; the
+    served CSS has the rule; header screenshot checked.
 
 * What Is Untested
   [Known gaps]

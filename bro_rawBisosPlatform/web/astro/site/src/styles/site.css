@@ -23,8 +23,11 @@ pre { background: #f3f4f6; padding: 1rem; overflow-x: auto; font-size: 0.8rem; }
 .titleBlock { padding: 1.25rem 1.5rem 0.75rem; }
 .siteTitle { color: var(--navy); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
 .titleBlock p { margin: 0.25rem 0 0; color: var(--muted); }
-.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem; padding-inline: 1rem; background: #dee7ec; }
-.tabs a { padding: 0.45rem 0.9rem; text-decoration: none; color: #205c90; }
+/* Each tab is its own box (folder tab), so a label of several words reads as one tab. */
+.tabs { display: flex; flex-wrap: wrap; gap: 0.3rem; padding-inline: 1rem; padding-block-start: 0.4rem;
+        background: #dee7ec; }
+.tabs a { padding: 0.45rem 0.9rem; text-decoration: none; color: #205c90; white-space: nowrap;
+          background: #c8d6df; border-radius: 6px 6px 0 0; }
 .tabs a.selected { background: #205c90; color: #fff; }
 
 .columns { display: grid; grid-template-columns: fit-content(18%) 1fr; gap: 1.5rem; padding: 1rem; flex: 1; }

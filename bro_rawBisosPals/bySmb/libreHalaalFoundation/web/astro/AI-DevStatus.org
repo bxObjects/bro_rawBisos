@@ -37,6 +37,11 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
   - WorkPlan: 2.1, 2.2, 2.5, 2.6 DONE; 2.3 and 2.4 TODO (astroProc.spcs). Committed 2026-10-19
     (bro_rawBisos 1f8c358, with bisos.pals, bisos.dnsCap and bisos.capability).
   - =README.org= here is still the astroPoc's (says "superseded"): out of date.
+  - Boxed (folder) tabs (2026-10-21), as in astro-starter-bystar (its =AI-DevStatus.org= has the
+    rationale): =site/src/styles/site.css= =--tabBox=, =nowrap=, rounded boxes. =siteBuild= 18 pages;
+    =libre-halaal.org.here= 200 / 404, the served CSS has the rule, header screenshot with the فارسی tab
+    boxed. Checked by name with curl, not =siteVerify=, which still checks =platform.here= (2.3).
+    Uncommitted at the time of writing.
 
 * Architecture
   - This directory (a PALS site, astro-site activity):

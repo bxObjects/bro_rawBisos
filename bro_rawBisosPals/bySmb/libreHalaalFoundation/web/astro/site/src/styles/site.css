@@ -5,6 +5,7 @@
   --navy: #001a4d;
   --blue: #205c90;
   --tabs: #dee7ec;
+  --tabBox: #c8d6df;      /* an unselected tab's box, on the --tabs bar */
   --line: #d1d5db;
   --muted: #6b7280;
 }
@@ -21,9 +22,12 @@ pre { background: #f3f4f6; padding: 1rem; overflow-x: auto; font-size: 0.85rem; 
 .titleBlock { padding: 1.25rem 1.5rem 0.75rem; }
 .siteTitle { color: var(--navy); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
 .titleBlock p { margin: 0.25rem 0 0; color: var(--muted); }
-.tabs { display: flex; flex-wrap: wrap; justify-content: space-between; padding-inline: 1rem; background: var(--tabs); }
-.tabGroup { display: flex; flex-wrap: wrap; gap: 0.25rem; }
-.tabs a { padding: 0.45rem 0.9rem; text-decoration: none; color: var(--blue); }
+/* Each tab is its own box (folder tab), so a label of several words reads as one tab. */
+.tabs { display: flex; flex-wrap: wrap; justify-content: space-between; padding-inline: 1rem;
+        padding-block-start: 0.4rem; background: var(--tabs); }
+.tabGroup { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.tabs a { padding: 0.45rem 0.9rem; text-decoration: none; color: var(--blue); white-space: nowrap;
+          background: var(--tabBox); border-radius: 6px 6px 0 0; }
 .tabs a.selected { background: var(--blue); color: #fff; }
 
 .columns { display: grid; grid-template-columns: fit-content(18%) 1fr; gap: 1.5rem; padding: 1rem; flex: 1; }
