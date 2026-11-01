@@ -62,7 +62,7 @@ bro_rawBisosPlatform/           # symlinked to /bisos/platform/
         ├── site/               # realm: site-owned capabilities
         ├── pals/               # realm: PAL-owned capabilities, planted by palsOfSys.cs
         │   ├── ftoBranchProc.spcs
-        │   └── bro_rawBisosPals/libreHalaal/   # <palsBxo>/<cbm>/: cbmProc.{spcs,control,status}
+        │   └── bro_rawBisosPals/example/      # <palsBxo>/<cbm>/: cbmProc.{spcs,control,status}
         ├── user/               # realm: user-owned capabilities
         └── collective/         # realm: shared across realms
             ├── hereWeb/        # capability type: HTTP via .here

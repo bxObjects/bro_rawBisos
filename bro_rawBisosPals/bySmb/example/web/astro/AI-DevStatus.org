@@ -9,8 +9,8 @@
 
 ####+BEGIN: b:ai:file/particulars
 * AI Working Context
-  Working Directory: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro
-  File: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/libreHalaalFoundation/web/astro/AI-DevStatus.org
+  Working Directory: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/example/web/astro
+  File: /bisos/git/auth/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/example/web/astro/AI-DevStatus.org
   Activity: astro-site
   Companion Docs: AI-Activity.org, AI-DevStatus.org, README.org
 ####+END:
@@ -25,45 +25,53 @@ This file is maintained by Claude. Updates are typically triggered by the
 Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; nothing committed).
 
 * Current State
-  - This directory is the Libre-Halaal Foundation's site, =http://libre-halaal.org.here=, the first PALS
+  - This directory is the Libre-Halaal Foundation's site, =http://example.org.here=, the first PALS
     made a functional part of BISOS (Stage 1/2 of AI-WorkPlan.org). It is served on this host from
     =site/dist= at =127.0.55.1=, and reachable as a CBM of the PALS-BXO =bro_rawBisosPals=.
   - The Libre-Halaal Foundation is the renamed Free Protocols Foundation (same work). The content tree
     (=content/tree=) is FPF's Plone 3 ContentTree subset from the astroPoc, now renamed throughout:
     "Libre-Halaal Foundation", "LHF", links to =libre-halaal.org= (=www.=, =web.=, =donate.=).
   - =site/= is the astro-starter-bystar template (no breadcrumbs, Site Map, RTL tabs at the right).
-  - The banner is =content/tree/contentImages/files/lhfBanner.jpg=, built from
-    =content/siteStyle/lhfBanner.tex= (XeLaTeX, Comic Neue, rebuild commands in its header).
+  - The banner is =content/tree/contentImages/files/exampleBanner.jpg=, built from
+    =content/siteStyle/exampleBanner.tex= (XeLaTeX, Comic Neue, rebuild commands in its header).
   - WorkPlan: 2.1, 2.2, 2.5, 2.6 DONE; 2.3 and 2.4 TODO (astroProc.spcs). Committed 2026-10-19
     (bro_rawBisos 1f8c358, with bisos.pals, bisos.dnsCap and bisos.capability).
   - =README.org= here is still the astroPoc's (says "superseded"): out of date.
   - Boxed (folder) tabs (2026-10-21), as in astro-starter-bystar (its =AI-DevStatus.org= has the
     rationale): =site/src/styles/site.css= =--tabBox=, =nowrap=, rounded boxes. =siteBuild= 18 pages;
-    =libre-halaal.org.here= 200 / 404, the served CSS has the rule, header screenshot with the فارسی tab
+    =example.org.here= 200 / 404, the served CSS has the rule, header screenshot with the فارسی tab
     boxed. Checked by name with curl, not =siteVerify=, which still checks =platform.here= (2.3).
     Uncommitted at the time of writing.
+
+  - Renamed 2026-10-26 (user): the site was =libre-halaal.org.here= (=bySmb/libreHalaalFoundation=); it is
+    now =example.org.here=, "BySmb Example: The Libre-Halaal Foundation" (banner =exampleBanner.jpg=, one
+    wordmark line). As if the old name never happened: the old =uri.list= line was replaced in place, so
+    =127.0.55.1= is the new name's (the never-reused rule was broken on purpose); the old nginx vhost and
+    the old platform leaf (with its status log) were deleted; the CBM is declared and planted as =example=.
+    Pages (=content/tree=) unchanged. History in this file and in AI-WorkPlan.org (2.1, 2.2, 2.5 Results)
+    still says libre-halaal.org.here and libreHalaal: that is what was done then.
 
 * Architecture
   - This directory (a PALS site, astro-site activity):
     | Path             | What                                                                           |
     |------------------+--------------------------------------------------------------------------------|
-    | =uri/here/value= | =libre-halaal.org.here= --- the site's name; every cbm/ file derives from it   |
+    | =uri/here/value= | =example.org.here= --- the site's name; every cbm/ file derives from it   |
     | =astroProc.spcs= | bisos.webCap's astroProc seed: content build, Astro build (still says          |
     |                  | =platform.here= and banna's =platform_dev= port: WorkPlan 2.3)                 |
     | =cbm/=           | four symlinks to bisos.pals =py3/bin/=: =pals-cbs.spcs=, =pals-assemble.cs=,   |
     |                  | =pals-here-dns.spcs=, =pals-wvd.spcs=                                          |
-    | =content/=       | =tree/= (pages), =siteStyle/= (logo.html, lhfBanner.tex), =bin/= (README only) |
+    | =content/=       | =tree/= (pages), =siteStyle/= (logo.html, exampleBanner.tex), =bin/= (README only) |
     | =site/=          | the starter's Astro site (package =libre-halaal-foundation=)                   |
   - bisos.pals (=/bisos/git/bxRepos/bisos-pip/pals=): =palsHere.py= / =palsHereInfo.cs= (.here names),
     =palsOfSys.py= / =palsOfSys.cs= (PALS-BXOs, their CBMs, platform leaves), the four generic files.
     README.org there documents the model, with the figure =py3/images/palsModel.png=.
   - On the host:
-    - =/bisos/var/palsHere/uri.list=: =127.0.55.1  libre-halaal.org.here  # pals=<this dir> added=...=
+    - =/bisos/var/palsHere/uri.list=: =127.0.55.1  example.org.here  # pals=<this dir> added=...=
     - =/etc/hosts=: a =palsHere= dblock (=palsHereInfo.cs -i palsForEtcHosts=) beside banna's.
-    - =/etc/nginx/sites-{available,enabled}/libre-halaal.org.here=: static, root =site/dist=.
+    - =/etc/nginx/sites-{available,enabled}/example.org.here=: static, root =site/dist=.
     - =/bisos/platform/sys/pals/bro_rawBisosPals/{path,origin}/value=; declaration
-      =bro_rawBisosPals/sys/cbm/libreHalaal/{capabilityType,cbsSpec}/value=; leaf
-      =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal/= (gate =available=).
+      =bro_rawBisosPals/sys/cbm/example/{capabilityType,cbsSpec}/value=; leaf
+      =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/example/= (gate =available=).
   - Trigger: =sysCbmManage.cs -i fullyMaterialize= walks =collective/hereWeb=, then =sys/cbm/pals=
     (bisos.capability, uncommitted); a leaf runs =pals-cbs.spcs= -> =pals-assemble.cs -i fullUpdate=
     (siteBuild via astroProc.spcs, hereDns, webVirtDom).

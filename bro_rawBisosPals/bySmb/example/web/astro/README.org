@@ -1,11 +1,11 @@
-#+title: libre-halaal.org.here --- the Libre-Halaal Foundation's Site, a PALS on BISOS
+#+title: example.org.here --- BySmb Example, the Libre-Halaal Foundation's Site, a PALS on BISOS
 #+DATE: <2026-10-19 Mon>
 #+AUTHOR: Mohsen BANAN
 
 * Overview
 
 The Libre-Halaal Foundation (LHF; formerly the Free Protocols Foundation) site, built with Astro from a
-content tree and served on a BISOS platform as =http://libre-halaal.org.here=. It is the first PALS site
+content tree and served on a BISOS platform as =http://example.org.here=. It is the first PALS site
 made a functional part of BISOS: its name, address, build and vhost come from bisos.pals's generic
 tools, and it is a CBM of the PALS-BXO =bro_rawBisosPals=, so the platform's CBM walk can materialize it.
 
@@ -16,12 +16,12 @@ Site Map, right-to-left pages mirrored and their tab at the right.
 
 #+begin_example
 web/astro/
-  uri/here/value     libre-halaal.org.here --- the site's name; the cbm/ files derive from it
+  uri/here/value     example.org.here --- the site's name; the cbm/ files derive from it
   astroProc.spcs     bisos.webCap's astroProc seed: content build, Astro build
   cbm/               symlinks to bisos.pals py3/bin/: pals-cbs.spcs, pals-assemble.cs,
                      pals-here-dns.spcs, pals-wvd.spcs
   content/tree/      the pages (the ByStar Plone 3 ContentTree model; from FPF's tree, renamed)
-  content/siteStyle/ logo.html (the banner and taglines), lhfBanner.tex (the banner's source)
+  content/siteStyle/ logo.html (the banner and taglines), exampleBanner.tex (the banner's source)
   content/bin/       site-specific content scripts (none yet)
   site/              the Astro site (astro-starter-bystar's), built into site/dist/
 #+end_example
@@ -32,11 +32,11 @@ The Plone 3 tree this content came from is =../lcaPlone3= (FPF's, under its old 
 
 | What          | Where                                                                  |
 |---------------+------------------------------------------------------------------------|
-| Name, address | =libre-halaal.org.here=, =127.0.55.1= (=/bisos/var/palsHere/uri.list=) |
+| Name, address | =example.org.here=, =127.0.55.1= (=/bisos/var/palsHere/uri.list=) |
 | /etc/hosts    | the =palsHere= dblock (=palsHereInfo.cs -i palsForEtcHosts=)           |
-| nginx         | =/etc/nginx/sites-available/libre-halaal.org.here=, root =site/dist=   |
-| Declared CBM  | =bro_rawBisosPals/sys/cbm/libreHalaal/=                                |
-| Platform leaf | =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal/=           |
+| nginx         | =/etc/nginx/sites-available/example.org.here=, root =site/dist=   |
+| Declared CBM  | =bro_rawBisosPals/sys/cbm/example/=                                |
+| Platform leaf | =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/example/=           |
 
 * Usage
 
@@ -44,7 +44,7 @@ The Plone 3 tree this content came from is =../lcaPlone3= (FPF's, under its old 
 cbm/pals-assemble.cs -i fullUpdate           # build the site, its .here name and its vhost
 ./astroProc.spcs -i siteBuild                # build only (content/tree, then Astro)
 cbm/pals-here-dns.spcs -i dnsCap_verify      # /etc/hosts has banna's and palsHere's blocks
-bx-browse-url.sh http://libre-halaal.org.here
+bx-browse-url.sh http://example.org.here
 
 palsOfSys.cs -i palsList                     # this site as a CBM of bro_rawBisosPals, and its gate
 cd /bisos/platform/sys/cbm/pals/bro_rawBisosPals/libreHalaal && ./cbmProc.spcs -i cbm_enable
@@ -55,7 +55,7 @@ platform's other capabilities.
 
 * The Banner
 
-=content/tree/contentImages/files/lhfBanner.jpg= is built from =content/siteStyle/lhfBanner.tex= with
+=content/tree/contentImages/files/exampleBanner.jpg= is built from =content/siteStyle/exampleBanner.tex= with
 XeLaTeX (=texlive-xetex=) in Comic Neue (=fonts-comic-neue=), the nearest free face to the old banner's
 Comic Sans MS. The rebuild commands are in the =.tex= file's header.
 
