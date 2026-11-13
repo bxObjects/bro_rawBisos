@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* ftoBranchProc.spcs at sys/cbm/collective/induct/
+*
+* Walker branch for the induct capabilities (non-service software induction) of the collective realm.
+* Detects capability leaves (directories containing cbmProc.spcs) via
+* bisos.capability.cbmProc_seedInfo.leafProcessorNames(), and exposes the cbm_* walk-example menu via
+* walkExamples(). sysCbmManage.cs -i fullyMaterialize walks it after collective/hereWeb and pals
+* (capability AI-WorkPlan.org 4.7). Leaves at control=available are skipped by their own gate.
+*
+* Walk usages:
+*   ./ftoBranchProc.spcs                             --- bare menu
+*   ./ftoBranchProc.spcs -i fto_treeList             --- inventory
+*   ./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status
+*   ./ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_materialize
+#+end_org """
+
+from bisos.fileObj import ftoBranch_seed         # noqa: F401  _atExit_
+from bisos.fileObj import ftoBranch_seedInfo
+from bisos.capability import cbmProc_seedInfo
+
+branchesOrdered = [
+    "pltfrmDevelBecome",  # first: it switches the platform to auth and editable installs
+    "lcntCore",
+    "lcntBases",          # after lcntCore: its toolchain
+    "lcntMultiMedia",     # after lcntCore
+    "emacsSrcBuild",
+    "bleeBuild",          # after emacsSrcBuild: built for its Emacs
+    "vscodeClaude",       # per user; after bleeBuild, whose Blee it opens
+]
+
+leavesOrdered = [
+]
+
+ftoBranch_seedInfo.setup(
+    leafProcessors=cbmProc_seedInfo.leafProcessorNames(),
+    leafExamples=cbmProc_seedInfo.walkExamples(),
+    branchesOrdered=branchesOrdered,
+    leavesOrdered=leavesOrdered,
+)
