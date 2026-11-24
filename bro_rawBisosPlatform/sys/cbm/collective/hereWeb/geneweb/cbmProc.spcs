@@ -25,5 +25,5 @@ from bisos.capability import cbmProc_seedInfo
 
 cbmProc_seedInfo.setup(
     capabilityName="geneweb",
-    cbsSpec="/bisos/git/bxRepos/bisos-pip/geneweb/py3/bin/geneweb-cbs.pcs",
+    cbsSpec="geneweb-cbs.pcs",
 )

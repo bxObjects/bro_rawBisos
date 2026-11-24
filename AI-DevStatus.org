@@ -108,7 +108,7 @@ bro_rawBisos/                       # this repo (one BRO)
 │               │   └── airflow/    # capability leaf
 │               │       ├── cbmProc.spcs
 │               │       ├── cbmProc.control
-│               │       └── cbmProc.status
+│               │       └── cbmBootstrap-sbom.pcs   # pip bisos.airflow into bisos3
 │               ├── hereMail/       # capabilityType (empty)
 │               ├── rpyc/           # capabilityType
 │               │   └── facterPerf/ # (README only, no cbmProc.spcs)
@@ -143,7 +143,11 @@ Three files at =sys/cbm/collective/hereWeb/airflow/=:
   those asc copies were deleted 2026-10-01, =bisos/asc= commit =addaad4=.)
 - =cbmProc.control= --- initial contents =available=. Written by
   =cbm_enable=/=cbm_disable=/=cbm_available=.
-- =cbmProc.status= --- append-only log of skip/run/failure events.
+- =cbmProc.status= --- append-only log of skip/run/failure events. Since 2026-11-24 not in the
+  leaf but under =/bisos/var/cbm/<leafRel>/= (bisos.capability > 0.26); ignored here
+  (=bro_rawBisosPlatform/sys/.gitignore=); the 22 old tracked ones untracked (=git rm --cached=).
+- =cbmBootstrap-sbom.pcs= --- what the CBS needs installed first (Phase 1: pip packages into
+  =bisos3=); run by =cbm_bootstrap= and before each materialize.
 
 ** Walker at =collective/=
 
@@ -216,6 +220,17 @@ Also verified directly at the airflow leaf (not just via walker):
   the CBM machinery).
 
 * Key Design Decisions
+
+** The leaves install what their CBS needs (2026-11-24, bxGenesis/base 3.1.2)
+
+On a fresh anon Raw-BISOS (VM, 2026-11-23) every leaf failed: the status could not be written in
+the read-only clone, and the CBSes named by git path (=/bisos/git/bxRepos/bisos-pip/<cap>/...=) ran
+from clones whose package was not installed, so their sibling =.pcs= were not on PATH. Now each
+=hereWeb= leaf but platform has a =cbmBootstrap-sbom.pcs= installing the package that carries its
+CBS (=bisos.<cap>=, or =bisos.webCap=), and the 9 pip-kind leaves name the CBS by basename. On a
+dev host =dev-bisos3= is first on PATH, so the editable package still runs. Phase 2 (after gitist
+is merged with sbom) moves the leaves' clones into the bootstraps too. The =induct= and =pals=
+leaves have no bootstrap yet.
 
 ** Realm/capabilityType layering
 

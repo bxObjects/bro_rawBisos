@@ -25,5 +25,5 @@ from bisos.capability import cbmProc_seedInfo
 
 cbmProc_seedInfo.setup(
     capabilityName="pypiserver",
-    cbsSpec="/bisos/git/bxRepos/bisos-pip/pypiserver/py3/bin/pypiserver-cbs.pcs",
+    cbsSpec="pypiserver-cbs.pcs",
 )

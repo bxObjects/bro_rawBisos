@@ -149,3 +149,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+################ CBM #################
+# A leaf's status is a fact of the host: bisos.capability writes it under /bisos/var/cbm/.
+cbmProc.status

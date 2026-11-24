@@ -25,5 +25,5 @@ from bisos.capability import cbmProc_seedInfo
 
 cbmProc_seedInfo.setup(
     capabilityName="devpi",
-    cbsSpec="/bisos/git/bxRepos/bisos-pip/devpi/py3/bin/devpi-cbs.pcs",
+    cbsSpec="devpi-cbs.pcs",
 )
