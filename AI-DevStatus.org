@@ -232,6 +232,16 @@ dev host =dev-bisos3= is first on PATH, so the editable package still runs. Phas
 is merged with sbom) moves the leaves' clones into the bootstraps too. The =induct= and =pals=
 leaves have no bootstrap yet.
 
+** Paths are =/bisos/git/bxRepos/...=, never =/bxRepos= or one vcMode (2026-11-25, bxGenesis/base 3.2.2)
+
+The 261124-1 VM run had no =/bxRepos= (a hand-made convenience link a fresh install does not get, by
+the user's decision), so the pals example failed: its =cbsSpec= was under =/bxRepos=, and its =cbm/=
+links pointed into =/bisos/git/auth/bxRepos/bisos-pip/pals/=. Fixed: =sys/pals/
+bro_rawBisosPals/path/value= now =/bisos/git/bxRepos/...=, the leaf re-planted from it (=palsOfSys.cs -i
+palsLeavesPlant=), the 4 pals links and =sys/cbm/facter-cbs-is-np-sysd.cs= to =/bisos/git/bxRepos/
+bisos-pip/{pals,facter}/py3/bin/=. Still into =/bisos/git/auth/=: the web sites' =AI-*.org= links and
+=.aiActivity.cs= templates values (bxGenesis/base 3.2.7, not urgent).
+
 ** Realm/capabilityType layering
 
 Directory shape enforced:

@@ -1,1 +1,1 @@
-/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bin/pals-assemble.cs
+/bisos/git/bxRepos/bisos-pip/pals/py3/bin/pals-assemble.cs

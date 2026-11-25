@@ -1,1 +1,1 @@
-/bisos/git/auth/bxRepos/bisos-pip/facter/py3/bin/facter-cbs-is-np-sysd.cs
+/bisos/git/bxRepos/bisos-pip/facter/py3/bin/facter-cbs-is-np-sysd.cs
