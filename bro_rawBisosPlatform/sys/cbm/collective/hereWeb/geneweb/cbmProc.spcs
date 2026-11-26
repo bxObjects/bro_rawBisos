@@ -26,4 +26,6 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="geneweb",
     cbsSpec="geneweb-cbs.pcs",
+    verifyUnits=["geneweb"],
+    verifySpec="genewebAdmin.cs -i driftCheck",
 )

@@ -25,6 +25,13 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
+- 2026-11-26 (from a bisos-pip/b session; uncommitted): the 19 leaves of
+  =bro_rawBisosPlatform/sys/cbm/collective/= declare what bisos.capability's =cbm_verify= checks
+  (=verifyUnits=, =verifySpec=; gatsbyBxSidebar =hereName="starterSidebar"=), and the PALS example
+  leaf was replanted with its =hereName= and =siteVerify= (bisos-pip/capability AI-WorkPlan.org
+  Stage 5). *Push only after the bisos.capability release that accepts those arguments*: an older
+  one fails to load the leaves, cbm_materialize too. Also: platform.internal's =.here= fix and its
+  Verify column (=web/astro/AI-DevStatus.org=).
 - 2026-11-26 (from a bisos-pip/b session): every =<name>.here= in this repo is now =<name>.internal=
   (=.here= is an https-only gTLD in Chrome; bisos-pip/banna AI-WorkPlan.org Stage 4, banna's
   =tcpPorts.hereFqdn=). Text renamed, not tested here; AI-WorkPlan.org keeps =.here= as history.

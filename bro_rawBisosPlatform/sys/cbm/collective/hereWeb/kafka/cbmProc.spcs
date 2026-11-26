@@ -26,4 +26,6 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="kafka",
     cbsSpec="kafka-cbs.pcs",
+    verifyUnits=["kafka", "kafbat-ui"],
+    verifySpec="kafkaAdmin.cs -i driftCheck",
 )

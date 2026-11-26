@@ -26,4 +26,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="bleeBuild",
     cbsSpec="/bisos/git/bxRepos/bisos-pip/capSpecs/py3/bin/bleeBuild-cbs.pcs",
+    verifySpec="blee31Build-assemble.cs -i fullCheck",
 )

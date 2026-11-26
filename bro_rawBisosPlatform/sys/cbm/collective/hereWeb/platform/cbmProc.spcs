@@ -26,4 +26,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="platform",
     cbsSpec="/bisos/platform/web/astro/cbm/platform-cbs.pcs",
+    verifySpec="cd /bisos/platform/web/astro && ./astroProc.spcs -i siteVerify",
 )

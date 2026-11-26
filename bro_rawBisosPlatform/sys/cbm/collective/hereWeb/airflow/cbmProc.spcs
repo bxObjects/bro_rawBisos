@@ -25,5 +25,7 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="airflow",
     cbsSpec="airflow-cbs.pcs",
+    verifyUnits=["airflow-db", "airflow-webserver", "airflow-scheduler", "airflow-triggerer", "airflow-dag-processor", "postgresql"],
+    verifySpec="airflowAdmin.cs -i driftCheck",
 
 )

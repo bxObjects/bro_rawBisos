@@ -12,4 +12,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="nginx",
     cbsSpec="nginx-cbs.pcs",   # bisos.webCap (moved from /bisos/asc/web/bin, 2026-10-18)
+    verifyUnits=["nginx"],
 )

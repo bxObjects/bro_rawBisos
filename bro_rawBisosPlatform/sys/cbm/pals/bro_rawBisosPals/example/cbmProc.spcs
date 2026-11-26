@@ -21,4 +21,6 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="example",
     cbsSpec="/bisos/git/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/example/web/astro/cbm/pals-cbs.spcs",
+    hereName="example.org.internal",
+    verifySpec="cd /bisos/git/bxRepos/bxObjects/bro_rawBisos/bro_rawBisosPals/bySmb/example/web/astro && ./astroProc.spcs -i siteVerify",
 )

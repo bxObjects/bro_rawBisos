@@ -13,4 +13,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="csPlayerPerf",
     cbsSpec="/bisos/git/bxRepos/bisos-web/csPlayerPerf-drf/cbm/csPlayerPerf-cbs.pcs",  # csPlayer's Django REST API
+    verifyUnits=["csPlayerPerf"],
 )

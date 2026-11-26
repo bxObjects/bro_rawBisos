@@ -12,4 +12,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="gatsbyBxSidebar",
     cbsSpec="/bisos/git/bxRepos/bisos-web/gatsby-starter-bystar-nestedSidebar/gatsbyBxSidebar-cbs.pcs",  # absolute-lock alternative
+    hereName="starterSidebar",
 )

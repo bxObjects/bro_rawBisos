@@ -4,14 +4,16 @@
 
 Read-only. For every leaf under /bisos/platform/sys/cbm/<realm>/<capabilityType>/<name>/ that has a
 cbmProc.spcs, it records the gate (cbmProc.control), the last line of cbmProc.status, the CBS the leaf
-points at, the .internal name, IP and port from bisos.banna, and the HTTP status of http://<name>.here/
+points at, the .internal name, IP and port from bisos.banna, and the HTTP status of http://<name>.internal/
 as probed now. cbmProc.spcs is parsed as text, not executed. The order is the walk's
-(branchesOrdered of the type's ftoBranchProc.spcs), then by name.
+(branchesOrdered of the type's ftoBranchProc.spcs), then by name. Each leaf also gets its verdict
+from the latest fullyVerify report (bisos.capability, /bisos/var/cbm/verify/latest/report.json),
+when there is one.
 
 The site is a snapshot: rerun this (cbm/platform-assemble.cs -i siteBuild runs every content/bin
 script) to refresh it.
 
-Usage: platformCapabilities.py [--cbmBase DIR] [--out FILE] [--noProbe]
+Usage: platformCapabilities.py [--cbmBase DIR] [--out FILE] [--noProbe] [--verifyReport FILE]
 """
 
 import argparse
@@ -29,6 +31,7 @@ from bisos.banna import tcpPorts
 thisDir = pathlib.Path(__file__).resolve().parent
 defaultOut = thisDir.parent / "data" / "capabilities.json"   # content/data/, read by site/ as @content
 defaultCbmBase = pathlib.Path("/bisos/platform/sys/cbm")
+defaultVerifyReport = pathlib.Path("/bisos/var/cbm/verify/latest/report.json")
 
 # Where a capability's .internal name differs from its capability name.
 hereNameOf = {
@@ -73,9 +76,12 @@ def _repoOf(cbsSpec: str) -> tuple[str, str]:
     return (name, f"https://github.com/{org}/{repo}")
 
 
-def _probe(url: str) -> int | None:
+def _probe(url: str) -> int | str | None:
+    """The status of url; "no vhost" when nginx's default page answered (any name without a vhost)."""
     try:
         with urllib.request.urlopen(url, timeout=3) as resp:
+            if b"<title>Welcome to nginx!</title>" in resp.read(4096):
+                return "no vhost"
             return resp.status
     except urllib.error.HTTPError as e:
         return e.code
@@ -83,7 +89,19 @@ def _probe(url: str) -> int | None:
         return None
 
 
-def capabilities(cbmBase: pathlib.Path, probe: bool = True) -> list[dict]:
+def _verifyByLeaf(path: pathlib.Path) -> tuple[dict, dict | None]:
+    """The leaves of a fullyVerify report, keyed <realm>/<type>/<name>, and the report's summary."""
+    try:
+        rep = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}, None
+    byLeaf = {"/".join(pathlib.PurePath(leaf["leafRel"]).parts[-3:]): leaf for leaf in rep.get("leaves", [])}
+    summary = {k: rep.get(k) for k in ("generatedAt", "verdict", "counts", "platformProblems", "maskedFailures")}
+    summary["report"] = str(path.resolve())
+    return byLeaf, summary
+
+
+def capabilities(cbmBase: pathlib.Path, probe: bool = True, verifyBy: dict | None = None) -> list[dict]:
     ports = tcpPorts.tcpPortsAssignedList.tcpPortsList
     hereNames = {name: (ip, portNu) for ip, name, portNu in tcpPorts.hereEntries()}
     result = []
@@ -102,7 +120,7 @@ def capabilities(cbmBase: pathlib.Path, probe: bool = True) -> list[dict]:
 
         hereName = hereNameOf.get(name, name)
         hereIp, portNu = hereNames.get(hereName, (None, None))
-        url = f"http://{hereName}.here/" if hereIp else None
+        url = f"http://{tcpPorts.hereFqdn(hereName)}/" if hereIp else None
         port = ports.get(hereName)
         description = descriptionOf.get(name) or (port.portDescription if port else "")
         package, repoUrl = _repoOf(cbsSpec)
@@ -127,9 +145,16 @@ def capabilities(cbmBase: pathlib.Path, probe: bool = True) -> list[dict]:
             "httpStatus": _probe(url) if (url and probe and name != thisSiteName) else None,
             "walkOrder": order.index(leafName) if leafName in order else len(order),
             "slug": f"/capabilities/{realm}/{capabilityType}/{name}/",
+            "verify": _verifyOf((verifyBy or {}).get(f"{realm}/{capabilityType}/{leafName}")),
         })
     result.sort(key=lambda c: (c["realm"], c["capabilityType"], c["walkOrder"], c["name"]))
     return result
+
+
+def _verifyOf(leaf: dict | None) -> dict | None:
+    if not leaf:
+        return None
+    return {k: leaf.get(k) for k in ("verdict", "detail", "at", "rcAgrees", "materializeRc")}
 
 
 def main() -> int:
@@ -137,15 +162,19 @@ def main() -> int:
     parser.add_argument("--cbmBase", type=pathlib.Path, default=defaultCbmBase)
     parser.add_argument("--out", type=pathlib.Path, default=defaultOut)
     parser.add_argument("--noProbe", action="store_true", help="do not probe the .internal URLs")
+    parser.add_argument("--verifyReport", type=pathlib.Path, default=defaultVerifyReport,
+                        help="the fullyVerify report whose verdicts the site shows")
     args = parser.parse_args()
 
-    caps = capabilities(args.cbmBase, probe=not args.noProbe)
+    verifyBy, verifySummary = _verifyByLeaf(args.verifyReport)
+    caps = capabilities(args.cbmBase, probe=not args.noProbe, verifyBy=verifyBy)
     snapshot = {
         "generatedAt": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
         "host": socket.gethostname(),
         "cbmBase": str(args.cbmBase),
         "probed": not args.noProbe,
         "counts": {g: sum(c["gate"] == g for c in caps) for g in gates},
+        "verify": verifySummary,
         "capabilities": caps,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

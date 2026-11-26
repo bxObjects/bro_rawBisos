@@ -26,4 +26,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="astroStarter",
     cbsSpec="/bisos/git/bxRepos/bisos-web/astro-starter-bystar/cbm/astroStarter-cbs.pcs",
+    verifySpec="cd /bisos/git/bxRepos/bisos-web/astro-starter-bystar && ./astroProc.spcs -i siteVerify",
 )

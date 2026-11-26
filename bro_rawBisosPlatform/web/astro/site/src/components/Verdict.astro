@@ -1,0 +1,9 @@
+---
+// The leaf's verdict in the latest fullyVerify report (bisos.capability; /bisos/var/cbm/verify/latest/),
+// from evidence, not exit codes. "masked": it failed, yet its materialize exited 0.
+const { c } = Astro.props
+const v = c.verify
+const cls = !v ? "muted" : v.verdict === "ok" ? "ok" : v.verdict === "fail" ? "bad" : "muted"
+---
+{!v ? <span class="muted">not verified</span>
+  : <span class={cls} title={v.detail}>{v.verdict}{v.rcAgrees === "masked" ? " (masked)" : ""}</span>}

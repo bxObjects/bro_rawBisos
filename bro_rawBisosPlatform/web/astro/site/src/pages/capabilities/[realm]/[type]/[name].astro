@@ -2,6 +2,7 @@
 // One page per CBM leaf.
 import Base from "../../../../layouts/Base.astro"
 import Answer from "../../../../components/Answer.astro"
+import Verdict from "../../../../components/Verdict.astro"
 import { capabilitiesSnapshot as s, capabilities } from "../../../../lib/content.mjs"
 
 export function getStaticPaths() {
@@ -26,6 +27,7 @@ const cbsName = c.cbsSpec.split("/").pop()
       <tr><th>Last outcome</th><td>{c.lastStatus ? <code>{c.lastStatus}</code> : <span class="muted">none yet</span>}</td></tr>
       <tr><th>.internal</th><td>{c.url ? <a href={c.url}>{c.hereName}.internal</a> : "---"}</td></tr>
       <tr><th>Answers</th><td><Answer c={c} /> <span class="muted">at {s.generatedAt}</span></td></tr>
+      <tr><th>Verify</th><td><Verdict c={c} />{c.verify && <span> --- {c.verify.detail} <span class="muted">at {c.verify.at}</span></span>}</td></tr>
       <tr><th>Address</th><td>{c.hereIp ? <code>{c.hereIp}</code> : "---"}{c.portNu && <span> --- nginx proxies to <code>127.0.0.1:{c.portNu}</code></span>}</td></tr>
       <tr><th>Package</th><td>{c.repoUrl ? <a href={c.repoUrl}>{c.package}</a> : "/bisos/asc"}</td></tr>
       <tr><th>CBS</th><td><code class="breakAll">{c.cbsSpec}</code></td></tr>
@@ -36,5 +38,6 @@ const cbsName = c.cbsSpec.split("/").pop()
   <pre>{`cd ${leafDir}
 ./cbmProc.spcs -i cbm_status         # the gate and the outcome log
 ./cbmProc.spcs -i cbm_materialize    # materialize, if enabled
+./cbmProc.spcs -i cbm_verify         # is it healthy? (sysCbmManage.cs -i fullyVerify: all)
 ${cbsName} -i examples   # the CBS itself`}</pre>
 </Base>

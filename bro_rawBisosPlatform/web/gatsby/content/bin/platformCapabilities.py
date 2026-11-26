@@ -4,7 +4,7 @@
 
 Read-only. For every leaf under /bisos/platform/sys/cbm/<realm>/<capabilityType>/<name>/ that has a
 cbmProc.spcs, it records the gate (cbmProc.control), the last line of cbmProc.status, the CBS the leaf
-points at, the .internal name, IP and port from bisos.banna, and the HTTP status of http://<name>.here/
+points at, the .internal name, IP and port from bisos.banna, and the HTTP status of http://<name>.internal/
 as probed now. cbmProc.spcs is parsed as text, not executed. The order is the walk's
 (branchesOrdered of the type's ftoBranchProc.spcs), then by name.
 
@@ -102,7 +102,7 @@ def capabilities(cbmBase: pathlib.Path, probe: bool = True) -> list[dict]:
 
         hereName = hereNameOf.get(name, name)
         hereIp, portNu = hereNames.get(hereName, (None, None))
-        url = f"http://{hereName}.here/" if hereIp else None
+        url = f"http://{tcpPorts.hereFqdn(hereName)}/" if hereIp else None
         port = ports.get(hereName)
         description = descriptionOf.get(name) or (port.portDescription if port else "")
         package, repoUrl = _repoOf(cbsSpec)

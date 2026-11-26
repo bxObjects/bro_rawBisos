@@ -25,6 +25,14 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
+  2026-11-26 (from a bisos-pip/b session; uncommitted):
+  - =content/bin/platformCapabilities.py= built each URL as =http://{hereName}.here/= (missed by the
+    banna Stage 4 rename); it now uses =tcpPorts.hereFqdn=. The Gatsby copy too.
+  - It reads the latest fullyVerify report (=/bisos/var/cbm/verify/latest/report.json=) into each
+    capability's =verify=, and its probe says "no vhost" for nginx's default page. The site shows
+    the verdict: =components/Verdict.astro=, a Verify column in =CapabilityTable=, a Verify row on
+    each leaf's page (bisos-pip/capability AI-WorkPlan.org Stage 5, 5.7). The site is built before
+    the verify of the same run: it shows the previous report until the next =siteBuild=.
   Not yet written up in full; this records only the change of 2026-10-21.
   - Boxed (folder) tabs, as in astro-starter-bystar (its =AI-DevStatus.org= has the rationale):
     =site/src/styles/site.css= in this site's older form (literal colours, no =.tabGroup=): =.tabs=

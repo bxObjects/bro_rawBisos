@@ -12,4 +12,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="csPlayerUi",
     cbsSpec="/bisos/git/bxRepos/bisos-web/csPlayer-webUi/cbm/csPlayerUi-cbs.pcs",  # the Astro site (the Gatsby one is in gatsby/)
+    verifySpec="cd /bisos/git/bxRepos/bisos-web/csPlayer-webUi && ./astroProc.spcs -i siteVerify",
 )

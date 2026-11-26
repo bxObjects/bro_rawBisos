@@ -26,4 +26,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="pltfrmDevelBecome",
     cbsSpec="/bisos/git/bxRepos/bisos-pip/capSpecs/py3/bin/pltfrmDevelBecome-cbs.pcs",
+    verifySpec="pltfrmDevelBecome-assemble.cs -i fullCheck",
 )

@@ -26,4 +26,6 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="pypiserver",
     cbsSpec="pypiserver-cbs.pcs",
+    verifyUnits=["pypiserver", "pypi-browser"],
+    verifySpec="pypiserverAdmin.cs -i driftCheck",
 )

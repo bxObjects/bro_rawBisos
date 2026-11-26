@@ -27,4 +27,5 @@ from bisos.capability import cbmProc_seedInfo
 cbmProc_seedInfo.setup(
     capabilityName="emacsSrcBuild",
     cbsSpec="/bisos/git/bxRepos/bisos-pip/capSpecs/py3/bin/emacsSrcBuild-cbs.pcs",
+    verifySpec="emacs31SrcBuild-assemble.cs -i fullCheck",
 )
