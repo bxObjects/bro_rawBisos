@@ -35,7 +35,7 @@ Fill in the sections below when asked to update, following the structure provide
   [Key components, file structure, entry points]
 
 * What Works
-  - Boxed tabs (2026-10-21): =siteBuild= 26 pages; platform.here 200 at =/=, 404 for a missing page; the
+  - Boxed tabs (2026-10-21): =siteBuild= 26 pages; platform.internal 200 at =/=, 404 for a missing page; the
     served CSS has the rule; header screenshot checked.
 
 * What Is Untested

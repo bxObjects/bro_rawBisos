@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """ #+begin_org
-* ~[Summary]~ :: A =PlantedCmndService= for this static site (Astro) --- platform.here
+* ~[Summary]~ :: A =PlantedCmndService= for this static site (Astro) --- platform.internal
 
 Planted at the top of the site's directory, on bisos.webCap's astroProc seed (astroProc-seed.cs). The
 directory holds cbm/ (the capability), content/ (tree/, bin/, data/) and site/ (the Astro site). The
@@ -17,7 +17,7 @@ from bisos.webCap import astroProc_seedInfo
 
 from bisos.banna import banna_csu
 
-fqdn = "platform.here"
+fqdn = "platform.internal"
 
 def bannaPortNu(portName: str) -> int:
     return int(banna_csu.bannaTcpPortNuOf().pyCmnd(argsList=[portName],).results)

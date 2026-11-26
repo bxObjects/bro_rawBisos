@@ -65,8 +65,8 @@ bro_rawBisosPlatform/           # symlinked to /bisos/platform/
         │   └── bro_rawBisosPals/example/      # <palsBxo>/<cbm>/: cbmProc.{spcs,control,status}
         ├── user/               # realm: user-owned capabilities
         └── collective/         # realm: shared across realms
-            ├── hereWeb/        # capability type: HTTP via .here
-            ├── hereMail/       # capability type: mail via .here
+            ├── hereWeb/        # capability type: HTTP via .internal
+            ├── hereMail/       # capability type: mail via .internal
             ├── rpyc/           # capability type: PyCS RPyC performer
             └── induct/         # capability type: non-service induction
 #+END_EXAMPLE
@@ -140,11 +140,11 @@ Currently four capability types are defined. All are valid under
 any realm.
 
 - *=hereWeb/=* --- capability delivered as an HTTP service reachable
-  through the =.here= fake domain (populated in =/etc/hosts=).
+  through the =.internal= fake domain (populated in =/etc/hosts=).
   Typically an nginx vhost fronting a local upstream. Example:
-  =airflow= (=airflow.here= → =127.0.0.1:24006=).
+  =airflow= (=airflow.internal= → =127.0.0.1:24006=).
 - *=hereMail/=* --- capability delivered as a mail service reachable
-  through the =.here= domain. Different resolution/delivery stack
+  through the =.internal= domain. Different resolution/delivery stack
   from =hereWeb= (qmail-side rather than nginx-side).
 - *=rpyc/=* --- capability delivered as a PyCS RPyC performer ---
   the service-side of BISOS Command-Services. Atomic; no further
@@ -214,7 +214,7 @@ Airflow is being planted as the first concrete CBM leaf at:
 : sys/cbm/collective/hereWeb/airflow/
 
 It represents one capability composed of four systemd units (db,
-webserver, scheduler, triggerer) plus a DNS entry (=airflow.here=)
+webserver, scheduler, triggerer) plus a DNS entry (=airflow.internal=)
 plus an nginx vhost --- all materialized in one shot when the
 leaf's =cbmProc.spcs= runs =cbs_materialize= (with the gate open).
 

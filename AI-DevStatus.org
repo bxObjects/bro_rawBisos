@@ -25,6 +25,9 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
+- 2026-11-26 (from a bisos-pip/b session): every =<name>.here= in this repo is now =<name>.internal=
+  (=.here= is an https-only gTLD in Chrome; bisos-pip/banna AI-WorkPlan.org Stage 4, banna's
+  =tcpPorts.hereFqdn=). Text renamed, not tested here; AI-WorkPlan.org keeps =.here= as history.
 
 =bro_rawBisos= is the BRO (single git repo) hosting umbrella
 BXO-partition subdirectories that a raw-bisos system expects. On a
@@ -62,7 +65,7 @@ Other subdirectories (=bro_rawBisosPals=, =bro_rawBisosSite=,
 =bro_rawBisosPals/bySmb/example/web/astro/= (its own initiateSub: AI-WorkPlan.org 2.1--2.6,
 AI-DevStatus.org); the tools are in bisos.pals (=palsOfSys.cs=, =palsHereInfo.cs=). Here:
 - =bro_rawBisosPals/bySmb/example/web/astro/= --- the Libre-Halaal Foundation's Astro site,
-  =http://example.org.here= (untracked as a whole). Its =cbm/= holds symlinks to bisos.pals's
+  =http://example.org.internal= (untracked as a whole). Its =cbm/= holds symlinks to bisos.pals's
   generic files.
 - =bro_rawBisosPals/sys/cbm/example/= --- this PALS-BXO's declaration of that CBM
   (=capabilityType/value=, =cbsSpec/value= relative to =bro_rawBisosPals=); =sys/cbm/readme.org= says
@@ -104,7 +107,7 @@ bro_rawBisos/                       # this repo (one BRO)
 │           ├── user/               # realm (empty)
 │           └── collective/         # realm (populated)
 │               ├── ftoBranchProc.spcs  # walker at this branch
-│               ├── hereWeb/        # capabilityType: HTTP via .here
+│               ├── hereWeb/        # capabilityType: HTTP via .internal
 │               │   └── airflow/    # capability leaf
 │               │       ├── cbmProc.spcs
 │               │       ├── cbmProc.control
@@ -194,7 +197,7 @@ Also verified directly at the airflow leaf (not just via walker):
   the CBS's inner =airflow-sbom.pcs -i sbom_fullUpdate= step (rc=127;
   =airflow-sbom.pcs= not on container PATH). Full materialization
   (installing packages, bringing up systemd units, adding
-  =airflow.here= DNS, installing nginx vhost, webserver listening on
+  =airflow.internal= DNS, installing nginx vhost, webserver listening on
   port 24006) requires a VM host.
 
 - *Airflow's dependent sub-.pcs files* (=airflow-sbom.pcs=,
@@ -256,8 +259,8 @@ service vs non-service).
 
 ** =here= renamed to =hereWeb= (with =hereMail= peer created)
 
-Original =collective/here/= implied all-things-.here. Renaming
-distinguishes HTTP-via-.here (=hereWeb=) from mail-via-.here
+Original =collective/here/= implied all-things-.internal. Renaming
+distinguishes HTTP-via-.internal (=hereWeb=) from mail-via-.internal
 (=hereMail=). Renamed via =git mv= to preserve history. Empty
 =hereMail/= created as sibling placeholder.
 

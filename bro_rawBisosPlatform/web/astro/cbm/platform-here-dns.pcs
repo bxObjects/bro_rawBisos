@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """ #+begin_org
-* ~[Summary]~ :: A =PlantedCmndService= for platform.here --- the /etc/hosts entry this site is browsed by
+* ~[Summary]~ :: A =PlantedCmndService= for platform.internal --- the /etc/hosts entry this site is browsed by
 #+end_org """
 
 from bisos.b import cs
@@ -15,7 +15,7 @@ from bisos.dnsCap import dnsCap_seedInfo
 cntrlInfo = dnsCap_seedInfo.cmndsControlInfo
 
 cntrlInfo.dnsSpecMethod = dnsCap_seedInfo.DnsSpecMethod.etcHosts   # Other choice is tinydns
-cntrlInfo.fqdn = "platform.here"   # 127.0.22.120, from bisos.banna tcpPorts (platform)
+cntrlInfo.fqdn = "platform.internal"   # 127.0.22.120, from bisos.banna tcpPorts (platform)
 
 from bisos.csSeed import csCmndsList_seedInfo
 csCmnd = csCmndsList_seedInfo.csCmnd

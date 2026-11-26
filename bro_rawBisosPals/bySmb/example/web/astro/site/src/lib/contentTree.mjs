@@ -4,7 +4,7 @@
 //
 // A node is a directory; its parameters are one file each:
 //   objectType      folder | page | pageLcnt | files | custom | app (auxNode/auxLeaf/rawFiles: old slider, skipped)
-//                   link: a tab that leads out (linkUrl), e.g. to another .here site
+//                   link: a tab that leads out (linkUrl), e.g. to another .internal site
 //                   app: the tree gives the tab, title and place; the page is a fixed page at that path
 //                   (site/src/pages/<path>.astro), e.g. a React island, rendered in this layout
 //   folderTitle     a folder's label (tabs, sidebar, breadcrumbs)

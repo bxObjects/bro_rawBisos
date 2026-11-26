@@ -5,8 +5,8 @@
 *
 * Planted location: sys/cbm/collective/hereWeb/pypiserver/cbmProc.spcs
 * Realm:            collective
-* CapabilityType:   hereWeb    (HTTP via .here fake domain)
-* CapabilityName:   pypiserver (index and pypi-browser as pypiserver.here)
+* CapabilityType:   hereWeb    (HTTP via .internal fake domain)
+* CapabilityName:   pypiserver (index and pypi-browser as pypiserver.internal)
 *
 * CBM sits on top of CBS --- it does NOT duplicate CBS content.
 * This file is a *pointer* to the CBS executable. cbm_* verbs

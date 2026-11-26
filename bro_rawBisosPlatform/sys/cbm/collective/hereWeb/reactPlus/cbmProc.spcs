@@ -5,8 +5,8 @@
 *
 * Planted location: sys/cbm/collective/hereWeb/airflow/cbmProc.spcs
 * Realm:            collective
-* CapabilityType:   hereWeb    (HTTP via .here fake domain)
-* CapabilityName:   airflow    (accessible as airflow.here)
+* CapabilityType:   hereWeb    (HTTP via .internal fake domain)
+* CapabilityName:   airflow    (accessible as airflow.internal)
 *
 * CBM sits on top of CBS --- it does NOT duplicate CBS content.
 * This file is a *pointer* to the CBS executable. cbm_* verbs

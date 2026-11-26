@@ -34,7 +34,7 @@ const CapabilityPage = ({ pageContext }) => {
               href={c.url}
               className="inline-block px-6 py-3 bg-bystar-navy text-white rounded-lg font-bold no-underline hover:shadow-lg"
             >
-              Open {c.hereName}.here
+              Open {c.hereName}.internal
             </a>
           </p>
         )}
@@ -45,7 +45,7 @@ const CapabilityPage = ({ pageContext }) => {
             <Row label="Last outcome">
               {c.lastStatus ? <code>{c.lastStatus}</code> : <span className="text-gray-500">none yet</span>}
             </Row>
-            <Row label=".here"><HereLink capability={c} /></Row>
+            <Row label=".internal"><HereLink capability={c} /></Row>
             <Row label="Answers"><Answer capability={c} /> <span className="text-gray-500">at {snapshot.generatedAt}</span></Row>
             <Row label="Address">
               {c.hereIp ? <code>{c.hereIp}</code> : "---"}

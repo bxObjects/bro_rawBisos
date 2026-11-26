@@ -9,10 +9,10 @@ const gateStyle = {
   disabled: "text-gray-500",
 }
 
-// What the .here URL answered when the snapshot was taken.
+// What the .internal URL answered when the snapshot was taken.
 export function Answer({ capability }) {
   const { url, httpStatus } = capability
-  if (!url) return <span className="text-gray-400">no .here</span>
+  if (!url) return <span className="text-gray-400">no .internal</span>
   if (capability.isThisSite) return <span className="text-green-700">this site</span>
   if (httpStatus === null || httpStatus === undefined) {
     return <span className="text-red-700 font-semibold">no answer</span>
@@ -25,7 +25,7 @@ export function HereLink({ capability }) {
   if (!capability.url) return <span className="text-gray-400">---</span>
   return (
     <a href={capability.url} className="text-blue-700 hover:underline">
-      {capability.hereName}.here
+      {capability.hereName}.internal
     </a>
   )
 }
@@ -40,7 +40,7 @@ export default function CapabilityTable({ capabilities }) {
             {gates.map((g) => (
               <th key={g} className="p-2 border-b text-center capitalize">{g}</th>
             ))}
-            <th className="p-2 border-b">.here</th>
+            <th className="p-2 border-b">.internal</th>
             <th className="p-2 border-b">Answers</th>
             <th className="p-2 border-b">Package</th>
           </tr>

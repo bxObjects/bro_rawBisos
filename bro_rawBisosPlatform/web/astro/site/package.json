@@ -1,7 +1,7 @@
 {
   "name": "platform-here",
   "private": true,
-  "description": "platform.here: the layers and capabilities of this Raw-BISOS platform (Astro)",
+  "description": "platform.internal: the layers and capabilities of this Raw-BISOS platform (Astro)",
   "type": "module",
   "version": "1.0.0",
   "author": "Mohsen Banan <https://github.com/mohsenBanan>",

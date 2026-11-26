@@ -25,7 +25,7 @@ This file is maintained by Claude. Updates are typically triggered by the
 Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; nothing committed).
 
 * Current State
-  - This directory is the Libre-Halaal Foundation's site, =http://example.org.here=, the first PALS
+  - This directory is the Libre-Halaal Foundation's site, =http://example.org.internal=, the first PALS
     made a functional part of BISOS (Stage 1/2 of AI-WorkPlan.org). It is served on this host from
     =site/dist= at =127.0.55.1=, and reachable as a CBM of the PALS-BXO =bro_rawBisosPals=.
   - The Libre-Halaal Foundation is the renamed Free Protocols Foundation (same work). The content tree
@@ -39,36 +39,36 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
   - =README.org= here is still the astroPoc's (says "superseded"): out of date.
   - Boxed (folder) tabs (2026-10-21), as in astro-starter-bystar (its =AI-DevStatus.org= has the
     rationale): =site/src/styles/site.css= =--tabBox=, =nowrap=, rounded boxes. =siteBuild= 18 pages;
-    =example.org.here= 200 / 404, the served CSS has the rule, header screenshot with the فارسی tab
-    boxed. Checked by name with curl, not =siteVerify=, which still checks =platform.here= (2.3).
+    =example.org.internal= 200 / 404, the served CSS has the rule, header screenshot with the فارسی tab
+    boxed. Checked by name with curl, not =siteVerify=, which still checks =platform.internal= (2.3).
     Uncommitted at the time of writing.
 
-  - Renamed 2026-10-26 (user): the site was =libre-halaal.org.here= (=bySmb/libreHalaalFoundation=); it is
-    now =example.org.here=, "BySmb Example: The Libre-Halaal Foundation" (banner =exampleBanner.jpg=, one
+  - Renamed 2026-10-26 (user): the site was =libre-halaal.org.internal= (=bySmb/libreHalaalFoundation=); it is
+    now =example.org.internal=, "BySmb Example: The Libre-Halaal Foundation" (banner =exampleBanner.jpg=, one
     wordmark line). As if the old name never happened: the old =uri.list= line was replaced in place, so
     =127.0.55.1= is the new name's (the never-reused rule was broken on purpose); the old nginx vhost and
     the old platform leaf (with its status log) were deleted; the CBM is declared and planted as =example=.
     Pages (=content/tree=) unchanged. History in this file and in AI-WorkPlan.org (2.1, 2.2, 2.5 Results)
-    still says libre-halaal.org.here and libreHalaal: that is what was done then.
+    still says libre-halaal.org.internal and libreHalaal: that is what was done then.
 
 * Architecture
   - This directory (a PALS site, astro-site activity):
     | Path             | What                                                                           |
     |------------------+--------------------------------------------------------------------------------|
-    | =uri/here/value= | =example.org.here= --- the site's name; every cbm/ file derives from it   |
+    | =uri/here/value= | =example.org.internal= --- the site's name; every cbm/ file derives from it   |
     | =astroProc.spcs= | bisos.webCap's astroProc seed: content build, Astro build (still says          |
-    |                  | =platform.here= and banna's =platform_dev= port: WorkPlan 2.3)                 |
+    |                  | =platform.internal= and banna's =platform_dev= port: WorkPlan 2.3)                 |
     | =cbm/=           | four symlinks to bisos.pals =py3/bin/=: =pals-cbs.spcs=, =pals-assemble.cs=,   |
     |                  | =pals-here-dns.spcs=, =pals-wvd.spcs=                                          |
     | =content/=       | =tree/= (pages), =siteStyle/= (logo.html, exampleBanner.tex), =bin/= (README only) |
     | =site/=          | the starter's Astro site (package =libre-halaal-foundation=)                   |
-  - bisos.pals (=/bisos/git/bxRepos/bisos-pip/pals=): =palsHere.py= / =palsHereInfo.cs= (.here names),
+  - bisos.pals (=/bisos/git/bxRepos/bisos-pip/pals=): =palsHere.py= / =palsHereInfo.cs= (.internal names),
     =palsOfSys.py= / =palsOfSys.cs= (PALS-BXOs, their CBMs, platform leaves), the four generic files.
     README.org there documents the model, with the figure =py3/images/palsModel.png=.
   - On the host:
-    - =/bisos/var/palsHere/uri.list=: =127.0.55.1  example.org.here  # pals=<this dir> added=...=
+    - =/bisos/var/palsHere/uri.list=: =127.0.55.1  example.org.internal  # pals=<this dir> added=...=
     - =/etc/hosts=: a =palsHere= dblock (=palsHereInfo.cs -i palsForEtcHosts=) beside banna's.
-    - =/etc/nginx/sites-{available,enabled}/example.org.here=: static, root =site/dist=.
+    - =/etc/nginx/sites-{available,enabled}/example.org.internal=: static, root =site/dist=.
     - =/bisos/platform/sys/pals/bro_rawBisosPals/{path,origin}/value=; declaration
       =bro_rawBisosPals/sys/cbm/example/{capabilityType,cbsSpec}/value=; leaf
       =/bisos/platform/sys/cbm/pals/bro_rawBisosPals/example/= (gate =available=).
@@ -78,11 +78,11 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
 
 * What Works
   Verified on this host (Debian 13), 2026-10-18/19:
-  - .here: =pals-here-dns.spcs -i dnsCap_update= adds the name to the list and fills /etc/hosts;
-    getent and ping resolve =libre-halaal.org.here= to 127.0.55.1. 16 checks of palsHere.py
+  - .internal: =pals-here-dns.spcs -i dnsCap_update= adds the name to the list and fills /etc/hosts;
+    getent and ping resolve =libre-halaal.org.internal= to 127.0.55.1. 16 checks of palsHere.py
     (scratch list).
   - Serving: =pals-assemble.cs -i webVirtDom=; =/= 200, a missing page 404 (the site's own),
-    platform.here unaffected.
+    platform.internal unaffected.
   - Template: breadcrumbs gone, =/sitemap/= 200, فارسی tab at the right, =/persian/= is =dir="rtl"=
     (headless Chrome screenshots); 18 pages built.
   - Rename: no "Free Protocols Foundation", "FPF" or =freeprotocols.org= left in the built site.
@@ -95,14 +95,14 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
   - The leaf left =available=: =fullyMaterialize= builds this site only once it is =enabled=.
   - A second platform; a fresh host (the =bySmb/= tree is untracked, so a clone does not have it).
   - Whether the =libre-halaal.org= links resolve (PLPC documents, projects, donation server).
-  - =palsActivate= (not built); platform.here's snapshot shows this leaf with "bro_rawBisosPals" as type.
+  - =palsActivate= (not built); platform.internal's snapshot shows this leaf with "bro_rawBisosPals" as type.
 
 * Key Design Decisions
   - PALS-BXO declares, platform holds state (user's model, refined, 2026-10-19; WorkPlan 2.5):
     =/bisos/platform/sys/pals/<palsBxo>/= (path, origin), =<palsBxo>/sys/cbm/<cbm>/= (capabilityType,
     relative cbsSpec), leaves at =sys/cbm/pals/<palsBxo>/<cbm>/= (user chose this over
     =pals/<type>/<cbm>/=). FileParams throughout.
-  - .here names (WorkPlan 2.1): host-local =/bisos/var/palsHere/uri.list=, 127.0.55.x assigned once and
+  - .internal names (WorkPlan 2.1): host-local =/bisos/var/palsHere/uri.list=, 127.0.55.x assigned once and
     stored, never reused (retire by commenting out), provenance per line; =palsHereIpOf()= for vhosts.
     dnsCap creates the palsHere dblock (=hostsDblockCommands=), not a pals-side step.
   - Spread-planted files (=.spcs=, WorkPlan 2.2): one generic file per role in bisos.pals, symlinked into
@@ -124,7 +124,7 @@ Last updated: 2026-10-19 (WorkPlan 2.1 and 2.2 done, 2.5 built, 2.6 rewritten; n
     - AI-WorkPlan.org 2.1, 2.2, 2.5, 2.6 --- the decisions above, with their Results.
     - AI-Outputs.org (blee-binders/evolution): dnsCap ensure (DONE), the CBS-symlink fix (DONE), the bare
       =ftoBranchProc.spcs= in sysCbmManage that depends on =.= in PATH (TODO), aiCommandsSkillsTrees.
-    - bisos.pals README.org ("PALS on a Platform", ".here Names") and its figure.
+    - bisos.pals README.org ("PALS on a Platform", ".internal Names") and its figure.
   - Installed in bisos3 as editable (were PyPI copies): bisos.pals, bisos.dnsCap, bisos.capability;
     devbin symlinks for palsHereInfo.cs, palsOfSys.cs by hand. Debian packages added: texlive-xetex,
     fonts-comic-neue.

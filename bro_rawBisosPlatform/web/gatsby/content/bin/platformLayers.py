@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Snapshot this platform's layers as content/data/platformLayers.json, for platform.here.
+"""Snapshot this platform's layers as content/data/platformLayers.json, for platform.internal.
 
 Read-only. Four layers, from the bottom up:
 
@@ -269,7 +269,7 @@ def bisosLayer(facts: dict) -> dict:
     items = [
         _item("Host name", socket.gethostname(), "socket.gethostname()"),
         _item("Primary address", f"{primaryIp} ({primary})" if primaryIp else "", "facter networking.primary"),
-        _item(".here addresses", f"{len(hereEntries)} names on {hereIps[0]} -- {hereIps[-1]}" if hereIps else "",
+        _item(".internal addresses", f"{len(hereEntries)} names on {hereIps[0]} -- {hereIps[-1]}" if hereIps else "",
               "bisos.banna tcpPorts.hereEntries(); /etc/hosts"),
         _item("/bisos/platform", platformEnd, "readlink /bisos/platform"),
         _item("/bisos/site", siteEnd, "readlink /bisos/site"),

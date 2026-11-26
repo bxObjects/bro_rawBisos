@@ -1,5 +1,5 @@
 /**
- * platform.here --- the capabilities of this Raw-BISOS platform (rawBisosCBMs).
+ * platform.internal --- the capabilities of this Raw-BISOS platform (rawBisosCBMs).
  *
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
  */
@@ -9,10 +9,10 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `platform.here`,
-    description: `The capabilities (CBMs) of this Raw-BISOS platform, with links to their .here sites.`,
+    title: `platform.internal`,
+    description: `The capabilities (CBMs) of this Raw-BISOS platform, with links to their .internal sites.`,
     author: `Mohsen Banan`,
-    siteUrl: `http://platform.here`,
+    siteUrl: `http://platform.internal`,
   },
   plugins: [
     `gatsby-plugin-postcss`,
@@ -29,7 +29,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `platform.here`,
+        name: `platform.internal`,
         short_name: `platform`,
         start_url: `/`,
         background_color: `#001a4d`,

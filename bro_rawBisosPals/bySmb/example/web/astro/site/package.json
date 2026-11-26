@@ -1,7 +1,7 @@
 {
   "name": "example-bysmb",
   "private": true,
-  "description": "example.org.here: the BySmb Example, the Libre-Halaal Foundation's site, from its content tree (astro-starter-bystar template)",
+  "description": "example.org.internal: the BySmb Example, the Libre-Halaal Foundation's site, from its content tree (astro-starter-bystar template)",
   "type": "module",
   "version": "1.0.0",
   "author": "Mohsen Banan <https://github.com/mohsenBanan>",

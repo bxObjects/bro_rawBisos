@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-"""Snapshot this platform's CBM tree as content/data/capabilities.json, for platform.here.
+"""Snapshot this platform's CBM tree as content/data/capabilities.json, for platform.internal.
 
 Read-only. For every leaf under /bisos/platform/sys/cbm/<realm>/<capabilityType>/<name>/ that has a
 cbmProc.spcs, it records the gate (cbmProc.control), the last line of cbmProc.status, the CBS the leaf
-points at, the .here name, IP and port from bisos.banna, and the HTTP status of http://<name>.here/
+points at, the .internal name, IP and port from bisos.banna, and the HTTP status of http://<name>.here/
 as probed now. cbmProc.spcs is parsed as text, not executed. The order is the walk's
 (branchesOrdered of the type's ftoBranchProc.spcs), then by name.
 
@@ -30,18 +30,18 @@ thisDir = pathlib.Path(__file__).resolve().parent
 defaultOut = thisDir.parent / "data" / "capabilities.json"   # content/data/, read by site/ as @content
 defaultCbmBase = pathlib.Path("/bisos/platform/sys/cbm")
 
-# Where a capability's .here name differs from its capability name.
+# Where a capability's .internal name differs from its capability name.
 hereNameOf = {
     "gatsbyBxSidebar": "starterSidebar",
 }
 
 # One line for leaves whose banna port has no description (or no port at all).
 descriptionOf = {
-    "nginx": "nginx, the web server every .here vhost needs",
+    "nginx": "nginx, the web server every .internal vhost needs",
     "reactPlus": "Node.js and the React/Gatsby toolchain (sbom only, no units)",
     "gatsbyBxSidebar": "the ByStar nested-sidebar Gatsby starter, as a site",
-    "kafka": "Apache Kafka, single-node KRaft; kafka.here is its web UI, Kafbat UI",
-    "platform": "this site: the platform's capabilities and their .here links",
+    "kafka": "Apache Kafka, single-node KRaft; kafka.internal is its web UI, Kafbat UI",
+    "platform": "this site: the platform's capabilities and their .internal links",
 }
 
 thisSiteName = "platform"
@@ -136,7 +136,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--cbmBase", type=pathlib.Path, default=defaultCbmBase)
     parser.add_argument("--out", type=pathlib.Path, default=defaultOut)
-    parser.add_argument("--noProbe", action="store_true", help="do not probe the .here URLs")
+    parser.add_argument("--noProbe", action="store_true", help="do not probe the .internal URLs")
     args = parser.parse_args()
 
     caps = capabilities(args.cbmBase, probe=not args.noProbe)

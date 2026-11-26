@@ -40,7 +40,7 @@ branchesOrdered = [
     "csPlayerPerf", # before csPlayerUi: its vhost proxies /api/ to csPlayerPerf
     "csPlayerUi",
     "astroStarter",
-    "platform",    # last: platform.here snapshots every leaf above
+    "platform",    # last: platform.internal snapshots every leaf above
 ]
 
 leavesOrdered = [

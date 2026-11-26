@@ -1,13 +1,13 @@
-#+title: platform.here --- This Platform's Capabilities
+#+title: platform.internal --- This Platform's Capabilities
 #+DATE: <2026-10-16 Fri>
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:3
 
 * Overview
 
-=http://platform.here= is a static Gatsby site that lists this Raw-BISOS platform's capabilities: one
+=http://platform.internal= is a static Gatsby site that lists this Raw-BISOS platform's capabilities: one
 table per =realm/capabilityType= with the leaf's gate (enabled, available, disabled), a link to its
-=.here= site, what that site answered, and its package. From it one gets to every capability's URL.
+=.internal= site, what that site answered, and its package. From it one gets to every capability's URL.
 It also shows the platform's layers, and summarizes the rawBisosCBMs concepts
 (=bxGenesis/start/rawBisosCBMs/README.org=).
 
@@ -51,11 +51,11 @@ is one item in the generator. The rules, as agreed (2026-10-17):
 
 The tables are what the CBM tree said when the site was built. =content/bin/platformCapabilities.py=
 reads each leaf under =/bisos/platform/sys/cbm/= (=cbmProc.spcs= parsed as text, =cbmProc.control=,
-the last line of =cbmProc.status=), takes the =.here= name, IP and port from =bisos.banna=, probes
-each =.here= URL once, and writes =content/data/capabilities.json=. The pages, the sidebar and one
+the last line of =cbmProc.status=), takes the =.internal= name, IP and port from =bisos.banna=, probes
+each =.internal= URL once, and writes =content/data/capabilities.json=. The pages, the sidebar and one
 page per leaf are built from that file. Refresh with =cbm/platform-assemble.cs -i gatsbyBuild=.
 
-Checking live from the browser was set aside: each =.here= name is a different origin.
+Checking live from the browser was set aside: each =.internal= name is a different origin.
 
 * Layout
 
@@ -79,7 +79,7 @@ web/gatsby/
 | =cbm/platform-cbs.pcs=                | the CBS: no sbom, no units, only the assemble step          |
 | =cbm/platform-assemble.cs=            | =gatsbyBuild= (=content/bin/*=, =npm ci=, =gatsby build=),  |
 |                                       | =hereDns=, =webVirtDom=                                     |
-| =cbm/platform-here-dns.pcs=           | =platform.here= in =/etc/hosts= (127.0.22.120)              |
+| =cbm/platform-here-dns.pcs=           | =platform.internal= in =/etc/hosts= (127.0.22.120)              |
 | =cbm/platform-wvd.pcs=                | the nginx vhost: static files from =site/public/=, the 404  |
 | =content/bin/platformCapabilities.py= | CBM tree + banna -> =content/data/capabilities.json=        |
 | =content/bin/platformLayers.py=       | facter + checks -> =content/data/platformLayers.json=       |
@@ -115,8 +115,8 @@ cd /bisos/platform/web/gatsby
 * Known Limits
 
 - Only leaves with a =cbmProc.spcs= are listed; declared leaves (a README only) are not.
-- The =.here= name is the capability name unless =hereNameOf= in the generator says otherwise
-  (=gatsbyBxSidebar= is =starterSidebar.here=).
+- The =.internal= name is the capability name unless =hereNameOf= in the generator says otherwise
+  (=gatsbyBxSidebar= is =starterSidebar.internal=).
 - This site's own row is not probed (it is built before its vhost exists): it says "this site".
 
 # Local Variables:

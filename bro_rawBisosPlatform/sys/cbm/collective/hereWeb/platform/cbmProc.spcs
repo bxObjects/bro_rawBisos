@@ -5,8 +5,8 @@
 *
 * Planted location: sys/cbm/collective/hereWeb/platform/cbmProc.spcs
 * Realm:            collective
-* CapabilityType:   hereWeb    (HTTP via .here fake domain)
-* CapabilityName:   platform   (this platform's capabilities as platform.here; built last)
+* CapabilityType:   hereWeb    (HTTP via .internal fake domain)
+* CapabilityName:   platform   (this platform's capabilities as platform.internal; built last)
 *
 * CBM sits on top of CBS --- it does NOT duplicate CBS content.
 * This file is a *pointer* to the CBS executable. cbm_* verbs

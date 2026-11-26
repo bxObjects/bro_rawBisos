@@ -4,7 +4,7 @@
 * Overview and Relevant Pointers
 platform-cbs.pcs
 cbs: Capability Bundle Specification  -- Based on a cba-sysd.cs seed
-ws: An Web Service  --- /Service Component/ --- platform.here, this platform's capabilities
+ws: An Web Service  --- /Service Component/ --- platform.internal, this platform's capabilities
 n:  No Data    -- Materialization is purely based on Realm-BPO
 p:  Platform    -- Materialization is based on Platform-BPO (Site-BPO is not used)
 

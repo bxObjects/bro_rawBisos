@@ -1,4 +1,4 @@
-#+title: content/ --- What platform.here Shows
+#+title: content/ --- What platform.internal Shows
 
 The site's content, kept apart from its presentation (=../site/=):
 
@@ -14,7 +14,7 @@ Here:
 | Script                        | Writes                     | What it is                            |
 |-------------------------------+----------------------------+---------------------------------------|
 | =bin/platformCapabilities.py= | =data/capabilities.json=   | the CBM leaves: gates, last outcomes, |
-|                               |                            | =.here= links and what they answer    |
+|                               |                            | =.internal= links and what they answer    |
 | =bin/platformLayers.py=       | =data/platformLayers.json= | the layers: Box, OS, BISOS,           |
 |                               |                            | BISOS-Evolution                       |
 

@@ -21,7 +21,7 @@ const IndexPage = () => {
           <span className="text-green-700">{enabled} enabled</span>,{" "}
           <span className="text-amber-600">{available} available</span> and{" "}
           <span className="text-gray-500">{disabled} disabled</span>. Every hereWeb capability is
-          reachable as <code>http://&lt;name&gt;.here</code> on this host. See{" "}
+          reachable as <code>http://&lt;name&gt;.internal</code> on this host. See{" "}
           <Link to="/capabilities" className="text-blue-700 hover:underline">Capabilities</Link> for the
           tables and <Link to="/rawBisosCBMs" className="text-blue-700 hover:underline">rawBisosCBMs</Link>{" "}
           for the concepts.
@@ -34,7 +34,7 @@ const IndexPage = () => {
           <LayerStack layers={layersSnapshot.layers} capabilitiesCount={snapshot.capabilities.length} />
         </div>
 
-        <h2 className="text-2xl font-bold text-bystar-navy mb-4">The .here Sites</h2>
+        <h2 className="text-2xl font-bold text-bystar-navy mb-4">The .internal Sites</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {reachable.map((c) => (
             <a
@@ -43,7 +43,7 @@ const IndexPage = () => {
               className="block p-4 bg-gray-50 rounded-lg border-l-4 border-bystar-navy hover:shadow-md no-underline"
             >
               <div className="flex justify-between items-baseline">
-                <span className="text-lg font-bold text-bystar-navy">{c.hereName}.here</span>
+                <span className="text-lg font-bold text-bystar-navy">{c.hereName}.internal</span>
                 <span className="text-xs"><Answer capability={c} /></span>
               </div>
               <div className="text-sm text-gray-600 mt-1">{c.description}</div>

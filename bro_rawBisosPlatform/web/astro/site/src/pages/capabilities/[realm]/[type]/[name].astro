@@ -19,12 +19,12 @@ const cbsName = c.cbsSpec.split("/").pop()
 <Base title={c.name}>
   <h1>{c.name}</h1>
   <p>{c.description}</p>
-  {c.url && <p><a href={c.url} class="button">Open {c.hereName}.here</a></p>}
+  {c.url && <p><a href={c.url} class="button">Open {c.hereName}.internal</a></p>}
   <table class="items">
     <tbody>
       <tr><th>Gate</th><td>{c.gate} <span class="muted">(cbmProc.control)</span></td></tr>
       <tr><th>Last outcome</th><td>{c.lastStatus ? <code>{c.lastStatus}</code> : <span class="muted">none yet</span>}</td></tr>
-      <tr><th>.here</th><td>{c.url ? <a href={c.url}>{c.hereName}.here</a> : "---"}</td></tr>
+      <tr><th>.internal</th><td>{c.url ? <a href={c.url}>{c.hereName}.internal</a> : "---"}</td></tr>
       <tr><th>Answers</th><td><Answer c={c} /> <span class="muted">at {s.generatedAt}</span></td></tr>
       <tr><th>Address</th><td>{c.hereIp ? <code>{c.hereIp}</code> : "---"}{c.portNu && <span> --- nginx proxies to <code>127.0.0.1:{c.portNu}</code></span>}</td></tr>
       <tr><th>Package</th><td>{c.repoUrl ? <a href={c.repoUrl}>{c.package}</a> : "/bisos/asc"}</td></tr>

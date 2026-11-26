@@ -1,7 +1,7 @@
 {
   "name": "platform-here",
   "private": true,
-  "description": "platform.here: the capabilities of this Raw-BISOS platform, from the gatsby-starter-bystar-nestedSidebar",
+  "description": "platform.internal: the capabilities of this Raw-BISOS platform, from the gatsby-starter-bystar-nestedSidebar",
   "version": "1.0.0",
   "author": "Mohsen Banan <https://github.com/mohsenBanan>",
   "dependencies": {

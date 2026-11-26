@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """ #+begin_org
-* ~[Summary]~ :: A =CmndSvc= for assembling platform.here: the content, the Astro build, the .here dns entry and the nginx vhost.
+* ~[Summary]~ :: A =CmndSvc= for assembling platform.internal: the content, the Astro build, the .internal dns entry and the nginx vhost.
 #+end_org """
 
 ####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-mu"
@@ -53,9 +53,9 @@ csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 This is the assemble step of platform-cbs.pcs, the last leaf of the hereWeb walk. The site's
 directory has cbm/ (this file and the other capability files), content/ and site/. siteBuild runs
 ./astroProc.spcs -i siteBuild: every executable in content/bin/, which write content/data/ --- here a snapshot of the platform's
-CBM tree (platformCapabilities.py: gates, last outcomes, .here names from bisos.banna and what each
+CBM tree (platformCapabilities.py: gates, last outcomes, .internal names from bisos.banna and what each
 URL answers) and of its layers (platformLayers.py: Box, OS, BISOS, BISOS-Evolution) --- then builds
-site/ into site/dist/ (npm ci, astro build). hereDns registers =platform.here=
+site/ into site/dist/ (npm ci, astro build). hereDns registers =platform.internal=
 (platform-here-dns.pcs); webVirtDom installs and enables its nginx vhost (platform-wvd.pcs), which
 serves site/dist/ as static files.
 ** Status: Starting point
@@ -182,8 +182,8 @@ class examples(cs.Cmnd):
         cmnd('siteBuild', comment=" # run content/bin/*, then npm ci + astro build in site/")
 
         cs.examples.menuChapter('=Activation Commands=')
-        cmnd('hereDns', comment=" # platform.here in /etc/hosts")
-        cmnd('webVirtDom', comment=" # platform.here nginx vhost -> site/dist/")
+        cmnd('hereDns', comment=" # platform.internal in /etc/hosts")
+        cmnd('webVirtDom', comment=" # platform.internal nginx vhost -> site/dist/")
 
         cs.examples.menuChapter('=Full Update=')
         cmnd('fullUpdate', comment=" # siteBuild + hereDns + webVirtDom")
@@ -290,7 +290,7 @@ class hereDns(cs.Cmnd):
             return failed(cmndOutcome)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Write platform.here into /etc/hosts.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Write platform.internal into /etc/hosts.
         #+end_org """): return(cmndOutcome)
 
         self.captureRunStr(""" #+begin_org
@@ -329,7 +329,7 @@ class webVirtDom(cs.Cmnd):
             return failed(cmndOutcome)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Install and enable platform.here's nginx vhost.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Install and enable platform.internal's nginx vhost.
         #+end_org """): return(cmndOutcome)
 
         self.captureRunStr(""" #+begin_org

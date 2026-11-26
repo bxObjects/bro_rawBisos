@@ -1,9 +1,9 @@
-// platform.here: static output, one directory per page (/platform/box/ -> platform/box/index.html),
+// platform.internal: static output, one directory per page (/platform/box/ -> platform/box/index.html),
 // served by nginx from site/dist/.
 import { defineConfig } from "astro/config"
 
 export default defineConfig({
-  site: "http://platform.here",
+  site: "http://platform.internal",
   output: "static",
   trailingSlash: "always",
   build: { format: "directory" },

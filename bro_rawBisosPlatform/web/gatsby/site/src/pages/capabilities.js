@@ -15,7 +15,7 @@ const CapabilitiesPage = () => (
         One table per <code>realm/capabilityType</code>, in the order the walk materializes them. The
         gate is the leaf's <code>cbmProc.control</code>: <em>enabled</em> is materialized with the
         tree, <em>available</em> is planted but not materialized automatically, <em>disabled</em> is
-        skipped. <em>Answers</em> is what the <code>.here</code> URL returned when this snapshot was
+        skipped. <em>Answers</em> is what the <code>.internal</code> URL returned when this snapshot was
         taken ({snapshot.generatedAt}).
       </p>
       {[...capabilityGroups(snapshot.capabilities)].map(([key, members]) => (

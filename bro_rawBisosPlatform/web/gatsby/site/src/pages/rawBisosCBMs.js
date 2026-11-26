@@ -21,7 +21,7 @@ const layering = `+-------------------------------------------------------------
 |    a real server's configuration and scale, over the generic CBS     |
 +----------------------------------------------------------------------+
 | 2. Generic CBM pip packages  (bisos.kafka, bisos.grafana, ...)       |
-|    the base layer: each capability installed, minimal, as x.here     |
+|    the base layer: each capability installed, minimal, as x.internal     |
 +----------------------------------------------------------------------+
 | 1. Raw-BISOS platform  (raw-bisos.sh, from a Fresh-Debian)           |
 |    /bisos, bystar, Blee, the venvs, bro_rawBisos as /bisos/platform  |
@@ -65,9 +65,9 @@ const RawBisosCbmsPage = () => (
         </p>
       </Section>
 
-      <Section title="The .here Convention">
+      <Section title="The .internal Convention">
         <p>
-          Every hereWeb capability is reachable as <code>http://&lt;name&gt;.here</code>: a fake domain in{" "}
+          Every hereWeb capability is reachable as <code>http://&lt;name&gt;.internal</code>: a fake domain in{" "}
           <code>/etc/hosts</code> on a <code>127.0.22.x</code> address that <code>bisos.banna</code>{" "}
           assigns once to the capability's port, served by nginx proxying to the program on{" "}
           <code>127.0.0.1</code>. Nothing listens beyond loopback, and every raw platform gets the same

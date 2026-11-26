@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """ #+begin_org
-* ~[Summary]~ :: A =PlantedCmndService= for platform.here NGINX virtual-host (capWebVd) --- serves the built site
+* ~[Summary]~ :: A =PlantedCmndService= for platform.internal NGINX virtual-host (capWebVd) --- serves the built site
 #+end_org """
 
 from bisos.b import cs
@@ -13,7 +13,7 @@ from bisos.webCap import capWebVd_seed  # noqa: F401  # _atExit_
 
 from bisos.webCap import capWebVd_seedInfo
 
-serverName = "platform.here"
+serverName = "platform.internal"
 # Static files from astro build (cbm/platform-assemble.cs -i siteBuild); no program behind it.
 # By the platform's stable name, so it does not depend on where bro_rawBisos is cloned.
 rootBaseDir = "/bisos/platform/web/astro/site/dist"
