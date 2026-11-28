@@ -22,12 +22,12 @@ from bisos.capability import cbmProc_seedInfo
 
 branchesOrdered = [
     "pltfrmDevelBecome",  # first: it switches the platform to auth and editable installs
-    "lcntCore",
-    "lcntBases",          # after lcntCore: its toolchain
-    "lcntMultiMedia",     # after lcntCore
     "emacsSrcBuild",
     "bleeBuild",          # after emacsSrcBuild: built for its Emacs
     "vscodeClaude",       # per user; after bleeBuild, whose Blee it opens
+    "lcntCore",
+    "lcntBases",          # after lcntCore: its toolchain
+    "lcntMultiMedia",     # after lcntCore
 ]
 
 leavesOrdered = [

@@ -91,8 +91,8 @@ web/astro/
 | =site/src/components/=, =layouts/=    | the tables, the layer stack, the astro-starter layout     |
 
 No React and no client-side JavaScript: Astro components rendered at build time; the left tree folds
-with =<details>=. Node comes from the =reactPlus= leaf; =npm ci= installs exactly
-=site/package-lock.json= (Astro 7.3.8). =site/node_modules/=, =site/dist/=, =site/.astro/= and
+with =<details>=. Node (and HeVeA) come from bisos.webCap's =astroSite-sbom.pcs=, the CBS's sbom;
+=npm ci= installs exactly =site/package-lock.json= (Astro 7.3.8). =site/node_modules/=, =site/dist/=, =site/.astro/= and
 =content/data/*= are not under git.
 
 * Where It Came From
